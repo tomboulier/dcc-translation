@@ -1,20 +1,20 @@
-all: DCC_cycloid.pdf clean view
+all: DCC_translation.pdf clean view
 
-DCC_cycloid.pdf: DCC_cycloid.tex DCC_cycloid.bib
-	pdflatex DCC_cycloid.tex
-	bibtex DCC_cycloid
-	pdflatex DCC_cycloid.tex
-	pdflatex DCC_cycloid.tex
+DCC_translation.pdf: DCC_translation.tex DCC_translation.bib
+	pdflatex DCC_translation.tex
+	bibtex DCC_translation
+	pdflatex DCC_translation.tex
+	pdflatex DCC_translation.tex
 
-view: DCC_cycloid.pdf
-	open DCC_cycloid.pdf
+view: DCC_translation.pdf
+	open DCC_translation.pdf
 
 clean:	
-	rm -f DCC_cycloid.aux
-	rm -f DCC_cycloid.log
-	rm -f DCC_cycloid.out
-	rm -f DCC_cycloid.bbl
-	rm -f DCC_cycloid.blg
-	rm -f DCC_cycloid.synctex.gz
-	rm -f DCC_cycloid.fls
-	rm -f DCC_cycloid.fdb_latexmk
+	rm -f DCC_translation.aux
+	rm -f DCC_translation.log
+	rm -f DCC_translation.out
+	rm -f DCC_translation.bbl
+	rm -f DCC_translation.blg
+	rm -f DCC_translation.synctex.gz
+	rm -f DCC_translation.fls
+	rm -f DCC_translation.fdb_latexmk
