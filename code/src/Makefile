@@ -2,9 +2,9 @@
 # installation sur MedEtPhy 
 # mai 2005
 # ########################## #### #### ####
-LIBROOT = $(HOME)
-LIBPATH = -L$(HOME)/lib  
-INCPATH = -I$(HOME)/include 
+LIBROOT = $(HOME)/Dropbox/Work/TIMC-IMAG/Laurent_Desbat/dcc-translation/code
+LIBPATH = -L$(LIBROOT)/lib  
+INCPATH = -I$(LIBROOT)/include 
 
 CFLAGS = -O3 $(INCPATH) 
 CPLUS = g++
