@@ -1,0 +1,38 @@
+// Mathematical tools 
+//
+// LD Jan 14 : creation
+
+// (c) Copyright TIMC 2014
+
+#include <mathtools.h>
+using namespace std;
+
+
+Scalaire DistancePoly(Scalaire *t,Scalaire *f,int n, int degree)
+// measure the norme 2 of the difference of the fonction "f" to the polynomial
+// set of degree "degree"
+// f is described by it sampled graph (t[i], f[i]), i=0,...,n-1
+// the function is given only for degree =0 or 1 or 2
+// the t[i] are supposed to be equidistant
+{
+  if(degree<0){
+    std::cout<< " ERR in DistancePoly: degree must be >= 0 ; degree = " 
+	     << degree << std::endl;
+    exit(0);
+  }
+  if(degree>0){
+    std::cout<< " ERR in DistancePoly: degree must be <= 0 ; degree = " 
+	     << degree << std::endl;
+  }
+  Scalaire mean;
+  mean=0.
+  for(int i=0;i<n;i++)
+    mean+=f[i];
+  mean-=(f[0]+f[n-1])/2
+  mean/=(n-1);
+  Scalaire distancezero=0.;
+  for(int i=0;i<n;i++)
+    distancezero+=(f[i]-mean)*(f[i]-mean);
+  distancezero-=((f[0]-mean)*(f[0]-mean) + (f[n-1]-mean)*(f[n-1]-mean))/2.
+  distancezero/=(n-1);
+}

@@ -1,0 +1,25 @@
+10
+1
+0.
+6.28319
+384
+256
+f
+defSL
+n
+-1
+SinoFile
+sino.pgm
+# radius of source-detector circle ?:  10
+# Centered FOV radius  ?:  1
+# angular begin of the source trajectory ? : 0.
+# angular interval of the source trajectory ? : 6.28319
+#   source position number ?:  384
+# detector position number   (123) ???: 256
+# Manual or File (*/f) ? f
+# phantom definition file name ? : defSL
+#  Save the data ? (y/n): n
+#  Noise level of the data (in %, 1 means 100% ; if <0 no noise) : -1
+# EcritSino sinogramme file name ???:  SinoFile
+# PGM sinogramme file name ???:  sino.pgm
+

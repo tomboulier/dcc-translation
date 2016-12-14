@@ -1,0 +1,2 @@
+
+double MYcfunc(double x);
