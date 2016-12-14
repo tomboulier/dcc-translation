@@ -13,7 +13,7 @@
 #include <fstream>
 
 #include <realimage.h>
-#include <random.h>
+// #include <random.h>
 // #include <vmi.h>
 // #include <operator.h>
 
