@@ -20,9 +20,8 @@ CFLAGS = $(INCOPT) -O3
 LIB = $(INSTALDIR)/lib/lib$(LIBNAME).a
 
 $(LIB) : $(OBJ)
-	#/bin/cp *.h $(INCPATH)
+	/bin/cp *.h $(INCPATH)
 	$(AR) cruvs $(LIB) $(OBJ)
-
 
 clean: secu
 	/bin/rm *.o *~ #* *.log
