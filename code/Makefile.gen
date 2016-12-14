@@ -8,7 +8,7 @@
 CC = gcc
 CPLUS = g++
 # INSTALDIR = 
-INSTALDIR = $(HOME)
+INSTALDIR = $(HOME)/Dropbox/Work/TIMC-IMAG/Laurent_Desbat/dcc-translation/code
 INCPATH = $(INSTALDIR)/include 
 #GMCAO_DIR=$(INSTALDIR)/Datas/Modules/LibGmcao
 #LIBGMCAO = $(GMCAO_DIR)/public/include
@@ -20,7 +20,7 @@ CFLAGS = $(INCOPT) -O3
 LIB = $(INSTALDIR)/lib/lib$(LIBNAME).a
 
 $(LIB) : $(OBJ)
-	/bin/cp *.h $(INCPATH)
+	#/bin/cp *.h $(INCPATH)
 	$(AR) cruvs $(LIB) $(OBJ)
 
 
