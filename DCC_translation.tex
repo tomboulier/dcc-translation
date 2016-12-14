@@ -37,7 +37,7 @@ Let us begin with some notations. The reader shall refer to Figure~\ref{fig:nota
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=10cm]{frame_scanner.eps}
-	\caption{Problem under consideration. The source point $s(t)$ follows the cycloid depicted in bold, and the virtual point has coordinates $(x,y_0)$.\label{fig:notations}}
+	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold.\label{fig:notations}}
 \end{figure}
 The object to be imaged at time $t=0$ in given by its density function $\mu(x)$ and is illuminated by a source that follows an arc of circle whose radius is $R_0$. For the sake of simplicity, we will consider that this object is moving parallel to the $x$-axis with a constant velocity $v$. The angular rotation of the source point will be denoted $\omega$. In other words, the fanbeam projection data $g(t,\phi)$ is given by
 \begin{equation}
@@ -46,7 +46,7 @@ The object to be imaged at time $t=0$ in given by its density function $\mu(x)$ 
 where
 \begin{align}
 s(t) & = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right), \\
-M(t) & =  \left( vt, 0 \right).
+M(t) & =  \left( \left( t + \frac{T}{2} \right)v, 0 \right).
 \end{align}
 
 \section{Derivation of DCCs}
@@ -55,7 +55,7 @@ In order to derive DCCs, we will first change our frame of reference. Indeed, le
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=10cm]{frame_object.eps}
-	\caption{Change of frame: the object is now at center of the coordinates system.\label{fig:change_frame}}
+	\caption{Change of frame: the object is now at center of the coordinates system. The virtual point has coordinates $\left( x,y_0 \right)$\label{fig:change_frame}}
 \end{figure}
 In other words, we are now dealing with a fixed object and a source following an arc of a cycloid. We will denote $R_t$ the distance between this new center and the translated source point $s_v(t)$, where the latter is given by
 \begin{equation}
@@ -72,12 +72,12 @@ If we denote $\lambda_t$ the angle formed with the $y$-axis, we have in the same
 
 The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$, which is then differentiated to change variables into the following integral
 \begin{equation}
-	B_n(x) = \int_{-\pi/2}^{\pi/2} g_v(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi,	
+	B_n(x) = \int_{-\pi/2}^{\pi/2} \tilde{g}(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi,	
 	\label{eq:Bn_x_phi}
 \end{equation}
-where $g_v(x,\phi)$ is the virtual fanbeam projection whose virtual source is located at $(x,y_0)$. In other words,
+where $\tilde{g}(x,\phi)$ is the virtual fanbeam projection whose virtual source is located at $(x,y_0)$. In other words,
 \begin{equation}
-	g_v(x,\phi) = \int_0^{\infty} \mu\left( (x,y_0) + l(\sin \phi, -\cos \phi) \right) dl.
+	\tilde{g}(x,\phi) = \int_0^{\infty} \mu\left( (x,y_0) + l(\sin \phi, -\cos \phi) \right) dl.
 \end{equation}
 
 We will follow the same path in this note. First, the formula giving $\tan \phi$ is nearly the same as in~\cite{clackdoyle2015consistency}, \emph{i.e.}
