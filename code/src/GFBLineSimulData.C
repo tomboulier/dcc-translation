@@ -22,6 +22,7 @@ int main()
   int i;
   int nbtrans, nbrot; // for parallel geometry
   Scalaire recradius; // Centered disk radius of the reconstruction region
+  Scalaire *trans = new Scalaire(); // translation of data
   Sinogramme *p; // parallel projection
   char *filename;
   
@@ -35,12 +36,15 @@ int main()
   std::cout<< "   Centered disk radius of the reconstruction region ?:  "<<std::flush;
   std::cin>>recradius;
 
+  std::cout<< "   Translation of data ?:  "<<std::flush;
+  std::cin>>*trans;
+
   p= new Sinogramme(nbrot,nbtrans, -M_PI/2, M_PI, recradius);
 
   std::cout<< " ################################ "<<std::endl;
   std::cout<< " Generation of simulated data: "<<std::endl;
   std::cout<< " ################################ "<<std::endl;
-  GetSimulData(p);
+  GetSimulDynTranslatedData(p, trans);
   std::cout<< " ################################ "<<std::endl;
   std::cout<< " ################################ "<<std::endl;
   
