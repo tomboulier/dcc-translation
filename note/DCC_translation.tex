@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage{mathenv}
 \usepackage{multirow}
+\usepackage{fullpage}
 
 \DeclareMathAlphabet{\itbf}{OML}{cmm}{b}{it}
 
@@ -18,6 +19,8 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\C}{\mathcal{C}}
+\newcommand{\Ccinf}{\mathcal{C}_c^{\infty}}
+\newtheorem{definition}{Definition}
 
 \title{Consistency of Fanbeam Projections of a Translating Object Along an Arc of a Circle}
 \author{}
@@ -29,6 +32,7 @@
 
 \begin{abstract}
 This note aims at extending the results of~\cite{clackdoyle2015consistency} to the case of a translating object.
+\end{abstract}
 
 \section{Introduction}
 
@@ -38,23 +42,46 @@ This note aims at extending the results of~\cite{clackdoyle2015consistency} to t
 \subsection{Problem under consideration}
 \label{sub:problem_under_consideration}
 
-Let us begin with some notations and definitions; the reader shall refer to Figure~\ref{fig:notations}.
+Let us begin with some notations and definitions. We will consider an object in $\R^2$ to be imaged by a fanbeam source that follows an arc of circle with center $O$ and radius $R_0$ (see Figure~\ref{fig:notations}, left). The object will be identified with its density function $x \mapsto \mu(x) \in \Ccinf$.
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=10cm]{figs/frame_scanner.eps}
-	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold.\label{fig:notations}}
+	\begin{tabular}{cc}
+	\includegraphics[width=8cm]{figs/frame_scanner_still.eps} &
+	\includegraphics[width=8cm]{figs/frame_scanner.eps}
+	\end{tabular}
+	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold. This latter has center $O$ and radius $R_0$.\label{fig:notations}}
 \end{figure}
-
-
-Now let us suppose that the object is moving. For the sake of simplicity, we will consider that it is moving parallel to the $x$-axis with a constant velocity $v$. The angular rotation of the source point will be denoted $\omega$. In other words, the fanbeam projection data $g(t,\phi)$ is given by
+The angular velocity of the source will be denoted $\omega$, and the time $t$ will range from $-T/2$ to $T/2$, where $T>0$. Hence, if we denote $s(t)$ the position of the source at time $t$, one has
 \begin{equation}
-	g(t,\phi) = \int_0^{+\infty} \mu \left( s(t) - M(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+	s(t) = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right).
+\label{eq:source_position}
 \end{equation}
-where
-\begin{align}
-s(t) & = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right), \\
-M(t) & =  \left( \left( t + \frac{T}{2} \right)v, 0 \right).
-\end{align}
+Moreover, we will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator giving the acquired data from the object.
+\begin{definition}
+The \emph{fanbeam projection data} of an object with density function $\mu$ is a function $(t,\phi) \mapsto T\mu(t,\phi)$ defined by
+\begin{equation}
+	T\mu(t,\phi) = \int_0^{+\infty} \mu \left( s(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+\end{equation}
+where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ and $s(t)$ is given by~(\ref{eq:source_position}). The operator $\mu \mapsto T\mu$ is called the \emph{fanbeam projection operator}.
+\end{definition}
+
+
+Now let us suppose that the object is translating along the $x$-axis with a constant velocity $v \in \R$ (see Figure~\ref{fig:notations}, right). In other words, if we denote $M(t)$ its center of mass at any time $t$, we have
+\begin{equation}
+	M(t) =  \left( \left( t + \frac{T}{2} \right)v, 0 \right).
+\label{eq:center_of_mass}
+\end{equation}
+In this regard, the fanbeam projection data will be modified in the following way.
+\begin{definition}
+The \emph{fanbeam projection data of a translating object} with density function $\mu$ and translating velocity $v$ is given by
+\begin{equation}
+	T_v\mu(t,\phi) = \int_0^{+\infty} \mu \left( s(t) - M(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+\label{eq:def_Tv}
+\end{equation}
+where $s(t)$ is given by~(\ref{eq:source_position}), and $M(t)$ is given by~(\ref{eq:center_of_mass}).
+\end{definition}
+
+The aim of this note is to derive data consistency conditions (DCCs) from~(\ref{eq:def_Tv}), in order to retrieve the velocity $v$.
 
 \subsection{Derivation of DCCs}
 
@@ -62,7 +89,7 @@ In order to derive DCCs, we will first change our frame of reference. Indeed, le
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=10cm]{figs/frame_object.eps}
-	\caption{Change of frame: the object is now at center of the coordinates system. The virtual point has coordinates $\left( x,y_0 \right)$\label{fig:change_frame}}
+	\caption{Change of frame: the object is now at center of the coordinates system. The virtual point has coordinates $\left( x,y_0 \right)$\label{fig:change_frame}}.
 \end{figure}
 In other words, we are now dealing with a fixed object and a source following an arc of a cycloid. We will denote $R_t$ the distance between this new center and the translated source point $s_v(t)$, where the latter is given by
 \begin{equation}
