@@ -6,6 +6,7 @@
 \usepackage{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{amsthm}
 \usepackage{mathenv}
 \usepackage{multirow}
 \usepackage{fullpage}
@@ -17,10 +18,14 @@
 
 % commandes perso
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\RnX}{\mathbb{R}_n[X]}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\C}{\mathcal{C}}
 \newcommand{\Ccinf}{\mathcal{C}_c^{\infty}}
+\newcommand{\supp}{\textrm{supp}}
 \newtheorem{definition}{Definition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
 
 \title{Consistency of Fanbeam Projections of a Translating Object Along an Arc of a Circle}
 \author{}
@@ -56,7 +61,7 @@ The angular velocity of the source will be denoted $\omega$, and the time $t$ wi
 	s(t) = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right).
 \label{eq:source_position}
 \end{equation}
-Furthermore, we will denote $s(-T/2)=(x_l,y_l)$ (resp. $s(T/2)=(x_r,y_r)$) the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value.
+Furthermore, we will denote $s(-T/2)=(x_l,y_l)$ (resp. $s(T/2)=(x_r,y_r)$) the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value. In the following, we will suppose that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$.
 
 We will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator giving the acquired data from the object.
 \begin{definition}
@@ -98,16 +103,7 @@ In other words, we are now dealing with a fixed object illuminated by a source f
 	\caption{Change of frame: the object is now at center of the coordinates system.\label{fig:change_frame}}
 \end{figure}
 
-% Let us denote $R_t$ the distance between this new center and the translated source point $s_v(t)$, \emph{i.e.}
-% \begin{equation}
-% R_t = \sqrt{ \left( R_0 \sin(\omega t) - \left( t + \frac{T}{2} \right)v \right)^2 + R_0^2 \cos^2(\omega t) }.
-% \end{equation}
-% If we denote $\lambda_t$ the angle formed with the $y$-axis, we have in the same manner
-% \begin{equation}
-% \lambda_t = \arctan \left( \frac{R_0 \sin(\omega t) + \left( t + T/2 \right)v}{R_0 \cos(\omega t)} \right).
-% \end{equation}.
-
-Here, the extreme points $s_v(-T/2)$ and $s_v(T/2)$ have the same $y$-coordinate $y_0$ but their $x$-coordinates differ; we will denote them $x'_l$ and $x'_r$, respectively. This allow us to define what we call the \emph{virtual fanbeam projection} $(x,y_0)$ (see Figure~\ref{fig:change_frame}).
+Here, the extreme points $s_v(-T/2)$ and $s_v(T/2)$ have the same $y$-coordinate $y_0$ but their $x$-coordinates differ; we will denote them $x'_l$ and $x'_r$, respectively. This allow us to define what we call the \emph{virtual fanbeam projection} $(x,y_0)$.
 \begin{definition}
 	For any point $x$ between $x'_l$ and $x'_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
 \begin{equation}
@@ -115,19 +111,46 @@ Here, the extreme points $s_v(-T/2)$ and $s_v(T/2)$ have the same $y$-coordinate
 \end{equation}
 \end{definition}
 
-The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$ (see Figure~\ref{fig:notations}), which is then differentiated to change variables into the following integral
+In the following lemma, we will make a connection between the virtual fanbeam projection and the fanbeam projection of the translating object.
+\begin{lemma}
+	Let us fix a time $t \in \left[ -T/2, T/2\right]$ and an angle $\phi \in \left[ -\pi/2, \pi/2\right]$. Let us denote $(x,y_0)$ the intersection point between the ray
+	$ \left\{ s_v(t) + l \left( \sin(\phi), -\cos(\phi) \right) \right\} $ and the line $\{ y = y_0\}$. Then, one has
+	\begin{equation}
+		\left( \tilde{T}\mu	\right)(x,\phi) = \left( T_v\mu	\right)(t,\phi).
+	\end{equation}
+\label{lem:T_x_t}
+\end{lemma}
+\begin{proof}
+Since $\supp(\mu)$ is under the line $\{ y=y_0 \}$, one has
 \begin{equation}
-	B_n(x) = \int_{-\pi/2}^{\pi/2} \tilde{g}(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi,	
+	\int_0^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+\end{equation}
+Moreover, by definition of $x$, the lines
+$$\left\{ (x,y_0) + l \left(\sin(\phi), -\cos(\phi) \right), l \in \R \right\}$$
+and
+$$\left\{ s_v(t) + l' \left(\sin(\phi), -\cos(\phi) \right), l' \in \R \right\}$$
+are the same. Hence,
+\begin{equation}
+	\left( \tilde{T}\mu	\right)(x,\phi) = \int_{-\infty}^{+\infty} \mu \left( s_v(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+\end{equation}
+The same argument as above with $\supp(\mu)$ then leads us to the desired result.
+\end{proof}
+
+We can now define what are the DCCs in our problem
+\begin{theorem}
+Let us fix a density function $\mu$. For any point $x$ between $x'_l$ and $x'_r$, for any integer $n$, let us define
+\begin{equation}
+	B_n(x) = \int_{-\pi/2}^{\pi/2} \left( \tilde{T}\mu	\right)(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi.	
 	\label{eq:Bn_x_phi}
 \end{equation}
-where $\tilde{g}(x,\phi)$ is the virtual fanbeam projection whose virtual source is located at $(x,y_0)$. In other words,
-\begin{equation}
-	\tilde{g}(x,\phi) = \int_0^{\infty} \mu\left( (x,y_0) + l(\sin \phi, -\cos \phi) \right) dl.
-\end{equation}
+Then, $B_n$ is a polynomial function of degree at most $n$.
+\end{theorem}
+\begin{proof}
+The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$ (see Figure~\ref{fig:notations}). This relation is then differentiated to change variables into~(\ref{eq:Bn_x_phi}).
 
-We will follow the same path in this note. First, the formula giving $\tan \phi$ is nearly the same as in~\cite{clackdoyle2015consistency}, \emph{i.e.}
+We will follow the same path here. First, the formula giving $\tan \phi$ is nearly the same as in~\cite{clackdoyle2015consistency},~\emph{i.e.}
 $$
-\tan \phi = \frac{x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0}
+\tan \phi = \frac{x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0}.
 $$
 Then, taking its derivative allows us to write the Jacobian for a change of variables from $\phi$ to $t$
 \begin{align*}
@@ -142,11 +165,17 @@ Hence, one can write
 	&:= W_n(x,t,v) dt,
 \end{align}
 where the term $D_{x,t}$ in equation~(\ref{eq:Dxt_first_occurence}) refers to the distance between the source point $s_v(t)$ and the virtual point $(x,y_0)$.
-In any case, equation~(\ref{eq:Bn_x_phi}) can be re-written as
+
+With the help of lemma~\ref{lem:T_x_t}, the change of variable from $\phi$ to $t$ then leads us to
 \begin{equation}
-	B_n(x,v) = \int_{-T/2}^{T/2} g(t,\phi) W_n(x,t,v) dt.
+	B_n(x) = \int_{-T/2}^{T/2} \left( T_v \mu \right)(t,\lambda_t) W_n(x,t,v) dt,
 	\label{eq:Bnx_DCC}
 \end{equation}
+where
+\begin{equation}
+	\lambda_t = \arctan \left( \frac{x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0} \right).
+\end{equation}
+\end{proof}
 
 \section{Numerical simulations}
 
