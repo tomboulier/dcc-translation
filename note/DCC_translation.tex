@@ -29,17 +29,24 @@
 
 \begin{abstract}
 This note aims at extending the results of~\cite{clackdoyle2015consistency} to the case of a translating object.
-\end{abstract}
 
 \section{Introduction}
 
-Let us begin with some notations. The reader shall refer to Figure~\ref{fig:notations}, which is analogous to~\cite[Figure~2]{clackdoyle2015consistency}.
+\section{Theory} 
+\label{sec:theory}
+
+\subsection{Problem under consideration}
+\label{sub:problem_under_consideration}
+
+Let us begin with some notations and definitions; the reader shall refer to Figure~\ref{fig:notations}.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=10cm]{figs/frame_scanner.eps}
 	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold.\label{fig:notations}}
 \end{figure}
-The object to be imaged at time $t=0$ in given by its density function $\mu(x)$ and is illuminated by a source that follows an arc of circle whose radius is $R_0$. For the sake of simplicity, we will consider that this object is moving parallel to the $x$-axis with a constant velocity $v$. The angular rotation of the source point will be denoted $\omega$. In other words, the fanbeam projection data $g(t,\phi)$ is given by
+
+
+Now let us suppose that the object is moving. For the sake of simplicity, we will consider that it is moving parallel to the $x$-axis with a constant velocity $v$. The angular rotation of the source point will be denoted $\omega$. In other words, the fanbeam projection data $g(t,\phi)$ is given by
 \begin{equation}
 	g(t,\phi) = \int_0^{+\infty} \mu \left( s(t) - M(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
 \end{equation}
@@ -49,7 +56,7 @@ s(t) & = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right), \\
 M(t) & =  \left( \left( t + \frac{T}{2} \right)v, 0 \right).
 \end{align}
 
-\section{Derivation of DCCs}
+\subsection{Derivation of DCCs}
 
 In order to derive DCCs, we will first change our frame of reference. Indeed, let us consider Figure~\ref{fig:change_frame}, where the object is at the center.
 \begin{figure}[!ht]
