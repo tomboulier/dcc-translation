@@ -56,11 +56,13 @@ The angular velocity of the source will be denoted $\omega$, and the time $t$ wi
 	s(t) = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right).
 \label{eq:source_position}
 \end{equation}
-Moreover, we will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator giving the acquired data from the object.
+Furthermore, we will denote $s(-T/2)=(x_l,y_l)$ (resp. $s(T/2)=(x_r,y_r)$) the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value.
+
+We will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator giving the acquired data from the object.
 \begin{definition}
 The \emph{fanbeam projection data} of an object with density function $\mu$ is a function $(t,\phi) \mapsto T\mu(t,\phi)$ defined by
 \begin{equation}
-	T\mu(t,\phi) = \int_0^{+\infty} \mu \left( s(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+	(T\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
 \end{equation}
 where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ and $s(t)$ is given by~(\ref{eq:source_position}). The operator $\mu \mapsto T\mu$ is called the \emph{fanbeam projection operator}.
 \end{definition}
@@ -68,14 +70,14 @@ where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ an
 
 Now let us suppose that the object is translating along the $x$-axis with a constant velocity $v \in \R$ (see Figure~\ref{fig:notations}, right). In other words, if we denote $M(t)$ its center of mass at any time $t$, we have
 \begin{equation}
-	M(t) =  \left( \left( t + \frac{T}{2} \right)v, 0 \right).
+	M_v(t) =  \left( \left( t + \frac{T}{2} \right)v, 0 \right).
 \label{eq:center_of_mass}
 \end{equation}
 In this regard, the fanbeam projection data will be modified in the following way.
 \begin{definition}
 The \emph{fanbeam projection data of a translating object} with density function $\mu$ and translating velocity $v$ is given by
 \begin{equation}
-	T_v\mu(t,\phi) = \int_0^{+\infty} \mu \left( s(t) - M(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+	(T_v\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s(t) - M_v(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
 \label{eq:def_Tv}
 \end{equation}
 where $s(t)$ is given by~(\ref{eq:source_position}), and $M(t)$ is given by~(\ref{eq:center_of_mass}).
@@ -85,26 +87,35 @@ The aim of this note is to derive data consistency conditions (DCCs) from~(\ref{
 
 \subsection{Derivation of DCCs}
 
-In order to derive DCCs, we will first change our frame of reference. Indeed, let us consider Figure~\ref{fig:change_frame}, where the object is at the center.
+In order to derive DCCs, we will first change our frame of reference, from $\left(O, x, y\right)$ to $\left(M(t), x, y\right)$, so that the object is at the center. In this frame, the coordinates of the source are denoted $s_v(t)=s(t)-M_v(t)$, so that we have
+\begin{equation}
+	(T_v\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s_v(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl
+\end{equation}
+In other words, we are now dealing with a fixed object illuminated by a source following an arc of a cycloid (see Figure~\ref{fig:change_frame}).
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=10cm]{figs/frame_object.eps}
-	\caption{Change of frame: the object is now at center of the coordinates system. The virtual point has coordinates $\left( x,y_0 \right)$\label{fig:change_frame}}.
+	\includegraphics[width=12cm]{figs/frame_object.eps}
+	\caption{Change of frame: the object is now at center of the coordinates system.\label{fig:change_frame}}
 \end{figure}
-In other words, we are now dealing with a fixed object and a source following an arc of a cycloid. We will denote $R_t$ the distance between this new center and the translated source point $s_v(t)$, where the latter is given by
-\begin{equation}
-	s_v(t) = \left( -R_0 \sin(\omega t) - \left( t + \frac{T}{2} \right)v, R_0 \cos(\omega t) \right),
-\end{equation}
-with $T$ defined such that $s(-T/2) = \left(x_r,y_0\right) $ and $s(T/2) = \left(x_l,y_0\right)$. Hence, one has
-\begin{equation}
-R_t = \sqrt{ \left( R_0 \sin(\omega t) - \left( t + \frac{T}{2} \right)v \right)^2 + R_0^2 \cos^2(\omega t) }.	
-\end{equation}
-If we denote $\lambda_t$ the angle formed with the $y$-axis, we have in the same manner
-\begin{equation}
-\lambda_t = \arctan \left( \frac{R_0 \sin(\omega t) + \left( t + T/2 \right)v}{R_0 \cos(\omega t)} \right).
-\end{equation}
 
-The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$, which is then differentiated to change variables into the following integral
+% Let us denote $R_t$ the distance between this new center and the translated source point $s_v(t)$, \emph{i.e.}
+% \begin{equation}
+% R_t = \sqrt{ \left( R_0 \sin(\omega t) - \left( t + \frac{T}{2} \right)v \right)^2 + R_0^2 \cos^2(\omega t) }.
+% \end{equation}
+% If we denote $\lambda_t$ the angle formed with the $y$-axis, we have in the same manner
+% \begin{equation}
+% \lambda_t = \arctan \left( \frac{R_0 \sin(\omega t) + \left( t + T/2 \right)v}{R_0 \cos(\omega t)} \right).
+% \end{equation}.
+
+Here, the extreme points $s_v(-T/2)$ and $s_v(T/2)$ have the same $y$-coordinate $y_0$ but their $x$-coordinates differ; we will denote them $x'_l$ and $x'_r$, respectively. This allow us to define what we call the \emph{virtual fanbeam projection} $(x,y_0)$ (see Figure~\ref{fig:change_frame}).
+\begin{definition}
+	For any point $x$ between $x'_l$ and $x'_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
+\begin{equation}
+	\left( \tilde{T}\mu	\right)(x,\phi) = \int_0^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl
+\end{equation}
+\end{definition}
+
+The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$ (see Figure~\ref{fig:notations}), which is then differentiated to change variables into the following integral
 \begin{equation}
 	B_n(x) = \int_{-\pi/2}^{\pi/2} \tilde{g}(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi,	
 	\label{eq:Bn_x_phi}

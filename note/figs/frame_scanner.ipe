@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.6">
-<info created="D:20161201145955" modified="D:20161212173437"/>
+<info created="D:20161201145955" modified="D:20170607171521"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -280,14 +280,7 @@ h
 <text matrix="1 0 0 1 -8.42536 -8.42536" transformations="translations" pos="544.931 556.746" stroke="black" type="label" width="5.694" height="4.289" depth="0" valign="baseline" style="math">x</text>
 <text matrix="1 0 0 1 -8.22148 -12.0373" transformations="translations" pos="269.552 549.45" stroke="black" type="label" width="11.125" height="9.803" depth="0" valign="baseline" size="Large" style="math">O</text>
 <text matrix="1 0 0 1 -54.5992 -23.6944" transformations="translations" pos="215.774 787.778" stroke="black" type="label" width="22.615" height="10.756" depth="3.59" valign="baseline" size="Large" style="math">s(t)</text>
-<path stroke="white" dash="dashed">
-9.48717 834.369 m
-9.48717 520.356 l
-586.767 520.356 l
-586.767 834.369 l
-h
-</path>
-<path matrix="1 0 0 1 0 -44.1225" stroke="black" arrow="normal/normal">
+<path matrix="0.890724 0 0 -0.897764 58.5148 1090.12" stroke="black" arrow="normal/normal">
 57.6935 597.671 m
 535.479 597.671 l
 </path>
@@ -319,5 +312,12 @@ h
 <text matrix="1 0 0 1 4 -12" transformations="translations" pos="164 820" stroke="black" type="label" width="8.314" height="9.962" depth="2.79" valign="baseline" size="Large" style="math">\phi</text>
 <use name="mark/disk(sx)" pos="421.959 553.549" size="large" stroke="black"/>
 <text matrix="1 0 0 1 -22.2081 -2.7925" transformations="translations" pos="408 540" stroke="black" type="label" width="31.086" height="10.756" depth="3.59" valign="baseline" size="Large" style="math">M(t)</text>
+<path matrix="0.775742 0 0 1.01879 87.4684 -17.9479" stroke="white" dash="dashed">
+9.48717 834.369 m
+9.48717 520.356 l
+586.767 520.356 l
+586.767 834.369 l
+h
+</path>
 </page>
 </ipe>
