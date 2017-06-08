@@ -23,6 +23,7 @@
 \newcommand{\C}{\mathcal{C}}
 \newcommand{\Ccinf}{\mathcal{C}_c^{\infty}}
 \newcommand{\supp}{\textrm{supp}}
+\newcommand{\bx}{\mathbf{x}}
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
@@ -47,7 +48,7 @@ This note aims at extending the results of~\cite{clackdoyle2015consistency} to t
 \subsection{Problem under consideration}
 \label{sub:problem_under_consideration}
 
-Let us begin with some notations and definitions. We will consider an object in $\R^2$ to be imaged by a fanbeam source that follows an arc of circle with center $O$ and radius $R_0$ (see Figure~\ref{fig:notations}, left). The object will be identified with its density function $x \mapsto \mu(x) \in \Ccinf$.
+Let us begin with some notations and definitions. We will consider an object in $\R^2$ to be imaged by a fanbeam source that follows an arc of circle with center $O$ and radius $R_0$ (see Figure~\ref{fig:notations}, left). The object will be identified with its density function $\mathbf{x} \mapsto \mu(\mathbf{x}) \in \Ccinf(\R^2)$.
 \begin{figure}[!ht]
 	\centering
 	\begin{tabular}{cc}
@@ -61,7 +62,7 @@ The angular velocity of the source will be denoted $\omega$, and the time $t$ wi
 	s(t) = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right).
 \label{eq:source_position}
 \end{equation}
-Furthermore, we will denote $s(-T/2)=(x_l,y_l)$ (resp. $s(T/2)=(x_r,y_r)$) the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value. In the following, we will suppose that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$.
+Furthermore, we will denote $s(T/2)=(x_l,y_l)$ (resp. $s(-T/2)=(x_r,y_r)$) the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value. In the following, we will suppose that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$.
 
 We will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator giving the acquired data from the object.
 \begin{definition}
@@ -78,23 +79,26 @@ Now let us suppose that the object is translating along the $x$-axis with a cons
 	M_v(t) =  \left( \left( t + \frac{T}{2} \right)v, 0 \right).
 \label{eq:center_of_mass}
 \end{equation}
+The density function of the object now depends on both the space variable $\bx \in \R^2$ and the time $t$. If we denote it $\mu_v$, we have
+\begin{equation}
+	\mu_v(t,\bx) = \mu\left( \bx - M_v(t)\right).
+\end{equation}
 In this regard, the fanbeam projection data will be modified in the following way.
 \begin{definition}
 The \emph{fanbeam projection data of a translating object} with density function $\mu$ and translating velocity $v$ is given by
 \begin{equation}
-	(T_v\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s(t) - M_v(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+	(T_v\mu)(t,\phi) = \left( T \mu_v(t,\cdot) \right)(t,\phi).
 \label{eq:def_Tv}
 \end{equation}
-where $s(t)$ is given by~(\ref{eq:source_position}), and $M(t)$ is given by~(\ref{eq:center_of_mass}).
 \end{definition}
 
 The aim of this note is to derive data consistency conditions (DCCs) from~(\ref{eq:def_Tv}), in order to retrieve the velocity $v$.
 
 \subsection{Derivation of DCCs}
 
-In order to derive DCCs, we will first change our frame of reference, from $\left(O, x, y\right)$ to $\left(M(t), x, y\right)$, so that the object is at the center. In this frame, the coordinates of the source are denoted $s_v(t)=s(t)-M_v(t)$, so that we have
+In order to derive DCCs, we will first change our frame of reference, from $\left(O, x, y\right)$ to $\left(M(t), x, y\right)$, so that the object is at the center. In this frame, the coordinates of the source are given by $s_v(t)=s(t)-M_v(t)$, so that we have
 \begin{equation}
-	(T_v\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s_v(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl
+	(T_v\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s_v(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
 \end{equation}
 In other words, we are now dealing with a fixed object illuminated by a source following an arc of a cycloid (see Figure~\ref{fig:change_frame}).
 \begin{figure}[!ht]
@@ -103,40 +107,45 @@ In other words, we are now dealing with a fixed object illuminated by a source f
 	\caption{Change of frame: the object is now at center of the coordinates system.\label{fig:change_frame}}
 \end{figure}
 
-Here, the extreme points $s_v(-T/2)$ and $s_v(T/2)$ have the same $y$-coordinate $y_0$ but their $x$-coordinates differ; we will denote them $x'_l$ and $x'_r$, respectively. This allow us to define what we call the \emph{virtual fanbeam projection} $(x,y_0)$.
+For any time $t$, let us denote the coordinates of $s_v(t)$ by $\left( s_{1,v}(t), s_{2,v}(t) \right)$. Here, the extreme points $s_v(-T/2)$ and $s_v(T/2)$ have the same $y$-coordinate $y_0$, and $s_{1,v}(-T/2)=x_r$, but $s_{1,v}(T/2)$ differs. We will call it $x'_l$; note that one has $x'_l = x_l - Tv$.
+This allows us to define what we call the \emph{virtual fanbeam projection} from a point $(x,y_0)$.
 \begin{definition}
-	For any point $x$ between $x'_l$ and $x'_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
+	For any point $x$ between $x'_l$ and $x_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
 \begin{equation}
-	\left( \tilde{T}\mu	\right)(x,\phi) = \int_0^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl
+	\left( \tilde{T}\mu	\right)(x,\phi) = \int_0^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
 \end{equation}
+This is called \emph{virtual} since it does not correspond to an actual position of the source.
 \end{definition}
 
 In the following lemma, we will make a connection between the virtual fanbeam projection and the fanbeam projection of the translating object.
 \begin{lemma}
-	Let us fix a time $t \in \left[ -T/2, T/2\right]$ and an angle $\phi \in \left[ -\pi/2, \pi/2\right]$. Let us denote $(x,y_0)$ the intersection point between the ray
-	$ \left\{ s_v(t) + l \left( \sin(\phi), -\cos(\phi) \right) \right\} $ and the line $\{ y = y_0\}$. Then, one has
+	Let us fix a time $t \in \left[ -T/2, T/2\right]$ and an angle $\phi \in \left[ -\pi/2, \pi/2\right]$. Let us define
+	\begin{equation}
+		x = s_{1,v}(t) + \tan \phi \left( s_{2,v}(t) - y_0 \right).
+	\end{equation}
+	Then, one has
 	\begin{equation}
 		\left( \tilde{T}\mu	\right)(x,\phi) = \left( T_v\mu	\right)(t,\phi).
 	\end{equation}
 \label{lem:T_x_t}
 \end{lemma}
 \begin{proof}
-Since $\supp(\mu)$ is under the line $\{ y=y_0 \}$, one has
+The idea is that the point $(x,y_0)$ is the intersection between the line $\{y=y_0\}$ and the ray coming from $s_v(t)$ with angle $\phi$ (see Figure~\ref{fig:change_frame}). Since $\supp(\mu)$ is under the line $\{ y=y_0 \}$, the integral does not differ if we start from $(x,y_0)$ or from $s_v(t)$. Indeed, one has
 \begin{equation}
 	\int_0^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
 \end{equation}
-Moreover, by definition of $x$, the lines
-$$\left\{ (x,y_0) + l \left(\sin(\phi), -\cos(\phi) \right), l \in \R \right\}$$
-and
-$$\left\{ s_v(t) + l' \left(\sin(\phi), -\cos(\phi) \right), l' \in \R \right\}$$
-are the same. Hence,
+Let us now perform the following change of variable
 \begin{equation}
-	\left( \tilde{T}\mu	\right)(x,\phi) = \int_{-\infty}^{+\infty} \mu \left( s_v(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+	l' \leftrightarrow l + \frac{s_{2,v}(t) - y_0}{\cos \phi}.
 \end{equation}
-The same argument as above with $\supp(\mu)$ then leads us to the desired result.
+By definition of $x$, it gives $x + l \sin \phi = s_{1,v}(t) + l' \sin \phi$ and $y_0 - l \cos \phi = s_{2,v}(t) - l' \cos \phi$. We then have
+\begin{equation}
+	\int_{-\infty}^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( s_v(t) + l' \left[ \sin \phi, -\cos \phi \right] \right) dl'.
+\end{equation}
+Restricting the domain of integration from $l'=0$ to $t = + \infty$ then leads us to the desired result.
 \end{proof}
 
-We can now define what are the DCCs in our problem
+We can now define what are the DCCs in our problem.
 \begin{theorem}
 Let us fix a density function $\mu$. For any point $x$ between $x'_l$ and $x'_r$, for any integer $n$, let us define
 \begin{equation}
