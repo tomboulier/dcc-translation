@@ -22,6 +22,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\C}{\mathcal{C}}
 \newcommand{\Ccinf}{\mathcal{C}_c^{\infty}}
+\newcommand{\Cinf}{\mathcal{C}^{\infty}}
 \newcommand{\supp}{\textrm{supp}}
 \newcommand{\bx}{\mathbf{x}}
 \newtheorem{definition}{Definition}
@@ -147,12 +148,14 @@ Restricting the domain of integration from $l'=0$ to $t = + \infty$ then leads u
 
 We can now define what are the DCCs in our problem.
 \begin{theorem}
-Let us fix a density function $\mu$. For any point $x$ between $x'_l$ and $x'_r$, for any integer $n$, let us define
+Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x,t)\mapsto W_{n,v}(t,x) \in \Cinf \left( [-T/2,T/2] \times [x'_l,x_r] \right)$ such that
 \begin{equation}
-	B_n(x) = \int_{-\pi/2}^{\pi/2} \left( \tilde{T}\mu	\right)(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi.	
-	\label{eq:Bn_x_phi}
+	x \mapsto \int_{-T/2}^{T/2} \left( T_v \mu \right)\left( t,\lambda(t) \right) W_n(x,t,v) dt \in \RnX,
 \end{equation}
-Then, $B_n$ is a polynomial function of degree at most $n$.
+where $\lambda(t)$ is defined by
+\begin{equation}
+	\lambda_t = \arctan \left( \frac{x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0} \right).
+\end{equation}
 \end{theorem}
 \begin{proof}
 The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$ (see Figure~\ref{fig:notations}). This relation is then differentiated to change variables into~(\ref{eq:Bn_x_phi}).
@@ -180,10 +183,7 @@ With the help of lemma~\ref{lem:T_x_t}, the change of variable from $\phi$ to $t
 	B_n(x) = \int_{-T/2}^{T/2} \left( T_v \mu \right)(t,\lambda_t) W_n(x,t,v) dt,
 	\label{eq:Bnx_DCC}
 \end{equation}
-where
-\begin{equation}
-	\lambda_t = \arctan \left( \frac{x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0} \right).
-\end{equation}
+
 \end{proof}
 
 \section{Numerical simulations}
