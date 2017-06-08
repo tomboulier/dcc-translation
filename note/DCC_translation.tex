@@ -146,19 +146,24 @@ By definition of $x$, it gives $x + l \sin \phi = s_{1,v}(t) + l' \sin \phi$ and
 Restricting the domain of integration from $l'=0$ to $t = + \infty$ then leads us to the desired result.
 \end{proof}
 
-We can now define what are the DCCs in our problem.
+We can now define what are the DCCs of our problem.
 \begin{theorem}
 Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x,t)\mapsto W_{n,v}(t,x) \in \Cinf \left( [-T/2,T/2] \times [x'_l,x_r] \right)$ such that
 \begin{equation}
-	x \mapsto \int_{-T/2}^{T/2} \left( T_v \mu \right)\left( t,\lambda(t) \right) W_n(x,t,v) dt \in \RnX,
+	B_n := x \mapsto \int_{-T/2}^{T/2} \left( T_v \mu \right)\left( t,\lambda(t) \right) W_n(x,t,v) dt \in \RnX,
+\label{eq:DCC}
 \end{equation}
 where $\lambda(t)$ is defined by
 \begin{equation}
 	\lambda_t = \arctan \left( \frac{x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0} \right).
 \end{equation}
+Moreover, it is possible to derive $W_{n,v}(t,x)$ analytically.
 \end{theorem}
 \begin{proof}
-The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$ (see Figure~\ref{fig:notations}). This relation is then differentiated to change variables into~(\ref{eq:Bn_x_phi}).
+The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$ (see Figure~\ref{fig:notations}). This relation is then differentiated to change variables into the integral in~(\ref{eq:DCC}), which gives the following expression, known to be a polynom according to~\cite{clackdoyle2013necessary}
+\begin{equation}
+	\int_{-\pi/2}^{\pi/2}  \left( \tilde{T}\mu	\right)(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi.
+\end{equation}
 
 We will follow the same path here. First, the formula giving $\tan \phi$ is nearly the same as in~\cite{clackdoyle2015consistency},~\emph{i.e.}
 $$
@@ -178,12 +183,11 @@ Hence, one can write
 \end{align}
 where the term $D_{x,t}$ in equation~(\ref{eq:Dxt_first_occurence}) refers to the distance between the source point $s_v(t)$ and the virtual point $(x,y_0)$.
 
-With the help of lemma~\ref{lem:T_x_t}, the change of variable from $\phi$ to $t$ then leads us to
+With the help of lemma~\ref{lem:T_x_t}, the change of variable from $t$ to $\phi$ then leads us to
 \begin{equation}
-	B_n(x) = \int_{-T/2}^{T/2} \left( T_v \mu \right)(t,\lambda_t) W_n(x,t,v) dt,
-	\label{eq:Bnx_DCC}
+	B_n(x) = \int_{-\pi/2}^{\pi/2}  \left( \tilde{T}\mu	\right)(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi,
 \end{equation}
-
+which is known to be a polynom of degree at most $n$ according to~\cite{clackdoyle2013necessary} as mentioned above.
 \end{proof}
 
 \section{Numerical simulations}
