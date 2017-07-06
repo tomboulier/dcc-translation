@@ -102,7 +102,8 @@ class Simulator(object):
 			proj = srtk.ConstantImageSource()
 			proj.SetSize([imageSize,1,1])
 			proj.SetSpacing([1, 1, 1])
-			proj.SetOrigin((np.array(proj.GetSize())-1)*np.array(proj.GetSpacing())*-0.5)
+			orig = (np.array(proj.GetSize())-1)*np.array(proj.GetSpacing())*-.5
+			proj.SetOrigin(orig)
 			proj.SetConstant(0.0)
 			source = proj.Execute()
 		
@@ -137,12 +138,7 @@ class Results(object):
 
 
 if __name__ == '__main__':
-
-	p = Parameters('test.ini')
-	s = Simulator(p)
-	res = s.run()
-
-	res.plotSinogram()
+	pass
 
 
 
