@@ -87,7 +87,7 @@ class Simulator(object):
 						   self.params.ellipseSemiAxisY,
 						   self.params.ellipseSemiAxisY]
 
-		projarray = np.zeros((Nt,1,imageSize)) # the array giving projections
+		projarray = np.zeros((Nt,imageSize)) # the array giving projections
 
 		for nt in range(Nt):
 			t = -T/2 + T * nt/(Nt-1)
@@ -117,7 +117,7 @@ class Simulator(object):
 			reiImage = rei.Execute(source)
 		
 			# put this projection into projarray
-			projarray[nt,0,:] = srtk.GetArrayFromImage(reiImage)[0,0,:]
+			projarray[nt,:] = srtk.GetArrayFromImage(reiImage)[0,0,:]
 
 		# store results
 		results = Results(self.params)
@@ -133,12 +133,16 @@ class Results(object):
 		self.projections = None
 
 	def plotSinogram(self):
-		plt.imshow(self.projections[:,0,:], cmap = cm.Greys_r)
+		plt.imshow(self.projections[:,:], cmap = cm.Greys_r)
 		plt.show()
 
 
 if __name__ == '__main__':
-	pass
+	p = Parameters('test.ini')
+	s = Simulator(p)
+	res = s.run()
+
+	res.plotSinogram()
 
 
 
