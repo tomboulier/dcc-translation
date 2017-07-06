@@ -18,6 +18,7 @@
 
 % commandes perso
 \newcommand{\R}{\mathbb{R}}
+\newcommand{\ie}{\emph{i.e.} }
 \newcommand{\RnX}{\mathbb{R}_n[X]}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\C}{\mathcal{C}}
@@ -63,7 +64,7 @@ The angular velocity of the source will be denoted $\omega$, and the time $t$ wi
 	s(t) = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right).
 \label{eq:source_position}
 \end{equation}
-Furthermore, we will denote $s(T/2)=(x_l,y_l)$ (resp. $s(-T/2)=(x_r,y_r)$) the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value. In the following, we will suppose that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$.
+Furthermore, we will denote $s(T/2)=(x_l,y_l)$ (resp. $s(-T/2)=(x_r,y_r)$) the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value. In the following, we will suppose that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$, and that $y_0 > 0$ (\ie $0 < \omega T < \pi$).
 
 We will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator giving the acquired data from the object.
 \begin{definition}
@@ -192,7 +193,7 @@ which is known to be a polynom of degree at most $n$ according to~\cite{clackdoy
 
 \section{Numerical simulations}
 
-Let us suppose that we have the projections $g(x,\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x)$ in equation~(\ref{eq:Bnx_DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
+Let us suppose that we have the projections $g(x,\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x)$ in equation~(\ref{eq:DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
 \begin{equation}
 	\mathcal{J}(v) = \sum_n \Vert \textrm{res} \left( B_n(x,v) \right) \Vert^2
 \end{equation}
