@@ -8,20 +8,20 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 # parameters
-R0 = 1000 # radius of the circle, in mm
+R0 = 600 # radius of the circle, in mm
 sdd = 2*R0 # source to detector distance, in mm
 omega = 1 # speed of rotation, in degree/s
 T = 90/omega # total time of experiment, in s
 y0 = R0*np.cos(omega*T/2 * 2*np.pi/360) # distance from isocenter to the chord of
                                         # the arc of circle, in mm
-imageSize = int(y0*.5)
+imageSize = 256
 Nt = 100 # number of discretization points for the time
 v = 0 # speed of the object along the x-axis, in mm/s
 projarray = np.zeros((Nt,1,imageSize)) # the array giving projections
 
 for nt in range(Nt):
 	t = -T/2 + T * nt/(Nt-1)
-	angle = omega*t
+	angle = omega*t + 90
 
 	# create geometry
 	geometry = srtk.ThreeDCircularProjectionGeometry()
@@ -41,7 +41,7 @@ for nt in range(Nt):
 	rei.SetDensity(20)
 	rei.SetAngle(0)
 	rei.SetCenter([(t+T/2)*v, 0, 0])
-	rei.SetAxis([imageSize*.5]*3)
+	rei.SetAxis([25, 50, 50])
 	rei.SetGeometry(geometry)
 	reiImage = rei.Execute(source)
 
