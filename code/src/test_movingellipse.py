@@ -77,6 +77,13 @@ projWiki = wiki_example_RTK(configFile)
 # difference between the two projections
 diff = res.projections - projWiki
 
+def test_get_angle():
+	"""
+		The angles start at 90 since we compute the angle with the
+		y-axis
+	"""
+	assert p.get_angle(0) == 90
+
 def test_projections_have_proper_dimensions():
     assert res.projections.shape[0] == p.Nt
     assert res.projections.shape[1] == p.imageSize
