@@ -1,5 +1,6 @@
 from movingellipse import *
 from numpy.linalg import norm
+import pytest
 
 def wiki_example_RTK(configFile):
 	"""
@@ -80,11 +81,14 @@ def test_projections_have_proper_dimensions():
     assert res.projections.shape[0] == p.Nt
     assert res.projections.shape[1] == p.imageSize
 
-def test_projections_fits_example_in_wiki_RTK_L2():
+def test_projections_fits_example_in_wiki_RTK():
 	"""
 		Compare the two projections, in L2 norm
 	"""
 	assert norm(diff) <= tol * norm(projWiki)
+	assert norm(diff,1) <= tol * norm(projWiki,1)
+	assert norm(diff,2) <= tol * norm(projWiki,2)
+	assert norm(diff,np.inf) <= tol * norm(projWiki,np.inf)
 
 
 
