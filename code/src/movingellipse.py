@@ -65,18 +65,39 @@ class Simulator(object):
 
 	def run(self):
 		"""
-			This is the core of the computation
+			Computes all the projections, at any angle and any time
 		"""
 
 		# get general parameters
-		R0 = self.params.R0
-		sdd = self.params.sdd
 		omega = self.params.omega
 		T = self.params.T
 		imageSize = self.params.imageSize
 		Nt = self.params.Nt
+
+		projarray = np.zeros((Nt,imageSize)) # the array giving projections
+
+		for nt in range(Nt):
+			t = -T/2 + T * nt/(Nt-1)
+			projarray[nt,:] = self.computeProjection(t)
+
+		# store results
+		results = Results(self.params)
+		results.projections = projarray
+		return results
+
+	def computeProjection(self, t):
+		"""
+			Compute the fanbeam projection data at time t
+		"""
+		# get general parameters
+		R0 = self.params.R0
+		sdd = self.params.sdd
+		imageSize = self.params.imageSize
 		v = self.params.v
-		y0 = self.params.y0
+		T = self.params.T
+		omega = self.params.omega
+
+		angle = omega*t + 90
 
 		# get ellipse parameters
 		ellipseDensity = self.params.ellipseDensity
@@ -87,42 +108,30 @@ class Simulator(object):
 						   self.params.ellipseSemiAxisY,
 						   self.params.ellipseSemiAxisY]
 
-		projarray = np.zeros((Nt,imageSize)) # the array giving projections
-
-		for nt in range(Nt):
-			t = -T/2 + T * nt/(Nt-1)
-			angle = omega*t + 90
-		
-			# create geometry
-			geometry = srtk.ThreeDCircularProjectionGeometry()
-			geometry.AddProjection(R0, sdd, angle, 0, 0)
-		
-			## simulate fan-beam acquisition
-			# create empty stack
-			proj = srtk.ConstantImageSource()
-			proj.SetSize([imageSize,1,1])
-			proj.SetSpacing([1, 1, 1])
-			orig = (np.array(proj.GetSize())-1)*np.array(proj.GetSpacing())*-.5
-			proj.SetOrigin(orig)
-			proj.SetConstant(0.0)
-			source = proj.Execute()
-		
-			# compute intersection with ellipse
-			rei = srtk.RayEllipsoidIntersectionImageFilter()
-			rei.SetDensity(ellipseDensity)
-			rei.SetAngle(ellipseAngle)
-			rei.SetCenter([ellipseCenterX + (t+T/2)*v, ellipseCenterY, 0])
-			rei.SetAxis(ellipseSemiAxis)
-			rei.SetGeometry(geometry)
-			reiImage = rei.Execute(source)
-		
-			# put this projection into projarray
-			projarray[nt,:] = srtk.GetArrayFromImage(reiImage)[0,0,:]
-
-		# store results
-		results = Results(self.params)
-		results.projections = projarray
-		return results
+		# create geometry
+		geometry = srtk.ThreeDCircularProjectionGeometry()
+		geometry.AddProjection(R0, sdd, angle, 0, 0)
+	
+		## simulate fan-beam acquisition
+		# create empty stack
+		proj = srtk.ConstantImageSource()
+		proj.SetSize([imageSize,1,1])
+		proj.SetSpacing([1, 1, 1])
+		orig = (np.array(proj.GetSize())-1)*np.array(proj.GetSpacing())*-.5
+		proj.SetOrigin(orig)
+		proj.SetConstant(0.0)
+		source = proj.Execute()
+	
+		# compute intersection with ellipse
+		rei = srtk.RayEllipsoidIntersectionImageFilter()
+		rei.SetDensity(ellipseDensity)
+		rei.SetAngle(ellipseAngle)
+		rei.SetCenter([ellipseCenterX + (t+T/2)*v, ellipseCenterY, 0])
+		rei.SetAxis(ellipseSemiAxis)
+		rei.SetGeometry(geometry)
+		reiImage = rei.Execute(source)
+	
+		return srtk.GetArrayFromImage(reiImage)[0,0,:]
 
 class Results(object):
 	"""
