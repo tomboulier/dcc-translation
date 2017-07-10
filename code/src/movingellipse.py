@@ -165,8 +165,6 @@ class Simulator(object):
 		results.projections = projarray
 		return results
 
-
-
 class Results(object):
 	"""
 		Encapsulation of everything that is computed by Simulator
@@ -176,7 +174,16 @@ class Results(object):
 		self.projections = None
 
 	def plotSinogram(self):
-		plt.imshow(self.projections[:,:], cmap = cm.Greys_r)
+		# define the limits of the axis
+		imageSize = self.params.imageSize
+		T = self.params.T
+		extent = [-imageSize/2, imageSize/2,
+		          self.params.get_angle(T/2), self.params.get_angle(-T/2)]
+
+		# plot the image
+		plt.imshow(self.projections[:,:], cmap = cm.Greys_r, extent = extent)
+		plt.xlabel('Distance from detector center (in mm)')
+		plt.ylabel('Angle of projection (in degrees)')
 		plt.show()
 
 
