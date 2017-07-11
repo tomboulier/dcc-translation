@@ -97,6 +97,20 @@ def test_projections_fits_example_in_wiki_RTK():
 	assert norm(diff,2) <= tol * norm(projWiki,2)
 	assert norm(diff,np.inf) <= tol * norm(projWiki,np.inf)
 
+def test_interpolation_fits_actual_projections():
+	"""
+		The interpolator must fit the actual data
+	"""
+	res.interpolate_projection()
+
+	T = res.projections_interpolator
+	t = p.get_time_range()
+	phi = p.get_phi_range()
+	Tarray = T(phi,t)
+
+	np.testing.assert_array_almost_equal(Tarray,res.projections)
+
+
 
 
 

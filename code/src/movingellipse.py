@@ -13,6 +13,7 @@ import ConfigParser
 import ipdb
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
+from scipy import interpolate
 
 class Parameters(object):
 	"""
@@ -54,6 +55,20 @@ class Parameters(object):
 
 	def get_angle(self, t):
 		return self.omega * t + 90
+
+	def get_max_angle(self):
+		return self.get_angle(self.T/2)
+
+	def get_min_angle(self):
+		return self.get_angle(-self.T/2)
+
+	def get_time_range(self):
+		nt = np.arange(self.Nt)
+		return -self.T/2 + self.T * nt/(self.Nt-1)
+
+	def get_phi_range(self):
+		x = np.arange(-self.imageSize/2, self.imageSize/2)
+		return np.arctan( x / self.sdd) * 360 / (2*np.pi)
 
 class MovingEllipse(object):
 	"""docstring for MovingEllipse"""
@@ -156,9 +171,10 @@ class Simulator(object):
 		# the array giving projections
 		projarray = np.zeros((Nt,imageSize))
 
-		for nt in range(Nt):
-			t = -T/2 + T * nt/(Nt-1)
-			projarray[nt,:] = self.ellipse.compute_projection(t, self.source, self.detector)
+		for nt,t in enumerate(self.params.get_time_range()):
+			projarray[nt,:] = self.ellipse.compute_projection(t,
+				                                              self.source,
+				                                              self.detector)
 
 		# store results
 		results = Results(self.params)
@@ -172,19 +188,46 @@ class Results(object):
 	def __init__(self, params):
 		self.params = params
 		self.projections = None
+		self.projections_interpolator = None
 
-	def plotSinogram(self):
+	def plotSinogram(self, xunits = 'mm'):
 		# define the limits of the axis
 		imageSize = self.params.imageSize
 		T = self.params.T
-		extent = [-imageSize/2, imageSize/2,
-		          self.params.get_angle(T/2), self.params.get_angle(-T/2)]
+		max_angle = self.params.get_max_angle()
+		min_angle = self.params.get_min_angle()
+		phimax = np.arctan( .5*imageSize / self.params.sdd) * 360 / (2*np.pi)
 
 		# plot the image
-		plt.imshow(self.projections[:,:], cmap = cm.Greys_r, extent = extent)
-		plt.xlabel('Distance from detector center (in mm)')
-		plt.ylabel('Angle of projection (in degrees)')
+		plt.figure()
+		
+		if xunits == 'mm':
+			# the units here represent a distance (on the detector)
+			plt.xlabel('Distance from detector center (in mm)')
+			extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
+			aspect = imageSize / (max_angle - min_angle)
+
+		elif xunits == 'degrees':
+			# the units here represent an angle ('phi' in T(x,phi))
+			plt.xlabel('Beam direction (in degrees)')
+			extent = [-phimax, phimax, max_angle, min_angle]
+			aspect = 2 * phimax / (max_angle - min_angle)
+
+		plt.imshow(self.projections, cmap = cm.Greys_r, extent = extent, 
+			       aspect = aspect/2)
+		plt.ylabel('Gantry angle (in degrees)')
 		plt.show()
+
+	def interpolate_projection(self):
+		"""
+			Interpolation of the operator T(phi,t)
+		"""
+		t = self.params.get_time_range()
+		phi = self.params.get_phi_range()
+
+		self.projections_interpolator = interpolate.interp2d(phi, t,
+			                                                 self.projections,
+			                                                 kind='cubic')
 
 
 if __name__ == '__main__':
@@ -192,7 +235,10 @@ if __name__ == '__main__':
 	s = Simulator(p)
 	res = s.run()
 
-	res.plotSinogram()
+	res.plotSinogram(xunits='degrees')
+
+	res.interpolate_projection()
+	T = res.projections_interpolator
 
 
 
