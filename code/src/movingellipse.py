@@ -14,6 +14,8 @@ import ipdb
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from scipy import interpolate
+from scipy.spatial import distance
+from scipy import integrate
 
 class Parameters(object):
 	"""
@@ -137,13 +139,20 @@ class Detector(object):
 class Source(object):
 	"""docstring for Source"""
 	def __init__(self, params):
-		self.params = params
+		self.R0 = params.R0
+		self.sdd = params.sdd
+		self.omega = params.omega
+		self.get_angle = params.get_angle
 
 	def get_geometry(self,t):
 		geometry = srtk.ThreeDCircularProjectionGeometry()
-		geometry.AddProjection(self.params.R0,self.params.sdd,
-							   self.params.get_angle(t), 0, 0)
+		geometry.AddProjection(self.R0,self.sdd,
+							   self.get_angle(t), 0, 0)
 		return geometry
+
+	def get_position(self, t):
+		return np.array((-self.R0 * np.sin(self.get_angle(t)), \
+			              self.R0 * np.cos(self.get_angle(t))))
 
 class Simulator(object):
 	"""
@@ -177,7 +186,7 @@ class Simulator(object):
 				                                              self.detector)
 
 		# store results
-		results = Results(self.params)
+		results = Results(self.params, self.source, self.detector)
 		results.projections = projarray
 		return results
 
@@ -185,10 +194,85 @@ class Results(object):
 	"""
 		Encapsulation of everything that is computed by Simulator
 	"""
-	def __init__(self, params):
+	def __init__(self, params, source, detector):
 		self.params = params
+		self.source = source
+		self.detector = detector
 		self.projections = None
 		self.projections_interpolator = None
+		self.DCC_function = None
+
+	def get_virtual_source_position(self, t, v):
+		"""
+			Computes :math:`s_v(t)`
+		"""
+		Mvt = np.array(((t+self.params.T/2) * v, 0))
+		return self.source.get_position(t) - Mvt
+
+	def alpha(self, t, x, v):
+		"""
+			Since 'lambda' is a reserved keword in Python, we use 'alpha'
+			to express the function :math:`\lambda` in Theorem 1, i.e.
+			
+			.. math::
+			\lambda_n(t,x) = \arctan \left( \frac{x + R_0 \sin(\omega t) + \
+			\left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0} \
+			\right)
+		"""
+		R0 = self.params.R0
+		omega = self.params.omega
+		T = self.params.T
+		y0 = self.params.y0
+	
+		num = x + R0 * np.sin(omega*t) + (t+T/2) * v
+		denom = R0 * np.cos(omega*t) - y0
+		
+		return np.arctan(num/denom)
+
+	def jacobian(self, t, x, v):
+		"""
+			The Jacobian used in the change of variable in Theorem 1,
+			which is given by
+
+			..math::
+			J(x,t,v) = \frac{ R_0^2 \omega - v y_0 + R_0 \cos(\omega \
+			t)(v-\omega y_0) + R_0 \omega \sin(\omega t)(x + \left( t \
+			+ \frac{T}{2} \right)v ) }{ \left( R_0 \cos(\omega t) - \
+			y_0 \right)^2 } dt
+		"""
+		R0 = self.params.R0
+		omega = self.params.omega
+		T = self.params.T
+		y0 = self.params.y0
+
+		num = R0**2 - v*y0 + R0 * np.cos(omega*t) * (v - omega*y0) \
+		                   + R0 * omega * np.sin(omega*t) * (x + (t+T/2)*v)
+		denom = (R0 * np.cos(omega*t) - y0)**2
+		return num / denom
+
+	def W(self, t, x, n, v):
+		"""
+			The weighting function in Theorem 1, i.e.
+
+			..math::
+			W_n(x,t,v) = \frac{ \left( x+R_0 \sin(\omega t) + \left( \
+			t + \frac{T}{2} \right)v \right)^n }{D_{x,t} \left( R_0 \
+			\cos(\omega t) - y_0 \right)^{n-1}} J(x,t,v) dt,
+
+			where :math:`J(x,t,v)` is given by the function 'jacobian'
+		"""
+		R0 = self.params.R0
+		omega = self.params.omega
+		T = self.params.T
+		y0 = self.params.y0
+
+		s_v_t = self.get_virtual_source_position(t, v)
+		D_x_t = distance.euclidean(s_v_t, (x,y0))
+
+		num = (x + R0 * np.sin(omega*t) + (t+T/2)*v)**n
+		denom = D_x_t * (R0 * np.cos(omega*t) - y0)**(n-1)
+
+		return num / denom * self.jacobian(t,x,v)
 
 	def plotSinogram(self, xunits = 'mm'):
 		# define the limits of the axis
@@ -229,16 +313,48 @@ class Results(object):
 			                                                 self.projections,
 			                                                 kind='cubic')
 
+	def B(self, x, n, v):
+		"""
+			Compute the function B_n(x) in Theorem 1, which is supposed
+			to be a polynom of order at most n, where n is the order of DCC.
+		"""
+
+		T = self.params.T
+
+		alpha_v = lambda t,x: self.alpha(t, x, v)
+		fb_proj = lambda t,x: self.projections_interpolator(alpha_v(t,x), t)
+		weight = lambda t,x,n: self.W(t, x, n, v)
+
+		integrand = lambda t,x,n: fb_proj(t,x) * weight(t,x,n)
+
+		y, err = integrate.quad(integrand, -T/2, T/2, args = (x,n))
+		return y
+
+	def compute_DCC_function(self, v):
+		"""
+			Transform B as a lambda function
+		"""
+		if self.projections_interpolator is None:
+			self.interpolate_projection()
+
+		self.DCC_function = lambda x,n: self.B(x, n, v)
+
+
+
 
 if __name__ == '__main__':
 	p = Parameters('test.ini')
 	s = Simulator(p)
 	res = s.run()
 
-	res.plotSinogram(xunits='degrees')
+	# res.plotSinogram(xunits='degrees')
 
-	res.interpolate_projection()
-	T = res.projections_interpolator
+	# res.interpolate_projection()
+	# T = res.projections_interpolator
+
+	res.compute_DCC_function(v=0.)
+	
+	B0 = lambda x: res.DCC_function(x, 0)
 
 
 
