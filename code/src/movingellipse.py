@@ -378,22 +378,24 @@ class Results(object):
 		self.DCC_function = lambda x,n: self.B(x, n, v)
 
 if __name__ == '__main__':
-	p = Parameters('test.ini')
+	p = Parameters('example.ini')
 	s = Simulator(p)
 	res = s.run()
 
+	res.plotSinogram()
+
 	## Plot DCC
-	v = 0.
-	n = 1
+	v = p.v
+	n = 2
 	xmax = p.R0 * np.sin(p.omega*p.T/2 /360*2*np.pi)
-	x = np.linspace(-xmax+10, xmax-10)
+	x = np.linspace(-xmax, xmax)
 
 	res.compute_DCC_function(v)
 	Bn = np.vectorize(lambda x: res.DCC_function(x, n))
 	y = Bn(x)
 
 	plt.plot(x, y, 'o-b')
-	plt.xlabel('x')
+	plt.xlabel('x, in mm')
 	plt.ylabel('Bn(x)')
-	plt.title('Bn(x) for n = ' + str(n))
+	plt.title('Bn(x) for n = ' + str(n) + ' and v = ' + str(v) + " mm/s")
 	plt.show()
