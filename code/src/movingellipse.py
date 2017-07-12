@@ -6,7 +6,9 @@
     This script simulate a moving ellipse, illuminated by a source
     following an arc of circle. The illumination is fanbeam.
 """
+import ipdb
 
+import math
 import SimpleRTK as srtk
 import numpy as np
 import ConfigParser
@@ -27,7 +29,8 @@ class Parameters(object):
     		The parameters are:
     		- R0: radius of the circle, in mm
     		- sdd: source to detector distance, in mm
-    		- T: speed of rotation, in degree/s
+    		- omega: speed of rotation, in degree/s
+    		- T: duration of acquisition, in s
     		- y0: total time of experiment, in s
     		- imageSize: distance from isocenter to the chord of the
     		             arc of circle, in mm
@@ -53,9 +56,9 @@ class Parameters(object):
 		self.ellipseSemiAxisY = cfg.getfloat('Ellipse', 'b')
 
 		# These parameters are derived from previous ones
-		self.y0 = self.R0*np.cos(self.omega*self.T/2 * 2*np.pi/360)
+		self.y0 = self.R0*np.cos(self.omega*self.T/2 / 360 *2*np.pi)
 
-	def get_angle(self, t):
+	def get_angle(self, t, unit = 'degrees'):
 		return self.omega * t + 90
 
 	def get_max_angle(self):
@@ -68,9 +71,10 @@ class Parameters(object):
 		nt = np.arange(self.Nt)
 		return -self.T/2 + self.T * nt/(self.Nt-1)
 
-	def get_phi_range(self):
+	def get_alpha_range(self):
 		x = np.arange(-self.imageSize/2, self.imageSize/2)
-		return np.arctan( x / self.sdd) * 360 / (2*np.pi)
+		# return np.arctan( x / self.sdd) * 360 / (2*np.pi)
+		return np.arctan( x / self.sdd)
 
 class MovingEllipse(object):
 	"""docstring for MovingEllipse"""
@@ -142,7 +146,7 @@ class Source(object):
 		self.R0 = params.R0
 		self.sdd = params.sdd
 		self.omega = params.omega
-		self.get_angle = params.get_angle
+		self.get_angle = lambda t: params.get_angle(t)
 
 	def get_geometry(self,t):
 		geometry = srtk.ThreeDCircularProjectionGeometry()
@@ -151,8 +155,8 @@ class Source(object):
 		return geometry
 
 	def get_position(self, t):
-		return np.array((-self.R0 * np.sin(self.get_angle(t)), \
-			              self.R0 * np.cos(self.get_angle(t))))
+		return np.array((-self.R0 * np.sin(self.omega * t / 360 * 2*np.pi),\
+			              self.R0 * np.cos(self.omega * t / 360 * 2*np.pi)))
 
 class Simulator(object):
 	"""
@@ -201,6 +205,7 @@ class Results(object):
 		self.projections = None
 		self.projections_interpolator = None
 		self.DCC_function = None
+		self.DCC_function_theo = None
 
 	def get_virtual_source_position(self, t, v):
 		"""
@@ -220,14 +225,17 @@ class Results(object):
 			\right)
 		"""
 		R0 = self.params.R0
-		omega = self.params.omega
+		omega = self.params.omega/360 *2*np.pi
 		T = self.params.T
 		y0 = self.params.y0
 	
 		num = x + R0 * np.sin(omega*t) + (t+T/2) * v
 		denom = R0 * np.cos(omega*t) - y0
 		
-		return np.arctan(num/denom)
+		if denom==0.0:
+			return np.sign(num) * np.pi / 2
+		else:
+			return np.arctan(num/denom)
 
 	def jacobian(self, t, x, v):
 		"""
@@ -241,13 +249,14 @@ class Results(object):
 			y_0 \right)^2 } dt
 		"""
 		R0 = self.params.R0
-		omega = self.params.omega
+		omega = self.params.omega/360 *2*np.pi
 		T = self.params.T
 		y0 = self.params.y0
 
-		num = R0**2 - v*y0 + R0 * np.cos(omega*t) * (v - omega*y0) \
-		                   + R0 * omega * np.sin(omega*t) * (x + (t+T/2)*v)
+		num = R0**2*omega - v*y0 + R0 * np.cos(omega*t) * (v - omega*y0) \
+		                         + R0 * omega * np.sin(omega*t) * (x + (t+T/2)*v)
 		denom = (R0 * np.cos(omega*t) - y0)**2
+
 		return num / denom
 
 	def W(self, t, x, n, v):
@@ -269,8 +278,8 @@ class Results(object):
 		s_v_t = self.get_virtual_source_position(t, v)
 		D_x_t = distance.euclidean(s_v_t, (x,y0))
 
-		num = (x + R0 * np.sin(omega*t) + (t+T/2)*v)**n
-		denom = D_x_t * (R0 * np.cos(omega*t) - y0)**(n-1)
+		num = (x + R0 * np.sin(omega*t/360 *2*np.pi) + (t+T/2)*v)**n
+		denom = D_x_t * (R0 * np.cos(omega*t/360 *2*np.pi) - y0)**(n-1)
 
 		return num / denom * self.jacobian(t,x,v)
 
@@ -304,31 +313,60 @@ class Results(object):
 
 	def interpolate_projection(self):
 		"""
-			Interpolation of the operator T(phi,t)
+			Interpolation of the operator T(alpha,t).
+			
+			Be careful: the angle alpha is the angle between the beam and the
+			line joining the source to the center of the detector. Not to be
+			confused with phi, which is the angle between the beam and the 
+			y-axis
 		"""
 		t = self.params.get_time_range()
-		phi = self.params.get_phi_range()
+		alpha = self.params.get_alpha_range()
 
-		self.projections_interpolator = interpolate.interp2d(phi, t,
+		self.projections_interpolator = interpolate.interp2d(alpha, t,
 			                                                 self.projections,
-			                                                 kind='cubic')
+			                                                 kind='linear')
 
-	def B(self, x, n, v):
+	def integrand(self, t, x, n, v):
+		"""
+			The function to be integrated in DCC, i.e.
+
+			..math::
+			T(t,\lambda_t) W_n(t,x)
+
+			We put it in a function since we have to be careful with Nans
+		"""
+
+		T = self.params.T
+		omega = self.params.omega / 360 * 2*np.pi
+
+		alpha_v = lambda t,x: self.alpha(t, x, v)
+		fb_proj = lambda t,x: self.projections_interpolator(alpha_v(t,x)-omega*t, t)
+		weight = lambda t,x,n: self.W(t, x, n, v)
+
+		y = fb_proj(t,x) * weight(t,x,n)
+
+		if fb_proj(t,x) < 1e-10:
+			return 0.
+		
+		if math.isnan(y):
+			return 0.
+
+		return y
+
+	def B(self, x, n, v, tol = 1):
 		"""
 			Compute the function B_n(x) in Theorem 1, which is supposed
 			to be a polynom of order at most n, where n is the order of DCC.
 		"""
-
 		T = self.params.T
 
-		alpha_v = lambda t,x: self.alpha(t, x, v)
-		fb_proj = lambda t,x: self.projections_interpolator(alpha_v(t,x), t)
-		weight = lambda t,x,n: self.W(t, x, n, v)
+		integrand = lambda t,x,n: self.integrand(t,x,n,v)
 
-		integrand = lambda t,x,n: fb_proj(t,x) * weight(t,x,n)
-
-		y, err = integrate.quad(integrand, -T/2, T/2, args = (x,n))
-		return y
+		t = np.linspace(-T/2, T/2, 1000)
+		y = np.array([integrand(time,x,n) for time in t])
+		
+		return integrate.simps(y, dx = t[1]-t[0])
 
 	def compute_DCC_function(self, v):
 		"""
@@ -339,22 +377,23 @@ class Results(object):
 
 		self.DCC_function = lambda x,n: self.B(x, n, v)
 
-
-
-
 if __name__ == '__main__':
 	p = Parameters('test.ini')
 	s = Simulator(p)
 	res = s.run()
 
-	# res.plotSinogram(xunits='degrees')
+	## Plot DCC
+	v = 0.
+	n = 1
+	xmax = p.R0 * np.sin(p.omega*p.T/2 /360*2*np.pi)
+	x = np.linspace(-xmax+10, xmax-10)
 
-	# res.interpolate_projection()
-	# T = res.projections_interpolator
+	res.compute_DCC_function(v)
+	Bn = np.vectorize(lambda x: res.DCC_function(x, n))
+	y = Bn(x)
 
-	res.compute_DCC_function(v=0.)
-	
-	B0 = lambda x: res.DCC_function(x, 0)
-
-
-
+	plt.plot(x, y, 'o-b')
+	plt.xlabel('x')
+	plt.ylabel('Bn(x)')
+	plt.title('Bn(x) for n = ' + str(n))
+	plt.show()

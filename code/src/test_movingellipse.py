@@ -77,12 +77,21 @@ projWiki = wiki_example_RTK(configFile)
 # difference between the two projections
 diff = res.projections - projWiki
 
+## General tests
 def test_get_angle():
 	"""
 		The angles start at 90 since we compute the angle with the
 		y-axis
 	"""
 	assert p.get_angle(0) == 90
+
+def test_y0():
+	"""
+		:math:`y0` is supposed to be stricly positive
+	"""
+	assert p.y0 > 0
+
+## Testing projection operator
 
 def test_projections_have_proper_dimensions():
     assert res.projections.shape[0] == p.Nt
@@ -97,6 +106,8 @@ def test_projections_fits_example_in_wiki_RTK():
 	assert norm(diff,2) <= tol * norm(projWiki,2)
 	assert norm(diff,np.inf) <= tol * norm(projWiki,np.inf)
 
+# Testing post-processing
+
 def test_interpolation_fits_actual_projections():
 	"""
 		The interpolator must fit the actual data
@@ -105,14 +116,43 @@ def test_interpolation_fits_actual_projections():
 
 	T = res.projections_interpolator
 	t = p.get_time_range()
-	phi = p.get_phi_range()
+	phi = p.get_alpha_range()
 	Tarray = T(phi,t)
 
 	np.testing.assert_array_almost_equal(Tarray,res.projections)
 
+def test_fanbeam_operator_has_compact_support():
+	"""
+		Because we image a finite object, :math:`T(\phi/2,t)` and
+		:math:`T(-\phi/2,t)` are always 0.
+	"""
+	res.interpolate_projection()
+	T = res.projections_interpolator
 
+	t = np.linspace(-1000,1000)
 
+	np.testing.assert_almost_equal(T(np.pi/2, t).sum(), 0.0)
+	np.testing.assert_almost_equal(T(-np.pi/2, t).sum(), 0.0)
 
+## Testing DCC
+def test_alpha_t_0_0():
+	"""
+		When :math:`v = 0` and `x = 0`, one has :math:`\alpha(T/2) = \pi/2`
+		and :math:`\alpha(-T/2) = -\pi/2`.
+		Moreover, the function is not supposed to raise a warning about
+		division by 0.
+	"""
+	alpha_t_0_0 = np.vectorize(lambda t:res.alpha(t,0,0))
+
+	# extreme values
+	np.testing.assert_almost_equal(alpha_t_0_0(p.T/2), np.pi/2)
+	np.testing.assert_almost_equal(alpha_t_0_0(-p.T/2), -np.pi/2)
+
+	# elsewhere, compare with theoretical values
+	t = np.linspace(-p.T/+.01, p.T/2-.01, 1000)
+	alpha_theo = np.arctan( (p.R0*np.sin(p.omega*t/360 *2*np.pi)) \
+		                  / (p.R0*np.cos(p.omega*t/360 *2*np.pi)-p.y0) )
+	np.testing.assert_array_almost_equal(alpha_t_0_0(t), alpha_theo)
 
 
 
