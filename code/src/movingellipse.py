@@ -12,7 +12,6 @@ import math
 import SimpleRTK as srtk
 import numpy as np
 import ConfigParser
-import ipdb
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from scipy import interpolate
@@ -360,10 +359,11 @@ class Results(object):
 			to be a polynom of order at most n, where n is the order of DCC.
 		"""
 		T = self.params.T
+		Nt = self.params.Nt
 
 		integrand = lambda t,x,n: self.integrand(t,x,n,v)
 
-		t = np.linspace(-T/2, T/2, 1000)
+		t = np.linspace(-T/2, T/2, Nt)
 		y = np.array([integrand(time,x,n) for time in t])
 		
 		return integrate.simps(y, dx = t[1]-t[0])
@@ -377,25 +377,50 @@ class Results(object):
 
 		self.DCC_function = lambda x,n: self.B(x, n, v)
 
+	def residual_polyfit(self, x, n, v):
+		"""
+			Computes the function |Bn(x)-P(x)|, where P(x) is the
+			polynom obtained by fitting.
+		"""
+
+		self.compute_DCC_function(v)
+		Bn = np.vectorize(lambda x: self.DCC_function(x, n))
+		_, res, _, _, _ = np.polyfit(Bn(x), y, n, full = True)
+
+		return res[0]
+
 if __name__ == '__main__':
 	p = Parameters('example.ini')
 	s = Simulator(p)
 	res = s.run()
-
 	res.plotSinogram()
+
+	# res.plotSinogram()
 
 	## Plot DCC
 	v = p.v
 	n = 2
-	xmax = p.R0 * np.sin(p.omega*p.T/2 /360*2*np.pi)
+	xmax = p.R0 * np.sin(p.omega*p.T/2 /360*2*np.pi) * .75
 	x = np.linspace(-xmax, xmax)
 
+	# compute x -> Bn(x) function
 	res.compute_DCC_function(v)
 	Bn = np.vectorize(lambda x: res.DCC_function(x, n))
 	y = Bn(x)
 
-	plt.plot(x, y, 'o-b')
+	# interpolation with polynom
+	poly = np.polyfit(x, y, n)
+
+	# plot results
+	plt.plot(x, y, 'ob')
+	plt.plot(x, np.poly1d(poly)(x), '-r')
 	plt.xlabel('x, in mm')
 	plt.ylabel('Bn(x)')
 	plt.title('Bn(x) for n = ' + str(n) + ' and v = ' + str(v) + " mm/s")
 	plt.show()
+
+	# optimization
+	print "Error of interpolation is: " + str(res.residual_polyfit(x,n,v))
+	from scipy.optimize import minimize
+	residual_callable = lambda v: res.residual_polyfit(x,n,v)
+	minimize(residual_callable, 0, method = 'Powell')
