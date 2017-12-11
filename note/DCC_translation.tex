@@ -26,6 +26,11 @@
 \newcommand{\Cinf}{\mathcal{C}^{\infty}}
 \newcommand{\supp}{\textrm{supp}}
 \newcommand{\bx}{\mathbf{x}}
+\newcommand{\bv}{\mathbf{v}}
+\newcommand{\Mbv}{M_{\mathbf{v}}}
+\newcommand{\Tbv}{T_{\mathbf{v}}}
+\newcommand{\mubv}{\mu_{\mathbf{v}}}
+\newcommand{\sbv}{s_{\mathbf{v}}}
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
@@ -76,45 +81,60 @@ where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ an
 \end{definition}
 
 
-Now let us suppose that the object is translating along the $x$-axis with a constant velocity $v \in \R$ (see Figure~\ref{fig:notations}, right). In other words, if we denote $M(t)$ its center of mass at any time $t$, we have
+Now let us suppose that the object is translating along a line with a constant velocity vector $\bv = (v_1, v_2)\in \R^2$ (see Figure~\ref{fig:notations}, right). In other words, if we denote $\Mbv(t)$ its center of mass at any time $t$, we have
 \begin{equation}
-	M_v(t) =  \left( \left( t + \frac{T}{2} \right)v, 0 \right).
+	\Mbv(t) =  \left( \left( t + \frac{T}{2} \right)v_1, \left( t + \frac{T}{2} \right)v_2 \right)
 \label{eq:center_of_mass}
 \end{equation}
-The density function of the object now depends on both the space variable $\bx \in \R^2$ and the time $t$. If we denote it $\mu_v$, we have
+The density function of the object now depends on both the space variable $\bx \in \R^2$ and the time $t$. If we denote it $\mubv$, we have
 \begin{equation}
-	\mu_v(t,\bx) = \mu\left( \bx - M_v(t)\right).
+	\mubv(t,\bx) = \mu\left( \bx - \Mbv(t)\right).
 \end{equation}
 In this regard, the fanbeam projection data will be modified in the following way.
 \begin{definition}
-The \emph{fanbeam projection data of a translating object} with density function $\mu$ and translating velocity $v$ is given by
+The \emph{fanbeam projection data of a translating object} with density function $\mu$ and translating velocity vector $\bv$ is given by
 \begin{equation}
-	(T_v\mu)(t,\phi) = \left( T \mu_v(t,\cdot) \right)(t,\phi).
+	(\Tbv\mu)(t,\phi) = \left( T \mubv(t,\cdot) \right)(t,\phi).
 \label{eq:def_Tv}
 \end{equation}
 \end{definition}
 
-The aim of this note is to derive data consistency conditions (DCCs) from~(\ref{eq:def_Tv}), in order to retrieve the velocity $v$.
+The aim of this note is to derive data consistency conditions (DCCs) from~(\ref{eq:def_Tv}), in order to retrieve the velocity vector $\bv$ from the knowledge of $\Tbv$.
 
 \subsection{Derivation of DCCs}
 
-In order to derive DCCs, we will first change our frame of reference, from $\left(O, x, y\right)$ to $\left(M(t), x, y\right)$, so that the object is at the center. In this frame, the coordinates of the source are given by $s_v(t)=s(t)-M_v(t)$, so that we have
+In order to derive DCCs, we will first change our frame of reference, from $\left(O, x, y\right)$ to $\left(M(t), x', y'\right)$, so that the object is at the center and the line between the start point and the end point of the source is still parallel to the $x'$-axis (see Figure~\ref{fig:change_frame}, right). In other words, we are performing the following change of variables
 \begin{equation}
-	(T_v\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s_v(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+	(x,y) \leftrightarrow (x',y') = \mathcal{R}_{\beta} \left( (x,y)-\Mbv(t) \right),
 \end{equation}
-In other words, we are now dealing with a fixed object illuminated by a source following an arc of a cycloid (see Figure~\ref{fig:change_frame}).
+where $\mathcal{R}_{\beta}$ is the rotation of angle $\beta$. This latter is the angle depicted in Figure~\ref{fig:change_frame} (left) and is given by
+\begin{equation}
+	\beta = \arctan \left( \frac{T v_2}{2R_0 \sin(\omega T/2) + T v_1} \right).
+\end{equation}
+
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=12cm]{figs/frame_object.eps}
-	\caption{Change of frame: the object is now at center of the coordinates system.\label{fig:change_frame}}
+	%\includegraphics[width=12cm]{figs/frame_object.eps}
+	\begin{tabular}{cc}
+	\includegraphics[width=8cm]{figs/frame_object_before_rotation.eps} &
+	\includegraphics[width=8cm]{figs/frame_object.eps}
+	\end{tabular}
+	\caption{Change of frame: the object is now at center of the coordinates system. Left, only translation of the center of frame; right, after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, right.\label{fig:change_frame}}
 \end{figure}
 
-For any time $t$, let us denote the coordinates of $s_v(t)$ by $\left( s_{1,v}(t), s_{2,v}(t) \right)$. Here, the extreme points $s_v(-T/2)$ and $s_v(T/2)$ have the same $y$-coordinate $y_0$, and $s_{1,v}(-T/2)=x_r$, but $s_{1,v}(T/2)$ differs. We will call it $x'_l$; note that one has $x'_l = x_l - Tv$.
-This allows us to define what we call the \emph{virtual fanbeam projection} from a point $(x,y_0)$.
-\begin{definition}
-	For any point $x$ between $x'_l$ and $x_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
+In this frame, the coordinates of the source are given by $\sbv(t)=\mathcal{R}_{\beta} \left( s(t)-\Mbv(t) \right)$. With this in mind, the data is given by the following formula
 \begin{equation}
-	\left( \tilde{T}\mu	\right)(x,\phi) = \int_0^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+	(\Tbv\mu)(t,\phi) = \int_0^{+\infty} \mu' \left( s_{\bv}(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+\end{equation}
+where $\mu'(\bx')=\mu(\bx)$, \ie the function $\mu'$ takes its arguments from the space $\left(M(t), x', y'\right)$.
+
+In other words, we are now dealing with a fixed object whose density function is given by $\mu'$ illuminated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, right).
+
+Here, the extreme points $\sbv(-T/2)$ and $\sbv(T/2)$ have the same $y'$-coordinate $y'_0$. We will call $x'_l$ (resp. $x'_r$) the $x'$-coordinates of $\sbv(T/2)$ (resp. $\sbv(-T/2)$). This allows us to define what we call the \emph{virtual fanbeam projection} from a point $(x',y'_0)$.
+\begin{definition}
+	For any point $x'$ between $x'_l$ and $x'_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
+\begin{equation}
+	\left( \tilde{T}\mu	\right)(x',\phi) = \int_0^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
 \end{equation}
 This is called \emph{virtual} since it does not correspond to an actual position of the source.
 \end{definition}
@@ -123,87 +143,96 @@ In the following lemma, we will make a connection between the virtual fanbeam pr
 \begin{lemma}
 	Let us fix a time $t \in \left[ -T/2, T/2\right]$ and an angle $\phi \in \left[ -\pi/2, \pi/2\right]$. Let us define
 	\begin{equation}
-		x = s_{1,v}(t) + \tan \phi \left( s_{2,v}(t) - y_0 \right).
+		x' = s_{1,\bv}(t) + \tan \phi \left( s_{2,\bv}(t) - y'_0 \right),
 	\end{equation}
+	where, for any time $t$, $\left( s_{1,\bv}(t), s_{2,\bv}(t) \right)$ are the coordinates of $\sbv(t)$.
 	Then, one has
 	\begin{equation}
-		\left( \tilde{T}\mu	\right)(x,\phi) = \left( T_v\mu	\right)(t,\phi).
+		\left( \tilde{T}\mu	\right)(x',\phi) = \left( \Tbv \mu	\right)(t,\phi).
 	\end{equation}
 \label{lem:T_x_t}
 \end{lemma}
 \begin{proof}
-The idea is that the point $(x,y_0)$ is the intersection between the line $\{y=y_0\}$ and the ray coming from $s_v(t)$ with angle $\phi$ (see Figure~\ref{fig:change_frame}). Since $\supp(\mu)$ is under the line $\{ y=y_0 \}$, the integral does not differ if we start from $(x,y_0)$ or from $s_v(t)$. Indeed, one has
+The idea is that the point $(x',y'_0)$ is the intersection between the line $\{y'=y'_0\}$ and the ray coming from $\sbv(t)$ with angle $\phi$ (see Figure~\ref{fig:change_frame}). Since $\supp(\mu)$ is under the line $\{ y'=y'_0 \}$, the integral does not differ if we start from $(x',y'_0)$ or from $\sbv(t)$. Indeed, one has
 \begin{equation}
-	\int_0^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+	\int_0^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
 \end{equation}
 Let us now perform the following change of variable
 \begin{equation}
-	l' \leftrightarrow l + \frac{s_{2,v}(t) - y_0}{\cos \phi}.
+	l' \leftrightarrow l + \frac{s_{2,\bv}(t) - y'_0}{\cos \phi}.
 \end{equation}
-By definition of $x$, it gives $x + l \sin \phi = s_{1,v}(t) + l' \sin \phi$ and $y_0 - l \cos \phi = s_{2,v}(t) - l' \cos \phi$. We then have
+By definition of $x'$, it gives $x' + l \sin \phi = s_{1,\bv}(t) + l' \sin \phi$ and $y'_0 - l \cos \phi = s_{2,\bv}(t) - l' \cos \phi$. We then have
 \begin{equation}
-	\int_{-\infty}^{+\infty} \mu \left( (x,y_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( s_v(t) + l' \left[ \sin \phi, -\cos \phi \right] \right) dl'.
+	\int_{-\infty}^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( \sbv(t) + l' \left[ \sin \phi, -\cos \phi \right] \right) dl'.
 \end{equation}
 Restricting the domain of integration from $l'=0$ to $t = + \infty$ then leads us to the desired result.
 \end{proof}
 
 We can now define what are the DCCs of our problem.
 \begin{theorem}
-Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x,t)\mapsto W_{n,v}(t,x) \in \Cinf \left( [-T/2,T/2] \times [x'_l,x_r] \right)$ such that
+Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x',t)\mapsto W_{n,v}(t,x') \in \Cinf \left( [-T/2,T/2] \times [x'_l,x'_r] \right)$ such that
 \begin{equation}
-	B_n := x \mapsto \int_{-T/2}^{T/2} \left( T_v \mu \right)\left( t,\lambda(t) \right) W_n(x,t,v) dt \in \RnX,
+	B_n := x' \mapsto \int_{-T/2}^{T/2} \left( \Tbv \mu \right)\left( t,\lambda(t) \right) W_n(x',t,v) dt \in \RnX,
 \label{eq:DCC}
 \end{equation}
 where $\lambda(t)$ is defined by
 \begin{equation}
-	\lambda_t = \arctan \left( \frac{x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0} \right).
+	\lambda_t = \arctan \left( \frac{x' + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y'_0} \right).
 \end{equation}
-Moreover, it is possible to derive $W_{n,v}(t,x)$ analytically.
+Moreover, it is possible to derive $W_{n,v}(t,x')$ analytically.
 \end{theorem}
 \begin{proof}
 The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$ (see Figure~\ref{fig:notations}). This relation is then differentiated to change variables into the integral in~(\ref{eq:DCC}), which gives the following expression, known to be a polynom according to~\cite{clackdoyle2013necessary}
 \begin{equation}
-	\int_{-\pi/2}^{\pi/2}  \left( \tilde{T}\mu	\right)(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi.
+	\int_{-\pi/2}^{\pi/2}  \left( \tilde{T}\mu	\right)(x',\phi) \frac{\tan^n \phi}{\cos \phi} d\phi.
 \end{equation}
 
 We will follow the same path here. First, the formula giving $\tan \phi$ is nearly the same as in~\cite{clackdoyle2015consistency},~\emph{i.e.}
-$$
-\tan \phi = \frac{x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y_0}.
-$$
-Then, taking its derivative allows us to write the Jacobian for a change of variables from $\phi$ to $t$
 \begin{align*}
-\frac{d\phi}{\cos^2 \phi} &= \frac{ \left( R_0 \omega \cos(\omega t) +v \right) \left( R_0 \cos(\omega t) - y_0 \right) + R_0 \omega \sin(\omega t) \left( x + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v \right) }{ \left( R_0 \cos(\omega t) - y_0 \right)^2 } dt \\
- &= \frac{ R_0^2 \omega - v y_0 + R_0 \cos(\omega t)(v-\omega y_0) + R_0 \omega \sin(\omega t)(x + \left( t + \frac{T}{2} \right)v ) }{ \left( R_0 \cos(\omega t) - y_0 \right)^2 } dt\\
- &:= J(x,t,v) dt.
+\tan \phi &= \frac{x'-s_{\bv,1}(t)}{s_{\bv,2}(t)-y'_0}\\
+&= \frac{x' + \cos \beta \left(R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v_1 \right) + \sin \beta \left( R_0 \cos(\omega t) - \left( t + \frac{T}{2} \right) v_2 \right)}{\cos \beta \left( R_0 \cos(\omega t) - \left( t + \frac{T}{2} \right) v_2 \right) - \sin \beta \left(R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v_1 \right) - y'_0} \\
+&:= F(x',t,\bv).
 \end{align*}
+Then, taking its derivative allows us to write the Jacobian for a change of variables from $\phi$ to $t$ (see Appendix for full detail)
+\begin{equation}
+\frac{d\phi}{\cos^2 \phi} = \frac{\partial F}{\partial t}(x',t,\bv)dt := J(x',t,\bv) dt.
+\end{equation}
 Hence, one can write
 \begin{align}
 	\frac{\tan^n \phi}{\cos \phi} d\phi &= \tan^n \phi \cos \phi \frac{d\phi}{\cos^2 \phi} \\
-	&= \frac{ \left( x+R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v \right)^n }{D_{x,t} \left( R_0 \cos(\omega t) - y_0 \right)^{n-1}} J(x,t,v) dt \label{eq:Dxt_first_occurence} \\
-	&:= W_n(x,t,v) dt,
+	&= \frac{ \left( x'+R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v \right)^n }{D_{x',t} \left( R_0 \cos(\omega t) - y'_0 \right)^{n-1}} J(x',t,\bv) dt \label{eq:Dxt_first_occurence} \\
+	&:= W_n(x',t,\bv) dt,
 \end{align}
-where the term $D_{x,t}$ in equation~(\ref{eq:Dxt_first_occurence}) refers to the distance between the source point $s_v(t)$ and the virtual point $(x,y_0)$.
+where the term $D_{x',t}$ in equation~(\ref{eq:Dxt_first_occurence}) refers to the distance between the source point $\sbv(t)$ and the virtual point $(x',y'_0)$.
 
 With the help of lemma~\ref{lem:T_x_t}, the change of variable from $t$ to $\phi$ then leads us to
 \begin{equation}
-	B_n(x) = \int_{-\pi/2}^{\pi/2}  \left( \tilde{T}\mu	\right)(x,\phi) \frac{\tan^n \phi}{\cos \phi} d\phi,
+	B_n(x') = \int_{-\pi/2}^{\pi/2}  \left( \tilde{T}\mu	\right)(x',\phi) \frac{\tan^n \phi}{\cos \phi} d\phi,
 \end{equation}
 which is known to be a polynom of degree at most $n$ according to~\cite{clackdoyle2013necessary} as mentioned above.
 \end{proof}
 
 \section{Numerical simulations}
 
-Let us suppose that we have the projections $g(x,\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x)$ in equation~(\ref{eq:DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
+Let us suppose that we have the projections $g(x',\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x')$ in equation~(\ref{eq:DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
 \begin{equation}
-	\mathcal{J}(v) = \sum_n \Vert \textrm{res} \left( B_n(x,v) \right) \Vert^2
+	\mathcal{J}(v) = \sum_n \Vert \textrm{res} \left( B_n(x',v) \right) \Vert^2
 \end{equation}
 with respect to $v$, where $\textrm{res}$ is the residual of the projection onto $\R_n[X]$. The minimization procedure can be done using the gradient of $\mathcal{J}(v)$, given by
 \begin{equation}
-	\nabla \mathcal{J}(v) = 2 \sum_n B_n(x,v) \int_{-T/2}^{T/2} g(t,\phi) \frac{\partial W_n}{\partial v}(x,t,v) dt.
+	\nabla \mathcal{J}(v) = 2 \sum_n B_n(x',v) \int_{-T/2}^{T/2} g(t,\phi) \frac{\partial W_n}{\partial v}(x',t,v) dt.
 \end{equation}
 
 \bibliographystyle{plain}
 \bibliography{DCC_translation}
+
+\section{Appendix}
+
+Here we will put all the "dirty" computations, so this is draft for the moment...
+\begin{align}
+\frac{d\phi}{\cos^2 \phi} &= \frac{ \left( R_0 \omega \cos(\omega t) +v \right) \left( R_0 \cos(\omega t) - y'_0 \right) + R_0 \omega \sin(\omega t) \left( x' + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v \right) }{ \left( R_0 \cos(\omega t) - y'_0 \right)^2 } dt \\
+ &= \frac{ R_0^2 \omega - v y'_0 + R_0 \cos(\omega t)(v-\omega y'_0) + R_0 \omega \sin(\omega t)(x' + \left( t + \frac{T}{2} \right)v ) }{ \left( R_0 \cos(\omega t) - y'_0 \right)^2 } dt\\
+\end{align}
 
 \end{document}
 

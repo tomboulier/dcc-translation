@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.6">
-<info created="D:20161201145955" modified="D:20170607171521"/>
+<info created="D:20161201145955" modified="D:20171030150036"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -284,7 +284,7 @@ h
 57.6935 597.671 m
 535.479 597.671 l
 </path>
-<path matrix="1 0 0 1 32 -16" stroke="black">
+<path matrix="1 0 0 1 32 64" stroke="black">
 288 640
 368 496
 496 576
@@ -310,8 +310,8 @@ h
 37.5306 0 0 37.5306 195.309 766.476 165.201 788.883 a
 </path>
 <text matrix="1 0 0 1 4 -12" transformations="translations" pos="164 820" stroke="black" type="label" width="8.314" height="9.962" depth="2.79" valign="baseline" size="Large" style="math">\phi</text>
-<use name="mark/disk(sx)" pos="421.959 553.549" size="large" stroke="black"/>
-<text matrix="1 0 0 1 -22.2081 -2.7925" transformations="translations" pos="408 540" stroke="black" type="label" width="31.086" height="10.756" depth="3.59" valign="baseline" size="Large" style="math">M(t)</text>
+<use matrix="1 0 0 1 0 64" name="mark/disk(sx)" pos="421.959 553.549" size="large" stroke="black"/>
+<text matrix="1 0 0 1 25.7919 77.2075" transformations="translations" pos="408 540" stroke="black" type="label" width="31.086" height="10.756" depth="3.59" valign="baseline" size="Large" style="math">M(t)</text>
 <path matrix="0.775742 0 0 1.01879 87.4684 -17.9479" stroke="white" dash="dashed">
 9.48717 834.369 m
 9.48717 520.356 l
