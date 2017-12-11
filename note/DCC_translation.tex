@@ -148,25 +148,10 @@ In the following lemma, we will make a connection between the virtual fanbeam pr
 	where, for any time $t$, $\left( s_{1,\bv}(t), s_{2,\bv}(t) \right)$ are the coordinates of $\sbv(t)$.
 	Then, one has
 	\begin{equation}
-		\left( \tilde{T}\mu	\right)(x',\phi) = \left( \Tbv \mu	\right)(t,\phi).
+		\left( \tilde{T}\mu	\right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi).
 	\end{equation}
 \label{lem:T_x_t}
 \end{lemma}
-\begin{proof}
-The idea is that the point $(x',y'_0)$ is the intersection between the line $\{y'=y'_0\}$ and the ray coming from $\sbv(t)$ with angle $\phi$ (see Figure~\ref{fig:change_frame}). Since $\supp(\mu)$ is under the line $\{ y'=y'_0 \}$, the integral does not differ if we start from $(x',y'_0)$ or from $\sbv(t)$. Indeed, one has
-\begin{equation}
-	\int_0^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
-\end{equation}
-Let us now perform the following change of variable
-\begin{equation}
-	l' \leftrightarrow l + \frac{s_{2,\bv}(t) - y'_0}{\cos \phi}.
-\end{equation}
-By definition of $x'$, it gives $x' + l \sin \phi = s_{1,\bv}(t) + l' \sin \phi$ and $y'_0 - l \cos \phi = s_{2,\bv}(t) - l' \cos \phi$. We then have
-\begin{equation}
-	\int_{-\infty}^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl = \int_{-\infty}^{+\infty} \mu \left( \sbv(t) + l' \left[ \sin \phi, -\cos \phi \right] \right) dl'.
-\end{equation}
-Restricting the domain of integration from $l'=0$ to $t = + \infty$ then leads us to the desired result.
-\end{proof}
 
 We can now define what are the DCCs of our problem.
 \begin{theorem}
@@ -181,58 +166,25 @@ where $\lambda(t)$ is defined by
 \end{equation}
 Moreover, it is possible to derive $W_{n,v}(t,x')$ analytically.
 \end{theorem}
-\begin{proof}
-The DCCs derived in~\cite{clackdoyle2015consistency} heavily rely on a relation between $\tan \phi$ and the angle $\omega t$ (see Figure~\ref{fig:notations}). This relation is then differentiated to change variables into the integral in~(\ref{eq:DCC}), which gives the following expression, known to be a polynom according to~\cite{clackdoyle2013necessary}
-\begin{equation}
-	\int_{-\pi/2}^{\pi/2}  \left( \tilde{T}\mu	\right)(x',\phi) \frac{\tan^n \phi}{\cos \phi} d\phi.
-\end{equation}
-
-We will follow the same path here. First, the formula giving $\tan \phi$ is nearly the same as in~\cite{clackdoyle2015consistency},~\emph{i.e.}
-\begin{align*}
-\tan \phi &= \frac{x'-s_{\bv,1}(t)}{s_{\bv,2}(t)-y'_0}\\
-&= \frac{x' + \cos \beta \left(R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v_1 \right) + \sin \beta \left( R_0 \cos(\omega t) - \left( t + \frac{T}{2} \right) v_2 \right)}{\cos \beta \left( R_0 \cos(\omega t) - \left( t + \frac{T}{2} \right) v_2 \right) - \sin \beta \left(R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v_1 \right) - y'_0} \\
-&:= F(x',t,\bv).
-\end{align*}
-Then, taking its derivative allows us to write the Jacobian for a change of variables from $\phi$ to $t$ (see Appendix for full detail)
-\begin{equation}
-\frac{d\phi}{\cos^2 \phi} = \frac{\partial F}{\partial t}(x',t,\bv)dt := J(x',t,\bv) dt.
-\end{equation}
-Hence, one can write
-\begin{align}
-	\frac{\tan^n \phi}{\cos \phi} d\phi &= \tan^n \phi \cos \phi \frac{d\phi}{\cos^2 \phi} \\
-	&= \frac{ \left( x'+R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v \right)^n }{D_{x',t} \left( R_0 \cos(\omega t) - y'_0 \right)^{n-1}} J(x',t,\bv) dt \label{eq:Dxt_first_occurence} \\
-	&:= W_n(x',t,\bv) dt,
-\end{align}
-where the term $D_{x',t}$ in equation~(\ref{eq:Dxt_first_occurence}) refers to the distance between the source point $\sbv(t)$ and the virtual point $(x',y'_0)$.
-
-With the help of lemma~\ref{lem:T_x_t}, the change of variable from $t$ to $\phi$ then leads us to
-\begin{equation}
-	B_n(x') = \int_{-\pi/2}^{\pi/2}  \left( \tilde{T}\mu	\right)(x',\phi) \frac{\tan^n \phi}{\cos \phi} d\phi,
-\end{equation}
-which is known to be a polynom of degree at most $n$ according to~\cite{clackdoyle2013necessary} as mentioned above.
-\end{proof}
 
 \section{Numerical simulations}
 
+\subsection{Principles}
+\label{sub:principles}
 Let us suppose that we have the projections $g(x',\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x')$ in equation~(\ref{eq:DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
 \begin{equation}
 	\mathcal{J}(v) = \sum_n \Vert \textrm{res} \left( B_n(x',v) \right) \Vert^2
 \end{equation}
-with respect to $v$, where $\textrm{res}$ is the residual of the projection onto $\R_n[X]$. The minimization procedure can be done using the gradient of $\mathcal{J}(v)$, given by
-\begin{equation}
-	\nabla \mathcal{J}(v) = 2 \sum_n B_n(x',v) \int_{-T/2}^{T/2} g(t,\phi) \frac{\partial W_n}{\partial v}(x',t,v) dt.
-\end{equation}
+with respect to $v$, where $\textrm{res}$ is the residual of the projection onto $\R_n[X]$. This will give us the velocity $v$ using only the knowledge of the data $\left( \Tbv \mu \right)(t,\phi)$.
+
+\subsection{Application}
+\label{sub:application}
+Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. The object under consideration is an ellipse, whose axis are.
+
 
 \bibliographystyle{plain}
 \bibliography{DCC_translation}
 
-\section{Appendix}
-
-Here we will put all the "dirty" computations, so this is draft for the moment...
-\begin{align}
-\frac{d\phi}{\cos^2 \phi} &= \frac{ \left( R_0 \omega \cos(\omega t) +v \right) \left( R_0 \cos(\omega t) - y'_0 \right) + R_0 \omega \sin(\omega t) \left( x' + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v \right) }{ \left( R_0 \cos(\omega t) - y'_0 \right)^2 } dt \\
- &= \frac{ R_0^2 \omega - v y'_0 + R_0 \cos(\omega t)(v-\omega y'_0) + R_0 \omega \sin(\omega t)(x' + \left( t + \frac{T}{2} \right)v ) }{ \left( R_0 \cos(\omega t) - y'_0 \right)^2 } dt\\
-\end{align}
 
 \end{document}
 
