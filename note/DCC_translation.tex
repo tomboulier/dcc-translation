@@ -171,15 +171,33 @@ Moreover, it is possible to derive $W_{n,v}(t,x')$ analytically.
 
 \subsection{Principles}
 \label{sub:principles}
-Let us suppose that we have the projections $g(x',\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x')$ in equation~(\ref{eq:DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
+Let us suppose that we have the projections $\left( \Tbv \mu \right)(t,\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x')$ in equation~(\ref{eq:DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
 \begin{equation}
-	\mathcal{J}(v) = \sum_n \Vert \textrm{res} \left( B_n(x',v) \right) \Vert^2
+	\mathcal{J}(v) = \sum_n \Vert \textrm{res} \left( B_n(\cdot,v) \right) \Vert^2
 \end{equation}
 with respect to $v$, where $\textrm{res}$ is the residual of the projection onto $\R_n[X]$. This will give us the velocity $v$ using only the knowledge of the data $\left( \Tbv \mu \right)(t,\phi)$.
 
 \subsection{Application}
 \label{sub:application}
-Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. The object under consideration is an ellipse, whose axis are.
+Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=12cm]{figs/sinogram.png}
+	\caption{Sinogram of a moving ellipse, with semi-axis $a = 30$ and $b = 15$, translating along the $x$-axis with velocity $v_1 = 0.3$. It is illuminated by a source at distance $R_0 = 600$, rotating with angle velocity $\omega = 1$.\label{fig:sinogram}}
+\end{figure}
+
+With this configuration in mind, the functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ can be visualized in Figure~\ref{fig:Bnx}.
+\begin{figure}[!ht]
+	\centering
+	\begin{tabular}{cc}
+	\includegraphics[width=8cm]{figs/B0.png} &
+	\includegraphics[width=8cm]{figs/B1.png} \\
+	\includegraphics[width=8cm]{figs/B2.png} &
+	\includegraphics[width=8cm]{figs/B3.png} 
+	\end{tabular}
+	\caption{From left to right, and top to bottom, functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ respectively.\label{fig:Bnx}}
+\end{figure}
+
 
 
 \bibliographystyle{plain}
