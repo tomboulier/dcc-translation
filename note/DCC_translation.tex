@@ -1,4 +1,5 @@
-\documentclass[a4paper]{article}
+% \documentclass[a4paper]{article}
+\documentclass[9pt,technote]{IEEEtran}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -36,7 +37,7 @@
 \newtheorem{theorem}{Theorem}
 
 \title{Consistency of Fanbeam Projections of a Translating Object Along an Arc of a Circle}
-\author{}
+\author{Thomas Boulier, Rolf Clackdoyle, Jérôme Lesaint, Laurent Desbat}
 \date{}
 
 \begin{document}
@@ -58,9 +59,9 @@ This note aims at extending the results of~\cite{clackdoyle2015consistency} to t
 Let us begin with some notations and definitions. We will consider an object in $\R^2$ to be imaged by a fanbeam source that follows an arc of circle with center $O$ and radius $R_0$ (see Figure~\ref{fig:notations}, left). The object will be identified with its density function $\mathbf{x} \mapsto \mu(\mathbf{x}) \in \Ccinf(\R^2)$.
 \begin{figure}[!ht]
 	\centering
-	\begin{tabular}{cc}
-	\includegraphics[width=8cm]{figs/frame_scanner_still.eps} &
-	\includegraphics[width=8cm]{figs/frame_scanner.eps}
+	\begin{tabular}{c}
+	\includegraphics[width=7cm]{figs/frame_scanner_still.eps} \\
+	\includegraphics[width=7cm]{figs/frame_scanner.eps}
 	\end{tabular}
 	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold. This latter has center $O$ and radius $R_0$.\label{fig:notations}}
 \end{figure}
@@ -115,9 +116,9 @@ where $\mathcal{R}_{\beta}$ is the rotation of angle $\beta$. This latter is the
 \begin{figure}[!ht]
 	\centering
 	%\includegraphics[width=12cm]{figs/frame_object.eps}
-	\begin{tabular}{cc}
-	\includegraphics[width=8cm]{figs/frame_object_before_rotation.eps} &
-	\includegraphics[width=8cm]{figs/frame_object.eps}
+	\begin{tabular}{c}
+	\includegraphics[width=7cm]{figs/frame_object_before_rotation.eps} \\
+	\includegraphics[width=7cm]{figs/frame_object.eps}
 	\end{tabular}
 	\caption{Change of frame: the object is now at center of the coordinates system. Left, only translation of the center of frame; right, after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, right.\label{fig:change_frame}}
 \end{figure}
@@ -182,7 +183,7 @@ with respect to $v$, where $\textrm{res}$ is the residual of the projection onto
 Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=12cm]{figs/sinogram.png}
+	\includegraphics[width=7cm]{figs/sinogram.png}
 	\caption{Sinogram of a moving ellipse, with semi-axis $a = 30$ and $b = 15$, translating along the $x$-axis with velocity $v_1 = 0.3$. It is illuminated by a source at distance $R_0 = 600$, rotating with angle velocity $\omega = 1$.\label{fig:sinogram}}
 \end{figure}
 
