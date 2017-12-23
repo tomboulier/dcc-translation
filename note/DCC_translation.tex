@@ -10,7 +10,8 @@
 \usepackage{amsthm}
 \usepackage{mathenv}
 \usepackage{multirow}
-\usepackage{fullpage}
+\usepackage{breqn}
+
 
 \DeclareMathAlphabet{\itbf}{OML}{cmm}{b}{it}
 
@@ -45,10 +46,16 @@
 \maketitle
 
 \begin{abstract}
-This note aims at extending the results of~\cite{clackdoyle2015consistency} to the case of a translating object.
+In this article, we compute data consistency conditions (DCCs) in the case of a translating object illuminated by a fan-beam source which is moving along an arc of a circle. The DCCs are thus a variation of thoses computed in~\cite{clackdoyle2015consistency}, where the object remained still. In a second part, we use the DCCs in order to retrieve the velocity of the object. These results are illustrated by numerical examples.
 \end{abstract}
 
 \section{Introduction}
+
+In the field of CT-imaging, data consistency conditions (DCCs) use the redundancy of the data in order to establish relations that must be fulfilled. These conditions are called \emph{full} when they are necessary and sufficient. One of the best known DCCs are the Helgason-Ludwig (H-L) conditions~\cite{helgason1980radon,ludwig1966radon}, which are full and are applied in the case of parallel projections along a line.
+
+In~\cite{clackdoyle2015consistency}, the H-L conditions are modified to the case of a source moving along an arc of a circle. In brief, they integrated all rays passing through the same point along a "virtual" line between the two extreme positions of the source. The H-L conditions could then be applied; numerical examples showed a situation where attenuation was added, and the DCCs permitted to recover this attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors use the H-L conditions in the case of an object undergoing rigid body motion while illuminated by a fan-beam source along a line. Those conditions allow the authors to recover the parameters of the movement, in order to suppress the artifacts caused by such movement.
+
+In this article, we will be interested by those two situations. We will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. Using a change of frame, we will use the same idea as in~\cite{clackdoyle2015consistency} for the derivation of DCCs. Then, in a second part, we will use the DCCs for the recovery of the velocity of translation, in order to correct motion artifacts.
 
 \section{Theory} 
 \label{sec:theory}
@@ -156,17 +163,34 @@ In the following lemma, we will make a connection between the virtual fanbeam pr
 
 We can now define what are the DCCs of our problem.
 \begin{theorem}
-Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x',t)\mapsto W_{n,v}(t,x') \in \Cinf \left( [-T/2,T/2] \times [x'_l,x'_r] \right)$ such that
+Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x',t)\mapsto W_{n,v}(t,x') \in \Cinf \left( [-T/2,T/2] \times [x'_l,x'_r] \right)$ such that the function $B_n$ defined by
 \begin{equation}
-	B_n := x' \mapsto \int_{-T/2}^{T/2} \left( \Tbv \mu \right)\left( t,\lambda(t) \right) W_n(x',t,v) dt \in \RnX,
+	B_n := x' \mapsto \int_{-T/2}^{T/2} \left( \Tbv \mu \right)\left( t,\lambda(t) \right) W_n(x',t,v) dt,
 \label{eq:DCC}
 \end{equation}
-where $\lambda(t)$ is defined by
+is a polynom of order $n$. In the formula above, the angle $\lambda(t)$ is defined by
 \begin{equation}
-	\lambda_t = \arctan \left( \frac{x' + R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v}{R_0 \cos(\omega t) - y'_0} \right).
+	\lambda(t) = \arctan \left( F(x',t,\bv) \right),
 \end{equation}
-Moreover, it is possible to derive $W_{n,v}(t,x')$ analytically.
+where $F(x',t,\bv)$ is defined as a fraction $A/B$ with
+\begin{dmath}
+	A = x' + \cos \beta \left( R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v_1 \right) + \\
+	\sin \beta \left( R_0 \cos(\omega t) - \left( t + \frac{T}{2} \right)v_2 \right)
+\end{dmath}
+and
+\begin{dmath}
+	B = \cos \beta \left( R_0 \cos(\omega t) - \left( t + \frac{T}{2} \right)v_2 \right) - \sin \beta \left( R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v_1 \right) - y'_0 
+\end{dmath}
+Moreover, it is possible to derive $W_{n,v}(t,x')$ analytically using the following formula
+\begin{equation}
+	W_{n,v}(t,x') = \tan^n F(x',t,\bv) \cos F(x',t,\bv) \frac{\partial F}{\partial t} (x',t,\bv)
+\end{equation}
 \end{theorem}
+
+Although the formula giving $W_{n,v}(t,x')$ is quite heavy, we can observe that in the case $v_1=v_2=0$, we obtain the formula (7) in~\cite{clackdoyle2015consistency} since
+\begin{equation}
+	F \left( x',t,\bv = (0,0) \right) = \frac{x' + R_0 \sin(\omega t)}{R_0 \cos(\omega t)}
+\end{equation}
 
 \section{Numerical simulations}
 
