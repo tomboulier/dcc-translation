@@ -12,6 +12,7 @@ import math
 import SimpleRTK as srtk
 import numpy as np
 import ConfigParser
+import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from scipy import interpolate
@@ -295,19 +296,20 @@ class Results(object):
 		
 		if xunits == 'mm':
 			# the units here represent a distance (on the detector)
-			plt.xlabel('Distance from detector center (in mm)')
+			plt.xlabel('Distance from detector center (in mm)', labelpad=20)
 			extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
 			aspect = imageSize / (max_angle - min_angle)
 
 		elif xunits == 'degrees':
 			# the units here represent an angle ('phi' in T(x,phi))
-			plt.xlabel('Beam direction (in degrees)')
+			plt.xlabel('Beam direction (in degrees)', labelpad=20)
 			extent = [-phimax, phimax, max_angle, min_angle]
 			aspect = 2 * phimax / (max_angle - min_angle)
 
 		plt.imshow(self.projections, cmap = cm.Greys_r, extent = extent, 
 			       aspect = aspect/2)
-		plt.ylabel('Gantry angle (in degrees)')
+		plt.ylabel('Gantry angle (in degrees)', labelpad=20)
+		matplotlib.rcParams.update({'font.size': 22})
 		plt.show()
 
 	def interpolate_projection(self):
@@ -406,17 +408,18 @@ if __name__ == '__main__':
 	res = s.run()
 	# res.plotSinogram()
 
-	x = np.concatenate((res0.projections[0:500,:],res.projections,res1.projections[1500:2000,:]), axis=0)
+	x = np.concatenate((res0.projections[0:499,:],res.projections,res1.projections[1500:2000,:]), axis=0)
 
 	plt.figure()
 	imageSize = p0.imageSize
 	max_angle = p0.get_max_angle()
 	min_angle = p0.get_min_angle()
-	plt.xlabel('Distance from detector center (in mm)')
+	plt.xlabel('Distance from detector center (in mm)', labelpad=20)
 	extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
 	aspect = imageSize / (max_angle - min_angle)
 	plt.imshow(x, cmap = cm.Greys_r,extent = extent, aspect = aspect)
-	plt.ylabel('Gantry angle (in degrees)')
+	plt.ylabel('Gantry angle (in degrees)', labelpad=20)
+	matplotlib.rcParams.update({'font.size': 22})
 	plt.show()
 
 	## Plot DCC
