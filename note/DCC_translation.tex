@@ -53,7 +53,7 @@ In this article, we compute data consistency conditions (DCCs) in the case of a 
 
 In the field of CT-imaging, data consistency conditions (DCCs) use the redundancy of the data in order to establish relations that must be fulfilled. These conditions are called \emph{full} when they are necessary and sufficient. One of the best known DCCs are the Helgason-Ludwig (H-L) conditions~\cite{helgason1980radon,ludwig1966radon}, which are full and are applied in the case of parallel projections along a line.
 
-In~\cite{clackdoyle2015consistency}, the H-L conditions are modified to the case of a source moving along an arc of a circle. In brief, they integrated all rays passing through the same point along a "virtual" line between the two extreme positions of the source. The H-L conditions could then be applied; numerical examples showed a situation where attenuation was added, and the DCCs permitted to recover this attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors use the H-L conditions in the case of an object undergoing rigid body motion while illuminated by a fan-beam source along a line. Those conditions allow the authors to recover the parameters of the movement, in order to suppress the artifacts caused by such movement.
+In~\cite{clackdoyle2015consistency}, the H-L conditions are modified to the case of a source moving along an arc of a circle. In brief, all rays passing through the same point along a "virtual" line between the two extreme positions of the source are integrated. The H-L conditions could then be applied; numerical examples showed a situation where attenuation was added, and the DCCs permitted to recover this attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors used the H-L conditions in the case of an object undergoing rigid body motion while illuminated by a fan-beam source along a line. Those conditions allow the authors to recover the parameters of the movement, in order to suppress the artifacts caused by such movement.
 
 In this article, we will be interested by those two situations. We will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. Using a change of frame, we will use the same idea as in~\cite{clackdoyle2015consistency} for the derivation of DCCs. Then, in a second part, we will use the DCCs for the recovery of the velocity of translation, in order to correct motion artifacts.
 
@@ -67,8 +67,8 @@ Let us begin with some notations and definitions. We will consider an object in 
 \begin{figure}[!ht]
 	\centering
 	\begin{tabular}{c}
-	\includegraphics[width=7cm]{figs/frame_scanner_still.eps} \\
-	\includegraphics[width=7cm]{figs/frame_scanner.eps}
+	\includegraphics[width=85mm]{figs/frame_scanner_still.eps} \\
+	\includegraphics[width=85mm]{figs/frame_scanner.eps}
 	\end{tabular}
 	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold. This latter has center $O$ and radius $R_0$.\label{fig:notations}}
 \end{figure}
@@ -124,8 +124,8 @@ where $\mathcal{R}_{\beta}$ is the rotation of angle $\beta$. This latter is the
 	\centering
 	%\includegraphics[width=12cm]{figs/frame_object.eps}
 	\begin{tabular}{c}
-	\includegraphics[width=7cm]{figs/frame_object_before_rotation.eps} \\
-	\includegraphics[width=7cm]{figs/frame_object.eps}
+	\includegraphics[width=85mm]{figs/frame_object_before_rotation.eps} \\
+	\includegraphics[width=85mm]{figs/frame_object.eps}
 	\end{tabular}
 	\caption{Change of frame: the object is now at center of the coordinates system. Left, only translation of the center of frame; right, after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, right.\label{fig:change_frame}}
 \end{figure}
@@ -207,21 +207,21 @@ with respect to $v$, where $\textrm{res}$ is the residual of the projection onto
 Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=7cm]{figs/sinogram.png}
+	\includegraphics[width=85mm]{figs/sinogram.png}
 	\caption{Sinogram of a moving ellipse, with semi-axis $a = 30$ and $b = 15$, translating along the $x$-axis with velocity $v_1 = 0.3$. It is illuminated by a source at distance $R_0 = 600$, rotating with angle velocity $\omega = 1$.\label{fig:sinogram}}
 \end{figure}
 
 With this configuration in mind, the functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ can be visualized in Figure~\ref{fig:Bnx}.
-\begin{figure}[!ht]
+\begin{figure*}[!ht]
 	\centering
-	\begin{tabular}{c}
-	\includegraphics[width=7cm]{figs/B0.png} \\
-	\includegraphics[width=7cm]{figs/B1.png} \\
-	\includegraphics[width=7cm]{figs/B2.png} \\
-	\includegraphics[width=7cm]{figs/B3.png} 
+	\begin{tabular}{cc}
+	\includegraphics[width=85mm]{figs/B0.png} &
+	\includegraphics[width=85mm]{figs/B1.png} \\
+	\includegraphics[width=85mm]{figs/B2.png} &
+	\includegraphics[width=85mm]{figs/B3.png} 
 	\end{tabular}
 	\caption{From top to bottom, functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ respectively.\label{fig:Bnx}}
-\end{figure}
+\end{figure*}
 
 
 
