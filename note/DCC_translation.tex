@@ -120,6 +120,7 @@ where $\mathcal{R}_{\beta}$ is the rotation of angle $\beta$. This latter is the
 \begin{equation}
 	\beta = \arctan \left( \frac{T v_2}{2R_0 \sin(\omega T/2) + T v_1} \right).
 \end{equation}
+Note that in this equation, the denominator can be equal to zero. Such situation occurs in particular when $v_1 < 0$. We studied those particular cases, both in terms of physical meaning and numerical implications. For the sake of simplicity, we will suppose in this abstract that $v_1$ is not too much negative so that the denominator is non-zero.
 
 \begin{figure}[!ht]
 	\centering
@@ -133,17 +134,18 @@ where $\mathcal{R}_{\beta}$ is the rotation of angle $\beta$. This latter is the
 
 In this frame, the coordinates of the source are given by $\sbv(t)=\mathcal{R}_{\beta} \left( s(t)-\Mbv(t) \right)$. With this in mind, the data is given by the following formula
 \begin{equation}
-	(\Tbv\mu)(t,\phi) = \int_0^{+\infty} \mu' \left( s_{\bv}(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+	(\Tbv\mu)(t,\phi) = \int_0^{+\infty} \mu \circ \mathcal{R}_{\beta} \left( s_{\bv}(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+\label{eq:F_from_sv}
 \end{equation}
-where $\mu'(\bx')=\mu(\bx)$, \ie the function $\mu'$ takes its arguments from the space $\left(M(t), x', y'\right)$.
 
-In other words, we are now dealing with a fixed object whose density function is given by $\mu'$ illuminated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, right).
+In other words, we are now dealing with a fixed object whose density function is given by $\mu \circ \mathcal{R}_{\beta}$ illuminated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, right).
 
 Here, the extreme points $\sbv(-T/2)$ and $\sbv(T/2)$ have the same $y'$-coordinate $y'_0$. We will call $x'_l$ (resp. $x'_r$) the $x'$-coordinates of $\sbv(T/2)$ (resp. $\sbv(-T/2)$). This allows us to define what we call the \emph{virtual fanbeam projection} from a point $(x',y'_0)$.
 \begin{definition}
 	For any point $x'$ between $x'_l$ and $x'_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
 \begin{equation}
 	\left( \tilde{\mathcal{F}}\mu	\right)(x',\phi) = \int_0^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+\label{eq:def_Ftilde}
 \end{equation}
 This is called \emph{virtual} since it does not correspond to an actual position of the source.
 \end{definition}
@@ -157,13 +159,15 @@ In the following lemma, we will make a connection between the virtual fanbeam pr
 	where, for any time $t$, $\left( s_{1,\bv}(t), s_{2,\bv}(t) \right)$ are the coordinates of $\sbv(t)$.
 	Then, one has
 	\begin{equation}
-		\left( \tilde{\mathcal{F}}\mu	\right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi).
+		\left( \tilde{\mathcal{F}}\mu \right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi).
 	\end{equation}
 \label{lem:T_x_t}
 \end{lemma}
+The idea of the proof is to remark that between $x'$ and $\sbv(t)$, the integral of $\mu$ is equal to zero since the support is supposed to remain in the half-space $\left\{ y<y_0 \right\}$. Hence, instead of starting the integration from $x'$ in~(\ref{eq:def_Ftilde}), we can start from $\sbv(t)$, which will give us~(\ref{eq:F_from_sv})
 
 We can now define what are the DCCs of our problem.
 \begin{theorem}
+\label{theo:main}
 Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x',t)\mapsto W_{n,v}(t,x') \in \Cinf \left( [-T/2,T/2] \times [x'_l,x'_r] \right)$ such that the function $B_n$ defined by
 \begin{equation}
 	B_n := x' \mapsto \int_{-T/2}^{T/2} \left( \Tbv \mu \right)\left( t,\lambda(t) \right) W_n(x',t,v) dt,
@@ -172,6 +176,7 @@ Let us fix a density function $\mu$. For any integer $n$, there exist a function
 is a polynom of order $n$. In the formula above, the angle $\lambda(t)$ is defined by
 \begin{equation}
 	\lambda(t) = \arctan \left( F(x',t,\bv) \right),
+\label{eq:def_lambda}
 \end{equation}
 where $F(x',t,\bv)$ is defined as a fraction $A/B$ with
 \begin{dmath}
@@ -187,6 +192,13 @@ Moreover, it is possible to derive $W_{n,v}(t,x')$ analytically using the follow
 	W_{n,v}(t,x') = \tan^n F(x',t,\bv) \cos F(x',t,\bv) \frac{\partial F}{\partial t} (x',t,\bv)
 \end{equation}
 \end{theorem}
+
+Here, the idea is to change variables in the following formula, which is known to be a polynom from~\cite{clackdoyle2013necessary}
+\begin{equation}
+	\int_{\pi/2}^{-\pi/2} \tilde{\mathcal{F}}\mu (x',\phi) \frac{\tan^n \phi}{\cos \phi} d\phi.
+\label{eq:DCC_rolf}
+\end{equation}
+The change of variable occurs between $\phi$ in~(\ref{eq:DCC_rolf}) and $t$ in~(\ref{eq:DCC}) by using the definition in~\ref{eq:def_lambda}. This explains why the formulas in Theorem~\ref{theo:main}.
 
 Although the formula giving $W_{n,v}(t,x')$ is quite heavy, we can observe that in the case $v_1=v_2=0$, we obtain the formula (7) in~\cite{clackdoyle2015consistency} since
 \begin{equation}
@@ -207,15 +219,17 @@ with respect to $v$, where $\textrm{res}$ is the residual of the projection onto
 \label{sub:application}
 Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. Indeed, we started with this particular case before tackling the more general one with $v_2 \neq 0$. Work is in progress and we hope to have the results for the CT-meeting conference. 
 
-The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively, and making and angle of $45^{\circ}$ with respect to the $x$-axis. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
+The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively, and making and angle of $45^{\circ}$ with respect to the $x$-axis. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. The detector is a plane situated at a distance of $600 \, \textrm{mm}$ from the origin. The computations of the forward problem are performed using \verb+simpleRTK+, a Python's wrapping of \verb+RTK+\footnote{http://openrtk.org}.
+
+With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=85mm]{figs/sinogram.png}
 	\caption{Sinogram of a moving ellipse, with semi-axis $a = 30$ and $b = 15$, translating along the $x$-axis with velocity $v_1 = 0.3$. It is illuminated by a source at distance $R_0 = 600$, rotating with angle velocity $\omega = 1$.\label{fig:sinogram}}
 \end{figure}
 
-With this configuration in mind, the functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ can be visualized in Figure~\ref{fig:Bnx}.
-\begin{figure*}[!ht]
+With this configuration in mind, the functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ can be visualized in Figure~\ref{fig:Bnx}. Note that the polynomial approximations are rather accurate. This can be seen by the fact that root mean square errors (RMSEs) between the actual values of $B_n(x)$ and their best polynomial approximations are low.
+\begin{figure}[!ht]
 	\centering
 	\begin{tabular}{cc}
 	\includegraphics[width=85mm]{figs/B0.png} &
@@ -223,10 +237,14 @@ With this configuration in mind, the functions $x' \mapsto B_n(x')$ for $n = 0,1
 	\includegraphics[width=85mm]{figs/B2.png} &
 	\includegraphics[width=85mm]{figs/B3.png} 
 	\end{tabular}
-	\caption{From top to bottom, functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ respectively.\label{fig:Bnx}}
-\end{figure*}
+	\caption{From left to right and top to bottom, functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ respectively. Red lines are the best polynomial approximations. RMSE stands for root mean square error. The $x$-axis are expressed in millimeters.\label{fig:Bnx}}
+\end{figure}
 
+\section{Conclusion}
+In this work, we have proposed a way to recover the velocity parameters of a translating object illuminated by a fanbeam source. The method uses the so-called data consistency conditions (DCCs), adapted from~\cite{clackdoyle2015consistency}. Setting the origin of the frame in the center of mass of the object, we are in fact dealing with DCCs in the case of an arc of a cycloid. Numerical examples show that these conditions work well in the case of an object translating in a direction which is parallel to the $x$-axis. Further work is under progress to recover the same results in the general case.
 
+\section{Acknowledgement}
+The authors would like to thank Simon Rit for his help using RTK
 
 \bibliographystyle{plain}
 \bibliography{DCC_translation}
