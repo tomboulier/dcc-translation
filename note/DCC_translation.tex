@@ -30,9 +30,10 @@
 \newcommand{\bx}{\mathbf{x}}
 \newcommand{\bv}{\mathbf{v}}
 \newcommand{\Mbv}{M_{\mathbf{v}}}
-\newcommand{\Tbv}{T_{\mathbf{v}}}
+\newcommand{\Tbv}{\mathcal{F}_{\mathbf{v}}}
 \newcommand{\mubv}{\mu_{\mathbf{v}}}
 \newcommand{\sbv}{s_{\mathbf{v}}}
+
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
@@ -81,11 +82,11 @@ Furthermore, we will denote $s(T/2)=(x_l,y_l)$ (resp. $s(-T/2)=(x_r,y_r)$) the e
 
 We will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator giving the acquired data from the object.
 \begin{definition}
-The \emph{fanbeam projection data} of an object with density function $\mu$ is a function $(t,\phi) \mapsto T\mu(t,\phi)$ defined by
+The \emph{fanbeam projection data} of an object with density function $\mu$ is a function $(t,\phi) \mapsto \mathcal{F}\mu(t,\phi)$ defined by
 \begin{equation}
-	(T\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
+	(\mathcal{F}\mu)(t,\phi) = \int_0^{+\infty} \mu \left( s(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl,
 \end{equation}
-where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ and $s(t)$ is given by~(\ref{eq:source_position}). The operator $\mu \mapsto T\mu$ is called the \emph{fanbeam projection operator}.
+where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ and $s(t)$ is given by~(\ref{eq:source_position}). The operator $\mu \mapsto \mathcal{F}\mu$ is called the \emph{fanbeam projection operator}.
 \end{definition}
 
 
@@ -102,7 +103,7 @@ In this regard, the fanbeam projection data will be modified in the following wa
 \begin{definition}
 The \emph{fanbeam projection data of a translating object} with density function $\mu$ and translating velocity vector $\bv$ is given by
 \begin{equation}
-	(\Tbv\mu)(t,\phi) = \left( T \mubv(t,\cdot) \right)(t,\phi).
+	(\Tbv\mu)(t,\phi) = \left( \mathcal{F} \mubv(t,\cdot) \right)(t,\phi).
 \label{eq:def_Tv}
 \end{equation}
 \end{definition}
@@ -142,7 +143,7 @@ Here, the extreme points $\sbv(-T/2)$ and $\sbv(T/2)$ have the same $y'$-coordin
 \begin{definition}
 	For any point $x'$ between $x'_l$ and $x'_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
 \begin{equation}
-	\left( \tilde{T}\mu	\right)(x',\phi) = \int_0^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+	\left( \tilde{\mathcal{F}}\mu	\right)(x',\phi) = \int_0^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
 \end{equation}
 This is called \emph{virtual} since it does not correspond to an actual position of the source.
 \end{definition}
@@ -156,7 +157,7 @@ In the following lemma, we will make a connection between the virtual fanbeam pr
 	where, for any time $t$, $\left( s_{1,\bv}(t), s_{2,\bv}(t) \right)$ are the coordinates of $\sbv(t)$.
 	Then, one has
 	\begin{equation}
-		\left( \tilde{T}\mu	\right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi).
+		\left( \tilde{\mathcal{F}}\mu	\right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi).
 	\end{equation}
 \label{lem:T_x_t}
 \end{lemma}
@@ -198,13 +199,15 @@ Although the formula giving $W_{n,v}(t,x')$ is quite heavy, we can observe that 
 \label{sub:principles}
 Let us suppose that we have the projections $\left( \Tbv \mu \right)(t,\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x')$ in equation~(\ref{eq:DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
 \begin{equation}
-	\mathcal{J}(v) = \sum_n \Vert \textrm{res} \left( B_n(\cdot,v) \right) \Vert^2
+	\mathcal{J}(v) = \sum_{n=0}^N \Vert \textrm{res} \left( B_n(\cdot,v) \right) \Vert^2
 \end{equation}
-with respect to $v$, where $\textrm{res}$ is the residual of the projection onto $\R_n[X]$. This will give us the velocity $v$ using only the knowledge of the data $\left( \Tbv \mu \right)(t,\phi)$.
+with respect to $v$, where $\textrm{res}$ is the residual of the projection onto $\R_n[X]$, and $N$ is the number of polynom degrees to be taken into account. This will give us the velocity $v$ using only the knowledge of the data $\left( \Tbv \mu \right)(t,\phi)$.
 
 \subsection{Application}
 \label{sub:application}
-Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
+Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. Indeed, we started with this particular case before tackling the more general one with $v_2 \neq 0$. Work is in progress and we hope to have the results for the CT-meeting conference. 
+
+The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively, and making and angle of $45^{\circ}$ with respect to the $x$-axis. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=85mm]{figs/sinogram.png}
