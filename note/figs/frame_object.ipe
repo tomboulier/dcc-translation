@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.6">
-<info created="D:20161201145955" modified="D:20171228214130"/>
+<info created="D:20161201145955" modified="D:20180104192200"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -266,8 +266,8 @@ h
 <use name="mark/disk(sx)" pos="280 553.815" size="large" stroke="black"/>
 <use matrix="1 0 0 1 -95.8873 -0.313966" name="mark/disk(sx)" pos="143.947 735.987" size="large" stroke="black"/>
 <use matrix="1 0 0 1 95.7683 -0.365963" name="mark/disk(sx)" pos="415.947 735.987" size="large" stroke="black"/>
-<text matrix="1 0 0 1 42.1603 -34.015" transformations="translations" pos="429.246 737.46" stroke="black" type="label" width="74.207" height="20.47" depth="6.18" valign="baseline" size="Huge" style="math">(x_r&apos;,y_0)</text>
-<text matrix="1 0 0 1 -118.374 -17.4979" transformations="translations" pos="127.861 725.748" stroke="black" type="label" width="71.008" height="20.472" depth="6.95" valign="baseline" size="Huge" style="math">(x_l&apos;,y_0)</text>
+<text matrix="1 0 0 1 42.1603 -34.015" transformations="translations" pos="429.246 737.46" stroke="black" type="label" width="74.207" height="20.47" depth="6.18" valign="baseline" size="Huge" style="math">(x_r&apos;,y_0&apos;)</text>
+<text matrix="1 0 0 1 -118.374 -17.4979" transformations="translations" pos="127.861 725.748" stroke="black" type="label" width="71.008" height="20.472" depth="6.95" valign="baseline" size="Huge" style="math">(x_l&apos;,y_0&apos;)</text>
 <text matrix="1 0 0 1 6.40059 -15.1664" transformations="translations" pos="279.07 821.573" stroke="black" type="label" width="18.904" height="20.474" depth="4.82" valign="baseline" size="Huge" style="math">y&apos;</text>
 <text matrix="1 0 0 1 -23.442 -33.1497" transformations="translations" pos="544.931 556.746" stroke="black" type="label" width="19.972" height="20.474" depth="0" valign="baseline" size="Huge" style="math">x&apos;</text>
 <text matrix="1 0 0 1 -76.3497 -43.3905" transformations="translations" pos="215.774 787.778" stroke="black" type="label" width="50.842" height="18.564" depth="6.18" valign="baseline" size="Huge" style="math">s_{\mathbf{v}}(t)</text>
@@ -310,7 +310,7 @@ h
 280.258 834.369
 48.0597 735.673 c
 </path>
-<text matrix="1 0 0 1 -35.5177 -17.6055" transformations="translations" pos="284.907 539.839" stroke="black" type="label" width="52.389" height="18.564" depth="6.18" valign="baseline" size="Huge" style="math">M(t)</text>
+<text matrix="1 0 0 1 -33.1968 -20.7124" transformations="translations" pos="284.907 539.839" stroke="black" type="label" width="62.889" height="18.564" depth="6.18" valign="baseline" size="Huge" style="math">M_{\mathbf{v}}(t)</text>
 <path matrix="1 0 0 1 118.222 42.8651" stroke="black" dash="dashed">
 64 800 m
 64 720 l

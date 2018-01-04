@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE ipe SYSTEM "ipe.dtd">
 <ipe version="70206" creator="Ipe 7.2.6">
-<info created="D:20161201145955" modified="D:20171228185354"/>
+<info created="D:20161201145955" modified="D:20180104184823"/>
 <ipestyle name="basic">
 <symbol name="arrow/arc(spx)">
 <path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
@@ -311,7 +311,7 @@ h
 </path>
 <text matrix="1 0 0 1 0.794414 -12.6474" transformations="translations" pos="164 820" stroke="black" type="label" width="14.364" height="17.213" depth="4.82" valign="baseline" size="Huge" style="math">\phi</text>
 <use matrix="1 0 0 1 0 64" name="mark/disk(sx)" pos="421.959 553.549" size="large" stroke="black"/>
-<text matrix="1 0 0 1 20.4623 81.492" transformations="translations" pos="408 540" stroke="black" type="label" width="52.389" height="18.564" depth="6.18" valign="baseline" size="Huge" style="math">M(t)</text>
+<text matrix="1 0 0 1 20.4623 81.492" transformations="translations" pos="408 540" stroke="black" type="label" width="62.889" height="18.564" depth="6.18" valign="baseline" size="Huge" style="math">M_{\mathbf{v}}(t)</text>
 <path matrix="0.775742 0 0 1.01879 87.4684 -17.9479" stroke="white" dash="dashed">
 9.48717 834.369 m
 9.48717 520.356 l
@@ -319,5 +319,10 @@ h
 586.767 834.369 l
 h
 </path>
+<path stroke="black" fill="white" pen="ultrafat" arrow="normal/normal">
+280.071 553.527 m
+417.693 615.304 l
+</path>
+<text matrix="1 0 0 1 -6.88954 -17.9466" transformations="translations" pos="328.22 607.743" stroke="black" type="label" width="23.869" height="15.246" depth="0" valign="baseline" size="Huge" style="math">t \mathbf{v}</text>
 </page>
 </ipe>
