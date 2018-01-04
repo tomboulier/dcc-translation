@@ -396,7 +396,7 @@ class Results(object):
 		return res[0]
 
 if __name__ == '__main__':
-	# plot sinogram
+	# # plot sinogram
 	# p0 = Parameters('example0.ini')
 	# s0 = Simulator(p0)
 	# res0 = s0.run()
@@ -419,14 +419,14 @@ if __name__ == '__main__':
 	# plt.xlabel('Distance from detector center (in mm)', labelpad=20)
 	# extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
 	# aspect = imageSize / (max_angle - min_angle)
-	# plt.imshow(x, cmap = cm.Greys_r,extent = extent, aspect = aspect)
+	# plt.imshow(x, cmap = cm.Greys_r,extent = extent, aspect = aspect*2)
 	# plt.ylabel('Gantry angle (in degrees)', labelpad=20)
 	# matplotlib.rcParams.update({'font.size': 22})
 	# plt.show()
 
 	# Plot DCC
 	v = p.v
-	n = 3
+	n = 2
 
 	xmax = p.R0 * np.sin(p.omega*p.T/2 /360*2*np.pi) * .75
 	x = np.linspace(-xmax, xmax)
@@ -459,8 +459,13 @@ if __name__ == '__main__':
 	plt.savefig('B' + str(n) + '.eps')
 	plt.show()
 
-	# # optimization
-	# print "Error of interpolation is: " + str(res.residual_polyfit(x,n,v))
-	# from scipy.optimize import minimize
+	# optimization
+	print "Error of interpolation is: " + str(res.residual_polyfit(x,n,v))
+	from scipy.optimize import minimize
 	# residual_callable = lambda v: res.residual_polyfit(x,0,v) + res.residual_polyfit(x,1,v) + res.residual_polyfit(x,2,v) + res.residual_polyfit(x,3,v)
-	# min_v = minimize(residual_callable, 0, method = 'Powell')
+	residual_callable = lambda v: res.residual_polyfit(x,n,v)
+	min_v = minimize(residual_callable, 0, method = 'Powell')
+	print "*** Results of optimization ***"
+	print "True value is: " + str(p.v)
+	print "Search result is: " + str(min_v.x)
+	print "Difference is: " + str(min_v.x-v)
