@@ -1,5 +1,5 @@
 % \documentclass[a4paper]{article}
-\documentclass[9pt,technote]{IEEEtran}
+\documentclass[twocolumn]{IEEEtran}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -39,12 +39,25 @@
 \newtheorem{theorem}{Theorem}
 
 \title{Consistency of Fanbeam Projections of a Translating Object Along an Arc of a Circle}
-\author{Thomas Boulier, Rolf Clackdoyle, Jérôme Lesaint, Laurent Desbat}
+%\author{}
 \date{}
 
 \begin{document}
 
+%==================
+\author{
+	\IEEEauthorblockN{Thomas Boulier, Rolf Clackdoyle, Jérôme Lesaint, Laurent Desbat}
+	\thanks{T. Boulier, R. Clackdoyle, J. Lesaint and L. Desbat are with the TIMC-IMAG laboratory, CNRS UMR 5525 and Universit\'e Grenoble Alpes (e-mail: tboulier@chu-grenoble.fr).
+
+	The authors would like to thank Simon Rit for his help using RTK.
+			
+	This work is partially supported by the Agence Nationale de la Recherche (France), Labex CAMI, number ANR-11-LABX-0004-01, Labex PRIMES, number ANR-11-LABX-0063 and project ``DROITE'', number ANR-12-BS01-0018.
+}		
+\IEEEauthorblockA{}
+}
+
 \maketitle
+%========================
 
 \begin{abstract}
 In this article, we compute data consistency conditions (DCCs) in the case of a translating object illuminated by a fan-beam source which is moving along an arc of a circle. The DCCs are thus a variation of thoses computed in~\cite{clackdoyle2015consistency}, where the object remained still. In a second part, we use the DCCs in order to retrieve the velocity of the object. These results are illustrated by numerical examples.
@@ -103,7 +116,7 @@ In this regard, the fanbeam projection data will be modified in the following wa
 \begin{definition}
 The \emph{fanbeam projection data of a translating object} with density function $\mu$ and translating velocity vector $\bv$ is given by
 \begin{equation}
-	(\Tbv\mu)(t,\phi) = \left( \mathcal{F} \mubv(t,\cdot) \right)(t,\phi).
+	(\Tbv\mu)(t,\phi) =  ( \mathcal{F} \mubv ) (t,\phi).
 \label{eq:def_Tv}
 \end{equation}
 \end{definition}
@@ -219,12 +232,12 @@ with respect to $v$, where $\textrm{res}$ is the residual of the projection onto
 \label{sub:application}
 Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. Indeed, we started with this particular case before tackling the more general one with $v_2 \neq 0$. Work is in progress and we hope to have the results for the CT-meeting conference. 
 
-The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively, and making and angle of $45^{\circ}$ with respect to the $x$-axis. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. The detector is a plane situated at a distance of $600 \, \textrm{mm}$ from the origin. The computations of the forward problem are performed using \verb+simpleRTK+, a Python's wrapping of \verb+RTK+\footnote{http://openrtk.org}.
+The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively, and making and angle of $45^{\circ}$ with respect to the $x$-axis. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. The detector is a plane situated at a distance of $600 \, \textrm{mm}$ from the origin. The computations of the forward problem are performed using \verb+simpleRTK+, a Python's wrapping of \verb+RTK+~\cite{RTK}.
 
 With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=85mm]{figs/sinogram.png}
+	\includegraphics[width=75mm]{figs/sinogram.png}
 	\caption{Sinogram of a moving ellipse, with semi-axis $a = 30$ and $b = 15$, translating along the $x$-axis with velocity $v_1 = 0.3$. It is illuminated by a source at distance $R_0 = 600$, rotating with angle velocity $\omega = 1$.\label{fig:sinogram}}
 \end{figure}
 
@@ -232,19 +245,17 @@ With this configuration in mind, the functions $x' \mapsto B_n(x')$ for $n = 0,1
 \begin{figure}[!ht]
 	\centering
 	\begin{tabular}{cc}
-	\includegraphics[width=85mm]{figs/B0.png} &
-	\includegraphics[width=85mm]{figs/B1.png} \\
-	\includegraphics[width=85mm]{figs/B2.png} &
-	\includegraphics[width=85mm]{figs/B3.png} 
+	\includegraphics[width=75mm]{figs/B0.png} \\
+	\includegraphics[width=75mm]{figs/B1.png} \\
+	\includegraphics[width=75mm]{figs/B2.png} \\
+	\includegraphics[width=75mm]{figs/B3.png} 
 	\end{tabular}
-	\caption{From left to right and top to bottom, functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ respectively. Red lines are the best polynomial approximations. RMSE stands for root mean square error. The $x$-axis are expressed in millimeters.\label{fig:Bnx}}
+	\caption{From top to bottom, functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ respectively. Red lines are the best polynomial approximations. RMSE stands for root mean square error. The $x$-axis are expressed in millimeters.\label{fig:Bnx}}
 \end{figure}
 
 \section{Conclusion}
 In this work, we have proposed a way to recover the velocity parameters of a translating object illuminated by a fanbeam source. The method uses the so-called data consistency conditions (DCCs), adapted from~\cite{clackdoyle2015consistency}. Setting the origin of the frame in the center of mass of the object, we are in fact dealing with DCCs in the case of an arc of a cycloid. Numerical examples show that these conditions work well in the case of an object translating in a direction which is parallel to the $x$-axis. Further work is under progress to recover the same results in the general case.
 
-\section{Acknowledgement}
-The authors would like to thank Simon Rit for his help using RTK
 
 \bibliographystyle{plain}
 \bibliography{DCC_translation}
