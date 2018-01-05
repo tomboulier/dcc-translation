@@ -16,7 +16,7 @@
 \DeclareMathAlphabet{\itbf}{OML}{cmm}{b}{it}
 
 % numérotation au sein de chaque section (du style "2.1")
-\numberwithin{equation}{section}
+% \numberwithin{equation}{section}
 
 % commandes perso
 \newcommand{\R}{\mathbb{R}}
@@ -78,21 +78,21 @@ In this article, we will be interested by those two situations. We will suppose 
 \subsection{Problem under consideration}
 \label{sub:problem_under_consideration}
 
-Let us begin with some notations and definitions. We will consider an object in $\R^2$ to be imaged in a fanbeam geometry with sources on an arc of circle with center $O$ and radius $R_0$ (see Figure~\ref{fig:notations}, top). The object is identified with its density function $\mathbf{x} \mapsto \mu(\mathbf{x}) \in \Ccinf(\R^2)$.
+Let us begin with some notation and definitions. We will consider an object in $\R^2$ to be imaged in a fanbeam geometry with sources on an arc of circle with center $O$ and radius $R_0$ (see Figure~\ref{fig:notations}, top). The object is identified with its density function $\mathbf{x} \mapsto \mu(\mathbf{x}) \in \Ccinf(\R^2)$.
 \begin{figure}[!ht]
 	\centering
 	\begin{tabular}{c}
 	\includegraphics[width=75mm]{figs/frame_scanner_still.eps} \\
 	\includegraphics[width=75mm]{figs/frame_scanner.eps}
 	\end{tabular}
-	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold. This latter has center $O$ and radius $R_0$.\label{fig:notations}}
+	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold. The circle has center $O$ and radius $R_0$. The object is continually undergoing a translation during the movement of the source.\label{fig:notations}}
 \end{figure}
-The angular velocity of the source will be denoted $\omega$, and the time $t$ will range from $-T/2$ to $T/2$, where $T>0$. Hence, if we denote $s(t)$ the position of the source at time $t$, one has
+The angular velocity of the source will be denoted $\omega$, and the time $t$ will range from $-T/2$ to $T/2$, where $T>0$. Hence, if we denote $s(t)$ the position of the source at time $t$, we have
 \begin{equation}
 	s(t) = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right).
 \label{eq:source_position}
 \end{equation}
-Furthermore, we will denote $s(T/2)=(x_l,y_l)$ (resp. $s(-T/2)=(x_r,y_r)$) the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value. In the following, we will suppose that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$, and that $y_0 > 0$ (\ie $0 < \omega T < \pi$).
+Furthermore, we will let $s(T/2)=(x_l,y_l)$ (resp. $s(-T/2)=(x_r,y_r)$) denote the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value. In the following, we will suppose that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$, and that $y_0 > 0$ (\ie $0 < \omega T < \pi$).
 
 We will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator modeling the acquired data from the object.
 \begin{definition}
@@ -104,37 +104,37 @@ where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ an
 \end{definition}
 
 
-Now let us suppose that the object is translating along a line with a constant velocity vector $\bv = (v_1, v_2)\in \R^2$ (see Figure~\ref{fig:notations}, bottom). In other words, if we denote $\Mbv(t)$ its center of mass at any time $t$, we have
+Now let us suppose that the object is translating along a line with a constant velocity vector $\bv = (v_1, v_2)\in \R^2$ (see Figure~\ref{fig:notations}, bottom). In other words, if we let $\Mbv(t)$ denote its center of mass at any time $t$, we have
 \begin{equation}
-	\Mbv(t) =  \left( \left( t + \frac{T}{2} \right)v_1, \left( t + \frac{T}{2} \right)v_2 \right)
+	\Mbv(t) =   \left( t + T/2 \right) \bv
 \label{eq:center_of_mass}
 \end{equation}
-The density function of the object now depends on both the space variable $\bx \in \R^2$ and the time $t$. If we denote it $\mubv$, we have
+The density function of the object now depends on both the spatial variable $\bx \in \R^2$ and the time $t$. If we denote the time varying object by $\mubv$, we have
 \begin{equation}
 	\mubv(t,\bx) = \mu\left( \bx - \Mbv(t)\right).
 \end{equation}
 In this regard, the fanbeam projection data will be modified in the following way.
 \begin{definition}
-The \emph{fanbeam projection data of a translating object} with density function $\mu$ and translating velocity vector $\bv$ is given by
+The \emph{fanbeam projection data of a translating object} with density function $\mu$ and  velocity vector $\bv$ is given by
 \begin{equation}
 	(\Tbv\mu)(t,\phi) =  ( \mathcal{F} \mubv ) (t,\phi).
 \label{eq:def_Tv}
 \end{equation}
 \end{definition}
 
-The aim of this note is to derive data consistency conditions (DCCs) from~(\ref{eq:def_Tv}), in order to retrieve the velocity vector $\bv$ from the knowledge of $\Tbv$.
+The aim of this note is to derive data consistency conditions (DCCs) from~(\ref{eq:def_Tv}), in order to retrieve the velocity vector $\bv$ from the knowledge of a single element of the range of $\Tbv$.
 
 \subsection{Derivation of DCCs}
 
-In order to derive DCCs, we will first change our reference frame, from $\left(O, x, y\right)$ to $\left(M(t), x', y'\right)$, so that the origin is the center of mass of the object at any time t and the line between the start point and the end point of the source is still parallel to the $x'$-axis (see Figure~\ref{fig:change_frame}, right). In other words, we are performing the following change of variables
+In order to derive DCCs, we will first change our reference frame, from $\left(O, x, y\right)$ to $\left(M(t), x', y'\right)$, so that the origin is the center of mass of the object at any time t and the line between the start point and the end point of the source is still parallel to the $x'$-axis (see Figure~\ref{fig:change_frame}). In other words, we are performing the following change of variables
 \begin{equation}
 	(x,y) \leftrightarrow (x',y') = \mathcal{R}_{\beta} \left( (x,y)-\Mbv(t) \right),
 \end{equation}
-where $\mathcal{R}_{\beta}$ is the rotation of angle $\beta$. This latter is the angle depicted in Figure~\ref{fig:change_frame} (top) and is given by
+where $\mathcal{R}_{\beta}$ rotation by $\beta$. The angle beta is depicted in Figure~\ref{fig:change_frame} (top) and is given by
 \begin{equation}
 	\beta = \arctan \left( \frac{T v_2}{2R_0 \sin(\omega T/2) + T v_1} \right).
 \end{equation}
-Note that in this equation, the denominator can be equal to zero. Such situation occurs in particular when $v_1 < 0$. We studied those particular cases, both in terms of physical meaning and numerical implications. For the sake of simplicity, we will suppose in this abstract that $v_1$ is not too much negative so that the denominator is non-zero.
+Note that in this equation, the denominator can be equal to zero. Such situation occurs in particular when $v_1 < 0$. We studied those particular cases, both in terms of physical meaning and numerical implications. For the sake of simplicity, we will assume in this abstract that $v_1$ is not too negative (\emph{e.g.} $v_1 > - 2 R_0 / T$) to ensure that the denominator is non-zero.
 
 \begin{figure}[!ht]
 	\centering
@@ -143,20 +143,22 @@ Note that in this equation, the denominator can be equal to zero. Such situation
 	\includegraphics[width=75mm]{figs/frame_object_before_rotation.eps} \\
 	\includegraphics[width=75mm]{figs/frame_object.eps}
 	\end{tabular}
-	\caption{Change of frame: the object is now at center of the coordinates system. Left, only translation of the center of frame; right, after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, bottom.\label{fig:change_frame}}
+	\caption{Change of frame: the object is now at center of the coordinates system. Top: only translation of the center of frame; bottom: after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, bottom. The virtual source position $(x',y_0')$ is defined in terms of $s_v(t)$ and $\phi$; see equation~(\ref{eq:x'}).\label{fig:change_frame}}
 \end{figure}
 
-In this frame, the coordinates of the source are given by $\sbv(t)=\mathcal{R}_{\beta} \left( s(t)-\Mbv(t) \right)$. With this in mind, the data is given by the following formula
+In this frame, the coordinates of the source position is given by $\sbv(t)=\mathcal{R}_{\beta} \left( s(t)-\Mbv(t) \right)$. With this in mind, the data are given by the following formula
 \begin{equation}
 	(\Tbv\mu)(t,\phi) = \int_0^{+\infty} \mu \circ \mathcal{R}_{\beta} \left( s_{\bv}(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
 \label{eq:F_from_sv}
 \end{equation}
 
-In other words, we are now dealing with a fixed object whose density function is given by $\mu \circ \mathcal{R}_{\beta}$ illuminated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, right).
+In other words, we are now dealing with a fixed object whose density function is given by $\mu \circ \mathcal{R}_{\beta}$ illuminated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, bottom).
 
-Here, the extreme points $\sbv(-T/2)$ and $\sbv(T/2)$ have the same $y'$-coordinate $y'_0$. We will call $x'_l$ (resp. $x'_r$) the $x'$-coordinates of $\sbv(T/2)$ (resp. $\sbv(-T/2)$). This allows us to define what we call the \emph{virtual fanbeam projection} from a point $(x',y'_0)$.
+Here, the extreme points $\sbv(-T/2)$ and $\sbv(T/2)$ have the same $y'$-coordinate, $y'_0$. We will call $x'_l$ (resp. $x'_r$) the $x'$-coordinates of $\sbv(T/2)$ (resp. $\sbv(-T/2)$).
+
+Now we define what we call the \emph{virtual fanbeam projection} from a point $(x',y'_0)$.
 \begin{definition}
-	For any point $x'$ between $x'_l$ and $x'_r$, for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
+	For any point $x'$ between $x'_l$ and $x'_r$, and for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
 \begin{equation}
 	\left( \tilde{\mathcal{F}}\mu	\right)(x',\phi) = \int_0^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
 \label{eq:def_Ftilde}
@@ -164,14 +166,15 @@ Here, the extreme points $\sbv(-T/2)$ and $\sbv(T/2)$ have the same $y'$-coordin
 This is called \emph{virtual} since it does not correspond to an actual position of the source.
 \end{definition}
 
-In the following lemma, we will make a connection between the virtual fanbeam projection and the fanbeam projection of the translating object.
+In the following lemma, we will make the connection between the virtual fanbeam projection and the fanbeam projection of the translating object.
 \begin{lemma}
 	Let us fix a time $t \in \left[ -T/2, T/2\right]$ and an angle $\phi \in \left[ -\pi/2, \pi/2\right]$. Let us define
 	\begin{equation}
 		x' = s_{1,\bv}(t) + \tan \phi \left( s_{2,\bv}(t) - y'_0 \right),
+		\label{eq:x'}
 	\end{equation}
 	where, for any time $t$, $\left( s_{1,\bv}(t), s_{2,\bv}(t) \right)$ are the coordinates of $\sbv(t)$.
-	Then, one has
+	Then, we have
 	\begin{equation}
 		\left( \tilde{\mathcal{F}}\mu \right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi).
 	\end{equation}
