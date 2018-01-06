@@ -11,6 +11,7 @@
 \usepackage{mathenv}
 \usepackage{multirow}
 \usepackage{breqn}
+\usepackage{rotating}
 
 
 \DeclareMathAlphabet{\itbf}{OML}{cmm}{b}{it}
@@ -33,6 +34,8 @@
 \newcommand{\Tbv}{\mathcal{F}_{\mathbf{v}}}
 \newcommand{\mubv}{\mu_{\mathbf{v}}}
 \newcommand{\sbv}{s_{\mathbf{v}}}
+\newcommand{\Bnv}{B_n^{(\bv)}}
+\newcommand{\Wnv}{W_n^{(\bv)}}
 
 \newtheorem{definition}{Definition}
 \newtheorem{lemma}{Lemma}
@@ -47,7 +50,7 @@
 %==================
 \author{
 	\IEEEauthorblockN{Thomas Boulier, Rolf Clackdoyle, Jérôme Lesaint, Laurent Desbat}
-	\thanks{T. Boulier, R. Clackdoyle, J. Lesaint and L. Desbat are with the TIMC-IMAG laboratory, CNRS UMR 5525 and Universit\'e Grenoble Alpes (e-mail: tboulier@chu-grenoble.fr).
+	\thanks{T. Boulier, R. Clackdoyle, J. Lesaint and L. Desbat are with the TIMC-IMAG laboratory, CNRS UMR 5525 and Universit\'e Grenoble Alpes (e-mail: thomas.boulier@polytechnique.edu).
 
 	The authors would like to thank Simon Rit for his help using RTK.
 			
@@ -61,16 +64,16 @@
 
 \begin{abstract}
 In this article, we compute data consistency conditions
-(DCCs) in fan beam geometry in the case of a translating object illuminated by source moving along an arc of a circle. The DCCs are thus a generalization of thoses computed in~\cite{clackdoyle2015consistency}, where the object remained still. In a second part, we use the DCCs in order to retrieve parameters of the object velocity. These results are illustrated by numerical examples.
+(DCCs) in fan beam geometry in the case of a translating object illuminated by source moving along an arc of a circle. The DCCs are thus a generalization of those computed in~\cite{clackdoyle2015consistency}, where the object remained still. In a second part, we use the DCCs in order to retrieve parameters of the object velocity. These results are illustrated by numerical examples.
 \end{abstract}
 
 \section{Introduction}
 
-In the field of CT-imaging, data consistency conditions (DCCs) use the redundancy of the data in order to establish relations that must be fulfilled. These conditions are called \emph{full} when they are not only necessary but also sufficient. One of the best known DCCs are the Helgason-Ludwig (H-L) conditions~\cite{helgason1980radon,ludwig1966radon}, which are full for parallel projections.
+In the field of CT-imaging, data consistency conditions (DCCs) use the redundancy of the data in order to establish relations that must be fulfilled  between projections. These conditions are called \emph{full} when they are not only necessary but also sufficient. One of the best known DCCs are the Helgason-Ludwig (H-L) conditions~\cite{helgason1980radon,ludwig1966radon}, which are full for parallel projections. Full DCCs are also known for the case of fan-beam projections with source position taken along a straight line~\cite{clackdoyle2013necessary}.
 
-In~\cite{clackdoyle2015consistency}, the H-L conditions are modified to the case of a source moving along an arc of a circle. In brief, all rays passing through the same point along a "virtual" line between the two extreme positions of the source are virtually gathered within a fan beam projection. The DCCs for fanbeam projections along a line from~\cite{clackdoyle2013necessary} could then be applied; numerical examples showed a situation where attenuation was added, and the DCCs permitted to recover this attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors used the H-L conditions in the case of an object undergoing rigid body motion while illuminated by a fan-beam source along a line. Those conditions allow the authors to recover the parameters of the movement, in order to suppress the artifacts caused by such movement.
+In~\cite{clackdoyle2015consistency}, the fan-beam DCCs were modified to handle the case of a source moving along an arc of a circle. Briefly, all rays passing through the same point along a "virtual" line between the two extreme positions of the source are gathered to form a fan-beam projection. The DCCs for fanbeam projections along a line from~\cite{clackdoyle2013necessary} could then be applied; numerical examples showed a situation where an artificial detector attenuation was added, and the DCCs were invoked to recover the unknown attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors used pallel-beam H-L conditions in the case of an object undergoing rigid body motion while illuminated by a fan-beam source along a line. Those conditions allowed the authors to recover the parameters of the movement, in order to suppress the artifacts caused by such movement.  However, using the parallel-beam H-L conditions means that the fan-beam projections had to cover all rays in the plane so that a fan-to-parallel rebinning could be achieved. The rebinning was achieved mathematically; however, the requirement of at least a standard fan-beam shortscan of $180^{\circ}$ plus fan-angle is required. In our work, we are concerned with the opposite extreme of a short arc of fan-beam measurements.
 
-In this article, we will be interested by those two situations. We will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. Using a change of frame, we will use the same idea as in~\cite{clackdoyle2015consistency} for a change of variables. Then, in a second part, we will use the DCCs in order to recover the translation velocity and to correct motion artifacts.
+In this article, we will be interested in these two situations. We will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. Using a change of reference frame, we will use the same idea as in~\cite{clackdoyle2015consistency} for a change of variables. Then, in a second part, we will use the DCCs in order to identify the translation velocity so that motion artifacts in the reconstructed images can be avoided.
 
 \section{Theory} 
 \label{sec:theory}
@@ -82,8 +85,8 @@ Let us begin with some notation and definitions. We will consider an object in $
 \begin{figure}[!ht]
 	\centering
 	\begin{tabular}{c}
-	\includegraphics[width=75mm]{figs/frame_scanner_still.eps} \\
-	\includegraphics[width=75mm]{figs/frame_scanner.eps}
+	\includegraphics[width=60mm]{figs/frame_scanner_still.eps} \\
+	\includegraphics[width=60mm]{figs/frame_scanner.eps}
 	\end{tabular}
 	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold. The circle has center $O$ and radius $R_0$. The object is continually undergoing a translation during the movement of the source.\label{fig:notations}}
 \end{figure}
@@ -140,10 +143,10 @@ Note that in this equation, the denominator can be equal to zero. Such situation
 	\centering
 	%\includegraphics[width=12cm]{figs/frame_object.eps}
 	\begin{tabular}{c}
-	\includegraphics[width=75mm]{figs/frame_object_before_rotation.eps} \\
-	\includegraphics[width=75mm]{figs/frame_object.eps}
+	\includegraphics[width=70mm]{figs/frame_object_before_rotation.eps} \\
+	\includegraphics[width=70mm]{figs/frame_object.eps}
 	\end{tabular}
-	\caption{Change of frame: the object is now at center of the coordinates system. Top: only translation of the center of frame; bottom: after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, bottom. The virtual source position $(x',y_0')$ is defined in terms of $s_v(t)$ and $\phi$; see equation~(\ref{eq:x'}).\label{fig:change_frame}}
+	\caption{Change of frame: the object is now at center of the coordinates system. Top: only translation of the center of frame; bottom: after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, bottom. The virtual source position $(x',y_0')$ is defined in terms of $\sbv(t)$ and $\phi$; see equation~(\ref{eq:x'}).\label{fig:change_frame}}
 \end{figure}
 
 In this frame, the coordinates of the source position is given by $\sbv(t)=\mathcal{R}_{\beta} \left( s(t)-\Mbv(t) \right)$. With this in mind, the data are given by the following formula
@@ -174,50 +177,47 @@ In the following lemma, we will make the connection between the virtual fanbeam 
 		\label{eq:x'}
 	\end{equation}
 	where, for any time $t$, $\left( s_{1,\bv}(t), s_{2,\bv}(t) \right)$ are the coordinates of $\sbv(t)$.
-	Then, we have
-	\begin{equation}
-		\left( \tilde{\mathcal{F}}\mu \right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi).
-	\end{equation}
+	Then, we have $\left( \tilde{\mathcal{F}}\mu \right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi)$.
 \label{lem:T_x_t}
 \end{lemma}
-The idea of the proof is to remark that between $x'$ and $\sbv(t)$, the integral of $\mu$ is equal to zero since the support is supposed to remain in the half-space $\left\{ y<y_0 \right\}$. Hence, instead of starting the integration from $x'$ in~(\ref{eq:def_Ftilde}), we can start from $\sbv(t)$, which will give us~(\ref{eq:F_from_sv})
+The idea behind the proof of lemma~\ref{lem:T_x_t} is to remark that between $x'$ and $\sbv(t)$, the integral of $\mu$ is equal to zero since the support is assumed to remain in the half-space $\left\{ y<y_0 \right\}$. Hence, instead of starting the integration from $x'$ in~(\ref{eq:def_Ftilde}), we can start from $\sbv(t)$, which will give us~(\ref{eq:F_from_sv}).
 
-We can now define what are the DCCs of our problem.
+We can now define the DCCs for our problem.
 \begin{theorem}
 \label{theo:main}
-Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x',t)\mapsto W_{n,v}(t,x') \in \Cinf \left( [-T/2,T/2] \times [x'_l,x'_r] \right)$ such that the function $B_n$ defined by
+Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x',t)\mapsto \Wnv(t,x') \in \Cinf \left( [-T/2,T/2] \times [x'_l,x'_r] \right)$ such that the function $\Bnv$ defined by
 \begin{equation}
-	B_n := x' \mapsto \int_{-T/2}^{T/2} \left( \Tbv \mu \right)\left( t,\lambda(t) \right) W_n(x',t,v) dt,
+	\Bnv(x') = \int_{-T/2}^{T/2} \left( \Tbv \mu \right)\left( t,\lambda(t) \right) \Wnv(x',t) dt,
 \label{eq:DCC}
 \end{equation}
-is a polynom of order $n$. In the formula above, the angle $\lambda(t)$ is defined by
+is a polynomial of degree $n$. In the formula above, the angle $\lambda(t)$ is defined by
 \begin{equation}
 	\lambda(t) = \arctan \left( F(x',t,\bv) \right),
 \label{eq:def_lambda}
 \end{equation}
-where $F(x',t,\bv)$ is defined as a fraction $A/B$ with
+where $F(x',t,\bv)$ is defined as the fraction $A/B$ with
 \begin{dmath}
-	A = x' + \cos \beta \left( R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v_1 \right) + \\
-	\sin \beta \left( R_0 \cos(\omega t) - \left( t + \frac{T}{2} \right)v_2 \right)
+	A = x' + \cos \beta \left( R_0 \sin(\omega t) + \left( t + T/2 \right)v_1 \right) + \\
+	\sin \beta \left( R_0 \cos(\omega t) - \left( t + T/2 \right)v_2 \right)
 \end{dmath}
 and
 \begin{dmath}
-	B = \cos \beta \left( R_0 \cos(\omega t) - \left( t + \frac{T}{2} \right)v_2 \right) - \sin \beta \left( R_0 \sin(\omega t) + \left( t + \frac{T}{2} \right)v_1 \right) - y'_0 
+	B = \cos \beta \left( R_0 \cos(\omega t) - \left( t + T/2 \right)v_2 \right) - \sin \beta \left( R_0 \sin(\omega t) + \left( t + T/2 \right)v_1 \right) - y'_0 
 \end{dmath}
-Moreover, it is possible to derive $W_{n,v}(t,x')$ analytically using the following formula
+Moreover, it is possible to derive $\Wnv(t,x')$ analytically using the following formula
 \begin{equation}
-	W_{n,v}(t,x') = \tan^n F(x',t,\bv) \cos F(x',t,\bv) \frac{\partial F}{\partial t} (x',t,\bv)
+	\Wnv(t,x') = \tan^n F(x',t,\bv) \cos F(x',t,\bv) \frac{\partial F}{\partial t} (x',t,\bv)
 \end{equation}
 \end{theorem}
 
-Here, the idea is to change variables in the following formula, which is known to be a polynom from~\cite{clackdoyle2013necessary}
+We only have room here for an outline of the proof. The idea is to change variables in the following formula, which is known from~\cite{clackdoyle2013necessary} to be a polynomial in $x'$
 \begin{equation}
 	\int_{\pi/2}^{-\pi/2} \tilde{\mathcal{F}}\mu (x',\phi) \frac{\tan^n \phi}{\cos \phi} d\phi.
 \label{eq:DCC_rolf}
 \end{equation}
-The change of variable occurs between $\phi$ in~(\ref{eq:DCC_rolf}) and $t$ in~(\ref{eq:DCC}) by using the definition in~\ref{eq:def_lambda}. This explains why the formulas in Theorem~\ref{theo:main}.
+The change of variable occurs between $\phi$ in~(\ref{eq:DCC_rolf}) and $t$ in~(\ref{eq:DCC}) by using the definition in~(\ref{eq:def_lambda}).
 
-Although the formula giving $W_{n,v}(t,x')$ is quite heavy, we can observe that in the case $v_1=v_2=0$, we obtain the formula (7) in~\cite{clackdoyle2015consistency} since
+Although the formula for $\Wnv(t,x')$ is complicated, we observe that in the case $v_1=v_2=0$, we obtain the formula (7) in~\cite{clackdoyle2015consistency} since
 \begin{equation}
 	F \left( x',t,\bv = (0,0) \right) = \frac{x' + R_0 \sin(\omega t)}{R_0 \cos(\omega t)}
 \end{equation}
@@ -226,27 +226,28 @@ Although the formula giving $W_{n,v}(t,x')$ is quite heavy, we can observe that 
 
 \subsection{Principles}
 \label{sub:principles}
-Let us suppose that we have the projections $\left( \Tbv \mu \right)(t,\phi)$. In order to recover $v$, we can perform the following optimization procedure. Since $B_n(x')$ in equation~(\ref{eq:DCC}) is supposed to be a polynom of order $\leq n$, one can minimize
+Let us suppose that we have the projections $\left( \Tbv \mu \right)(t,\phi)$. In order to recover $\bv$, we can perform the following optimization procedure. Since $\Bnv(x')$ in equation~(\ref{eq:DCC}) is supposed to be a polynomial of degree less than or equal to $n$, we can minimize
 \begin{equation}
-	\mathcal{J}(v) = \Vert \textrm{res} \left( B_n(\cdot,v) \right) \Vert^2
+	\mathcal{J}(v) = \Vert \left( \textrm{res} \Bnv \right) \Vert^2
 \label{eq:Jv}
 \end{equation}
-with respect to $v$, where $\textrm{res}$ is the residual of the projection onto $\R_n[X]$, and $n$ is the polynom degree to be taken into account. This will give us the velocity $v$ using only the knowledge of the data $\left( \Tbv \mu \right)(t,\phi)$.
+with respect to $\bv$, where $\textrm{res}$ is the residual of the projection onto $\R_n[X]$, and $n$ is the polynomial degree to be taken into account. This will give us the velocity $\bv$ using only the knowledge of the data $\left( \Tbv \mu \right)(t,\phi)$.
 
 \subsection{Application}
 \label{sub:application}
-Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. Indeed, we started with this particular case before tackling the more general one with $v_2 \neq 0$. Work is in progress and we hope to have the results for the CT-meeting conference. 
 
-The object under consideration is an ellipse of uniform density, whose axis are $30$ and $15$ millimeters respectively, and making and angle of $45^{\circ}$ with respect to the $x$-axis. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angle velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. The detector is a plane situated at a distance of $600 \, \textrm{mm}$ from the origin. The computations of the forward problem are performed using \verb+simpleRTK+, a Python's wrapping of \verb+RTK+~\cite{RTK}.
+The object under consideration is an ellipse of uniform density, whose axis lengths are $30$ and $15$ millimeters respectively, and making an angle of $45^{\circ}$ with respect to the $x$-axis. The source is rotating around the object with radius $R_0 = 600 \, \textrm{mm}$, with angular velocity $\omega = 1 \, \textrm{rad} \cdot \textrm{s}^{-1}$. The detector is a plane situated at a distance of $600 \, \textrm{mm}$ from the origin. The computations of the forward problem are performed using \verb+simpleRTK+, a Python wrapping of \verb+RTK+~\cite{RTK}.
 
-With a velocity of the ellipse given by $v_1 = 0.3 \textrm{mm} \cdot \textrm{s}^{-1}$, we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
+Here, we will consider an object translating along the $x$-axis, \ie $v_2=0$. Indeed, we started with this particular case before tackling the more general one with $v_2 \neq 0$. Work is in progress and we hope to have the results for the CT-meeting conference.
+
+With a velocity of the ellipse given by $v_1 = 0.3 \, \textrm{mm} \cdot \textrm{s}^{-1}$, and $v_2 = 0 \, \textrm{mm} \cdot \textrm{s}^{-1}$ we obtain the sinogram depicted in Figure~\ref{fig:sinogram}.
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=75mm]{figs/sinogram.png}
-	\caption{Sinogram of a moving ellipse, with semi-axis $a = 30$ and $b = 15$, translating along the $x$-axis with velocity $v_1 = 0.3$. It is illuminated by a source at distance $R_0 = 600$, rotating with angle velocity $\omega = 1$.\label{fig:sinogram}}
+	\includegraphics[width=70mm]{figs/sinogram.png}
+	\caption{Sinogram of a moving ellipse, with semi-axis $a = 30$ and $b = 15$, translating along the $x$-axis with velocity $\bv = (0.3,0)$. It is illuminated by a source at distance $R_0 = 600$, rotating with angle velocity $\omega = 1$. Gantry angle represents the angle $\widehat{xOs(t)} (= \omega t + \pi/2)$ in Figure~\ref{fig:notations}. The object translation occurs between gantry angles $45^{\circ}$ and $90^{\circ}$.\label{fig:sinogram}}
 \end{figure}
 
-With this configuration in mind, the functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ can be visualized in Figure~\ref{fig:Bnx}. Note that the polynomial approximations are rather accurate. This can be seen by the fact that root mean square errors (RMSEs) between the actual values of $B_n(x)$ and their best polynomial approximations are low.
+With this configuration in mind, the functions $x' \mapsto \Bnv(x')$ for $n = 0,1,2,3$ are illustrated in Figure~\ref{fig:Bnx}. Note that these expressions for $\Bnv$, which were calculated from the simulated sinogram, follow the predicted pattern of $n^{\textrm{th}}$-degree polynomials, as can be seen by the fact that root mean square errors (RMSEs) between the actual values of $\Bnv(x)$ and their best polynomial approximations are low.
 \begin{figure}
 	\centering
 	\begin{tabular}{cc}
@@ -255,16 +256,22 @@ With this configuration in mind, the functions $x' \mapsto B_n(x')$ for $n = 0,1
 	\includegraphics[width=75mm]{figs/B2.png} \\
 	\includegraphics[width=75mm]{figs/B3.png} 
 	\end{tabular}
-	\caption{From top to bottom, functions $x' \mapsto B_n(x')$ for $n = 0,1,2,3$ respectively. Blue points are the actual data, while red lines are the best polynomial approximations. RMSE stands for root mean square error. The $x$-axis are expressed in millimeters.\label{fig:Bnx}}
+	\caption{From top to bottom, functions $x' \mapsto \Bnv(x')$ for $n = 0,1,2,3$ respectively. Blue points are the actual data, while red lines are the best polynomial approximations. RMSE stands for root mean square error. The $x$-axis are expressed in millimeters.\label{fig:Bnx}}
 \end{figure}
 
-With this velocity $v_1 = 0.3$, and with a degree of polynom $n = 2$, we performed the minimization of the functionnal $\mathcal{J}(v)$ defined in~(\ref{eq:Jv}). For this purpose, we used Powell's conjugate direction method~\cite{powell1964efficient}, which does not require differentiation of the functionnal. We studied the influence of the time during which the object is translating, see Table~\ref{tab:results} for full results, where $\hat{v}$ stands for the estimated value for the velocity $v_1$.. We can observe that there is a limit below which the accuracy decrease dramatically. Further investigations are in progress, where the influence of all other parameters are studied.
+With this velocity $\bv = (0.3,0)$, and with a degree of polynom $n = 2$, we performed the minimization of the functionnal $\mathcal{J}(v)$ defined in~(\ref{eq:Jv}). For this purpose, we used Powell's conjugate direction method~\cite{powell1964efficient}, which does not require differentiation of the functionnal.
+
+We studied the influence of the time during which the object is translating, \ie the angle $\alpha$ described by the source $s(t)$ when the object is translating. As an example, for the sinogram depicted in Figre~\ref{fig:sinogram} we have $\alpha = 90^{\circ}$. Table~\ref{tab:results} summarize all the results, where $\hat{v}$ stands for the estimated value for the velocity $v_1$. We can observe that there is a limit below which the accuracy decrease dramatically. Further investigations are in progress, where the influence of all other parameters are studied.
 
 \begin{table}[!ht]
 \caption{Results of optimization \label{tab:results}}
 \centering
-	\begin{tabular}{c|c|c}
-	  $T$ & $\hat{v}$ & $\Vert v_1 - \hat{v}\Vert$ \\
+	\begin{tabular}{ccc}
+	% $\alpha$ & $95$ & $90$ & $85$ & $84$ & $83$ & $82$ & $81$ & $80$ & $75$ \\
+	% \hline 
+	% $\hat{v}$ & $0.300$ & $0.300$ & $0.300$ & $0.300$ & $0.300$ & $0.376$ & $0.415$ & $0.436$ & $0.436$ \\
+	% \hline
+	  $\alpha$ & $\hat{v}$ & $\Vert v_1 - \hat{v}\Vert$ \\
 	  \hline
 		$95$ & $0.30$0 & $5.55 \cdot 10^{-17}$ \\
 		$90$ & $0.300$ & $1.11 \cdot 10^{-16}$ \\
@@ -280,7 +287,7 @@ With this velocity $v_1 = 0.3$, and with a degree of polynom $n = 2$, we perform
 
 
 \section{Conclusion}
-In this work, we have proposed a way to recover the velocity parameters of a translating object in fanbeam CT from a set of projections restricted to an arc of the circular trajectory. The method uses the so-called data consistency conditions (DCCs), adapted from~\cite{clackdoyle2015consistency}. Setting the origin of the frame in the center of mass of the object, we are in fact dealing with DCCs in the case of an arc of a cycloid. Numerical examples show that these conditions work well in the case of an object translating in a direction which is parallel to the $x$-axis. Further work is under progress to recover the same results in the general translation.
+In this work, we have proposed a way to recover the velocity parameters of a translating object in fanbeam CT from a set of projections restricted to an arc of the circular trajectory. The method uses the so-called data consistency conditions (DCCs), adapted from~\cite{clackdoyle2015consistency}. Setting the origin of the reference frame at the center of mass of the object, we are in fact dealing with DCCs in the case of an arc of a cycloid. Numerical examples show that these conditions work well in the case of an object translating in a direction which is parallel to the $x$-axis. Further work is in progress to recover the same results for a general translation.
 
 
 \bibliographystyle{plain}
