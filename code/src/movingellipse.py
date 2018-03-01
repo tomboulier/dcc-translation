@@ -396,76 +396,76 @@ class Results(object):
 		return res[0]
 
 if __name__ == '__main__':
-	# # plot sinogram
-	# p0 = Parameters('example0.ini')
-	# s0 = Simulator(p0)
-	# res0 = s0.run()
+	# plot sinogram
+	p0 = Parameters('example0.ini')
+	s0 = Simulator(p0)
+	res0 = s0.run()
 
-	# p1 = Parameters('example1.ini')
-	# s1 = Simulator(p1)
-	# res1 = s1.run()
+	p1 = Parameters('example1.ini')
+	s1 = Simulator(p1)
+	res1 = s1.run()
 
 	p = Parameters('example.ini')
 	s = Simulator(p)
 	res = s.run()
 	# res.plotSinogram()
 
-	# x = np.concatenate((res0.projections[0:499,:],res.projections,res1.projections[1500:2000,:]), axis=0)
+	x = np.concatenate((res0.projections[0:499,:],res.projections,res1.projections[1500:2000,:]), axis=0)
 
-	# plt.figure()
-	# imageSize = p0.imageSize
-	# max_angle = p0.get_max_angle()
-	# min_angle = p0.get_min_angle()
-	# plt.xlabel('Distance from detector center (in mm)', labelpad=20)
-	# extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
-	# aspect = imageSize / (max_angle - min_angle)
-	# plt.imshow(x, cmap = cm.Greys_r,extent = extent, aspect = aspect*2)
-	# plt.ylabel('Gantry angle (in degrees)', labelpad=20)
-	# matplotlib.rcParams.update({'font.size': 22})
-	# plt.show()
-
-	# Plot DCC
-	v = p.v
-	n = 2
-
-	xmax = p.R0 * np.sin(p.omega*p.T/2 /360*2*np.pi) * .75
-	x = np.linspace(-xmax, xmax)
-
-	# compute x -> Bn(x) function
-	res.compute_DCC_function(v)
-	Bn = np.vectorize(lambda x: res.DCC_function(x, n))
-	y = Bn(x)
-
-	# interpolation with polynom
-	poly = np.polyfit(x, y, n)
-	yfit = np.poly1d(poly)(x)
-	# rmse = sqrt(mean_squared_error(y, yfit))
-	diff = y-yfit
-	rmse = np.sqrt((diff*diff).sum())/np.sqrt((y*y).sum())
-	textrmse = r"$%.4f$" % (rmse)
-	textstr = r"$RMSE = $" + textrmse
-
-	# plot results
-	fig, ax = plt.subplots(1)
-	plt.plot(x, y, 'ob')
-	plt.plot(x, yfit, '-r')
-	# plt.xlabel(r'$x$, in mm', labelpad=15)
-	# plt.ylabel(r'$B_n(x)$', labelpad=15)
-	axes = plt.gca()
-	axes.set_ylim([y.mean()-20,y.mean()+20])
-	matplotlib.rcParams.update({'font.size': 25})
-	ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=30,
-        verticalalignment='top')
-	plt.savefig('B' + str(n) + '.eps')
+	plt.figure()
+	imageSize = p0.imageSize
+	max_angle = p0.get_max_angle()
+	min_angle = p0.get_min_angle()
+	plt.xlabel('Distance from detector center (in mm)', labelpad=20)
+	extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
+	aspect = imageSize / (max_angle - min_angle)
+	plt.imshow(x, cmap = cm.Greys_r,extent = extent, aspect = aspect)
+	plt.ylabel('Gantry angle (in degrees)', labelpad=20)
+	matplotlib.rcParams.update({'font.size': 22})
 	plt.show()
 
-	# optimization
-	print "Error of interpolation is: " + str(res.residual_polyfit(x,n,v))
-	from scipy.optimize import minimize
-	# residual_callable = lambda v: res.residual_polyfit(x,0,v) + res.residual_polyfit(x,1,v) + res.residual_polyfit(x,2,v) + res.residual_polyfit(x,3,v)
-	residual_callable = lambda v: res.residual_polyfit(x,n,v)
-	min_v = minimize(residual_callable, 0, method = 'Powell')
-	print "*** Results of optimization ***"
-	print "True value is: " + str(p.v)
-	print "Search result is: " + str(min_v.x)
-	print "Difference is: " + str(min_v.x-v)
+	# # Plot DCC
+	# v = p.v
+	# n = 2
+
+	# xmax = p.R0 * np.sin(p.omega*p.T/2 /360*2*np.pi) * .75
+	# x = np.linspace(-xmax, xmax)
+
+	# # compute x -> Bn(x) function
+	# res.compute_DCC_function(v)
+	# Bn = np.vectorize(lambda x: res.DCC_function(x, n))
+	# y = Bn(x)
+
+	# # interpolation with polynom
+	# poly = np.polyfit(x, y, n)
+	# yfit = np.poly1d(poly)(x)
+	# # rmse = sqrt(mean_squared_error(y, yfit))
+	# diff = y-yfit
+	# rmse = np.sqrt((diff*diff).sum())/np.sqrt((y*y).sum())
+	# textrmse = r"$%.4f$" % (rmse)
+	# textstr = r"$RMSE = $" + textrmse
+
+	# # plot results
+	# fig, ax = plt.subplots(1)
+	# plt.plot(x, y, 'ob')
+	# plt.plot(x, yfit, '-r')
+	# # plt.xlabel(r'$x$, in mm', labelpad=15)
+	# # plt.ylabel(r'$B_n(x)$', labelpad=15)
+	# axes = plt.gca()
+	# axes.set_ylim([y.mean()-20,y.mean()+20])
+	# matplotlib.rcParams.update({'font.size': 25})
+	# ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=30,
+ #        verticalalignment='top')
+	# plt.savefig('B' + str(n) + '.eps')
+	# plt.show()
+
+	# # optimization
+	# print "Error of interpolation is: " + str(res.residual_polyfit(x,n,v))
+	# from scipy.optimize import minimize
+	# # residual_callable = lambda v: res.residual_polyfit(x,0,v) + res.residual_polyfit(x,1,v) + res.residual_polyfit(x,2,v) + res.residual_polyfit(x,3,v)
+	# residual_callable = lambda v: res.residual_polyfit(x,n,v)
+	# min_v = minimize(residual_callable, 0, method = 'Powell')
+	# print "*** Results of optimization ***"
+	# print "True value is: " + str(p.v)
+	# print "Search result is: " + str(min_v.x)
+	# print "Difference is: " + str(min_v.x-v)
