@@ -21,7 +21,7 @@
 
 % commandes perso
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\ie}{\emph{i.e.} }
+\newcommand{\ie}{i.e.}
 \newcommand{\RnX}{\mathbb{R}_n[X]}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\C}{\mathcal{C}}
@@ -41,7 +41,7 @@
 \newtheorem{lemma}{Lemma}
 \newtheorem{theorem}{Theorem}
 
-\title{Consistency of Fanbeam Projections of a Translating Object Along an Arc of a Circle}
+\title{Consistency of Fan-beam Projections of a Translating Object Along an Arc of a Circle}
 %\author{}
 \date{}
 
@@ -54,7 +54,7 @@
 
 	The authors would like to thank Simon Rit for his help using RTK.
 			
-	This work is partially supported by the Agence Nationale de la Recherche (France), project ``DROITE'', number ANR-12-BS01-0018.
+	This work is partially supported by the Agence Nationale de la Recherche (France), project ``DROITE'', number ANR-12-BS01-0018, and FUI project "3D4Carm".
 }		
 \IEEEauthorblockA{}
 }
@@ -64,16 +64,16 @@
 
 \begin{abstract}
 In this article, we compute data consistency conditions
-(DCCs) in fan beam geometry in the case of a translating object illuminated by source moving along an arc of a circle. The DCCs are thus a generalization of those computed in~\cite{clackdoyle2015consistency}, where the object remained still. In a second part, we use the DCCs in order to retrieve parameters of the object velocity. These results are illustrated by numerical examples.
+(DCCs) in fan-beam geometry for the case of a translating object irradiated by source moving along an arc of a circle. The DCCs are thus a generalization of those computed in~\cite{clackdoyle2015consistency}, where the object remained still. In a second part, we use the DCCs in order to retrieve parameters of the object velocity. These results are illustrated by numerical examples.
 \end{abstract}
 
 \section{Introduction}
 
 In the field of CT-imaging, data consistency conditions (DCCs) use the redundancy of the data in order to establish relations that must be fulfilled  between projections. These conditions are called \emph{full} when they are not only necessary but also sufficient. One of the best known DCCs are the Helgason-Ludwig (H-L) conditions~\cite{helgason1980radon,ludwig1966radon}, which are full for parallel projections. Full DCCs are also known for the case of fan-beam projections with source position taken along a straight line~\cite{clackdoyle2013necessary}.
 
-In~\cite{clackdoyle2015consistency}, the fan-beam DCCs were modified to handle the case of a source moving along an arc of a circle. Briefly, all rays passing through the same point along a "virtual" line between the two extreme positions of the source are gathered to form a fan-beam projection. The DCCs for fanbeam projections along a line from~\cite{clackdoyle2013necessary} could then be applied; numerical examples showed a situation where an artificial detector attenuation was added, and the DCCs were invoked to recover the unknown attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors used pallel-beam H-L conditions in the case of an object undergoing rigid body motion while illuminated by a fan-beam source along a line. Those conditions allowed the authors to recover the parameters of the movement, in order to suppress the artifacts caused by such movement.  However, using the parallel-beam H-L conditions means that the fan-beam projections had to cover all rays in the plane so that a fan-to-parallel rebinning could be achieved. The rebinning was achieved mathematically; however, the requirement of at least a standard fan-beam shortscan of $180^{\circ}$ plus fan-angle is required. In our work, we are concerned with the opposite extreme of a short arc of fan-beam measurements.
+In~\cite{clackdoyle2015consistency}, the fan-beam DCCs were modified to handle the case of a source moving along an arc of a circle. Briefly, all rays passing through the same point along a "virtual" source line between the two extreme positions of the source are gathered to form a virtual fan-beam projection. The DCCs for fanbeam projections along a line from~\cite{clackdoyle2013necessary} could then be applied; numerical examples showed a situation where an artificial detector attenuation was added, and the DCCs were invoked to recover the unknown attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors used parallel-beam H-L conditions for the case of an object undergoing rigid body motion while irradiated by a fan-beam source along a circular trajectory. Those conditions allowed the authors to recover the parameters of the the movement. The parameters were subsequently incorporated into the reconstruction procedure, in order to suppress the artifacts caused by such movement.  However, using the parallel-beam H-L conditions means that the fan-beam projections had to cover all rays in the plane so that a fan-to-parallel rebinning could be achieved. The rebinning was achieved mathematically; however, the requirement of at least a standard fan-beam shortscan of $180^{\circ}$ plus fan-angle was required. In our work, we are concerned with the opposite extreme of a short arc of fan-beam measurements.
 
-In this article, we will be interested in these two situations. We will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. Using a change of reference frame, we will use the same idea as in~\cite{clackdoyle2015consistency} for a change of variables. Then, in a second part, we will use the DCCs in order to identify the translation velocity so that motion artifacts in the reconstructed images can be avoided.
+In this article, we will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. Using a change of reference frame, we will use the same idea as in~\cite{clackdoyle2015consistency} a change of variables. Then, in a second part, we will show how the DCCs can be used in order to identify the translation velocity.
 
 \section{Theory} 
 \label{sec:theory}
@@ -90,14 +90,14 @@ Let us begin with some notation and definitions. We will consider an object in $
 	\end{tabular}
 	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold. The circle has center $O$ and radius $R_0$. The object is continually undergoing a translation during the movement of the source.\label{fig:notations}}
 \end{figure}
-The angular velocity of the source will be denoted $\omega$, and the time $t$ will range from $-T/2$ to $T/2$, where $T>0$. Hence, if we denote $s(t)$ the position of the source at time $t$, we have
+The angular velocity of the source will be denoted $\omega$, and the time $t$ will range from $-T/2$ to $T/2$, where $T>0$. Hence, if we use $s(t)$ to denote the position of the source at time $t$, we have
 \begin{equation}
 	s(t) = \left( -R_0 \sin(\omega t), R_0 \cos(\omega t) \right).
 \label{eq:source_position}
 \end{equation}
-Furthermore, we will let $s(T/2)=(x_l,y_l)$ (resp. $s(-T/2)=(x_r,y_r)$) denote the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call $y_0$ this common value. In the following, we will suppose that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$, and that $y_0 > 0$ (\ie $0 < \omega T < \pi$).
+Furthermore, we will let $s(T/2)=(x_l,y_l)$ (resp. $s(-T/2)=(x_r,y_r)$) denote the extreme left (resp. right) position of the source. Since $y_l = y_r = R_0 \cos(\omega T/2)$, we will call the common value $y_0$. In the following, we will assume that $\supp(\mu)$ lies in the half-space $\{ y < y_0 \}$, and that $y_0 > 0$ (\ie $0 < \omega T < \pi$, the total arc length is less than $\pi$).
 
-We will suppose that at any time $t$ rays are simultaneously emitted from the source $s(t)$ with angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator modeling the acquired data from the object.
+We will suppose that at any time $t$, rays are simultaneously emitted from the source $s(t)$ with each ray at angle $\phi$ ranging from $-\pi/2$ to $\pi/2$. With this setup in mind, we can define the operator modeling the acquired data from the object.
 \begin{definition}
 The \emph{fanbeam projection data} of an object with density function $\mu$ is a function $(t,\phi) \mapsto \mathcal{F}\mu(t,\phi)$ defined by
 \begin{equation}
@@ -107,7 +107,7 @@ where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ an
 \end{definition}
 
 
-Now let us suppose that the object is translating along a line with a constant velocity vector $\bv = (v_1, v_2)\in \R^2$ (see Figure~\ref{fig:notations}, bottom). In other words, if we let $\Mbv(t)$ denote its center of mass at any time $t$, we have
+Now let us suppose that the object is translating along a straight-line with a constant velocity vector $\bv = (v_1, v_2)\in \R^2$ (see Figure~\ref{fig:notations}, bottom). In other words, if we let $\Mbv(t)$ denote its center of mass at any time $t$, we have
 \begin{equation}
 	\Mbv(t) =   \left( t + T/2 \right) \bv
 \label{eq:center_of_mass}
@@ -129,15 +129,15 @@ The aim of this note is to derive data consistency conditions (DCCs) from~(\ref{
 
 \subsection{Derivation of DCCs}
 
-In order to derive DCCs, we will first change our reference frame, from $\left(O, x, y\right)$ to $\left(M(t), x', y'\right)$, so that the origin is the center of mass of the object at any time t and the line between the start point and the end point of the source is still parallel to the $x'$-axis (see Figure~\ref{fig:change_frame}). In other words, we are performing the following change of variables
+In order to derive DCCs, we will first change our reference frame, from $\left(O, x, y\right)$ to $\left(M(t), x', y'\right)$, so that the origin is the center of mass of the object at any time $t$, and the line between the start point and the end point of the source is still parallel to the $x'$-axis (see Figure~\ref{fig:change_frame}). In other words, we are performing the following change of variables
 \begin{equation}
 	(x,y) \leftrightarrow (x',y') = \mathcal{R}_{\beta} \left( (x,y)-\Mbv(t) \right),
 \end{equation}
-where $\mathcal{R}_{\beta}$ rotation by $\beta$. The angle beta is depicted in Figure~\ref{fig:change_frame} (top) and is given by
+where $\mathcal{R}_{\beta}$ rotation by $\beta$. Note that the translation depends on $t$, but a single global rotation is applied. The angle $\beta$ is depicted in Figure~\ref{fig:change_frame} (top) and is given by
 \begin{equation}
 	\beta = \arctan \left( \frac{T v_2}{2R_0 \sin(\omega T/2) + T v_1} \right).
 \end{equation}
-Note that in this equation, the denominator can be equal to zero. Such situation occurs in particular when $v_1 < 0$. We studied those particular cases, both in terms of physical meaning and numerical implications. For the sake of simplicity, we will assume in this abstract that $v_1$ is not too negative (\emph{e.g.} $v_1 > - 2 R_0 / T$) to ensure that the denominator is non-zero.
+Note that in this equation, the denominator can be equal to zero. This situation can occur in particular cases when $v_1 < 0$. We have studied those particular cases, both in terms of physical meaning and numerical implications. For the sake of simplicity, we will assume that $v_1$ is not too negative (e.g. $v_1 > - 2 R_0 / T$) to ensure that the denominator is non-zero.
 
 \begin{figure}[!ht]
 	\centering
@@ -146,7 +146,7 @@ Note that in this equation, the denominator can be equal to zero. Such situation
 	\includegraphics[width=70mm]{figs/frame_object_before_rotation.eps} \\
 	\includegraphics[width=70mm]{figs/frame_object.eps}
 	\end{tabular}
-	\caption{Change of frame: the object is now at center of the coordinates system. Top: only translation of the center of frame; bottom: after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, bottom. The virtual source position $(x',y_0')$ is defined in terms of $\sbv(t)$ and $\phi$; see equation~(\ref{eq:x'}).\label{fig:change_frame}}
+	\caption{Change of reference frame: the object is now at center of the coordinate system. Top: only translation of the center of frame; bottom: after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, bottom. The virtual source position $(x',y_0')$ is defined in terms of $\sbv(t)$ and $\phi$; see equation~(\ref{eq:x'}).\label{fig:change_frame}}
 \end{figure}
 
 In this frame, the coordinates of the source position is given by $\sbv(t)=\mathcal{R}_{\beta} \left( s(t)-\Mbv(t) \right)$. With this in mind, the data are given by the following formula
@@ -155,7 +155,7 @@ In this frame, the coordinates of the source position is given by $\sbv(t)=\math
 \label{eq:F_from_sv}
 \end{equation}
 
-In other words, we are now dealing with a fixed object whose density function is given by $\mu \circ \mathcal{R}_{\beta}$ illuminated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, bottom).
+In other words, we are now dealing with a fixed object whose density function is given by $\mu \circ \mathcal{R}_{\beta}$ irradiated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, bottom).
 
 Here, the extreme points $\sbv(-T/2)$ and $\sbv(T/2)$ have the same $y'$-coordinate, $y'_0$. We will call $x'_l$ (resp. $x'_r$) the $x'$-coordinates of $\sbv(T/2)$ (resp. $\sbv(-T/2)$).
 
@@ -180,12 +180,12 @@ In the following lemma, we will make the connection between the virtual fanbeam 
 	Then, we have $\left( \tilde{\mathcal{F}}\mu \right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi)$.
 \label{lem:T_x_t}
 \end{lemma}
-The idea behind the proof of lemma~\ref{lem:T_x_t} is to remark that between $x'$ and $\sbv(t)$, the integral of $\mu$ is equal to zero since the support is assumed to remain in the half-space $\left\{ y<y_0 \right\}$. Hence, instead of starting the integration from $x'$ in~(\ref{eq:def_Ftilde}), we can start from $\sbv(t)$, which will give us~(\ref{eq:F_from_sv}).
+The idea behind the proof of lemma~\ref{lem:T_x_t} is to note that between $x'$ and $\sbv(t)$, the integral of $\mu$ is equal to zero since the support is assumed to remain in the half-space $\left\{ y<y_0 \right\}$. Hence, instead of starting the integration from $x'$ in~(\ref{eq:def_Ftilde}), we can start from $\sbv(t)$, which will give us~(\ref{eq:F_from_sv}).
 
 We can now define the DCCs for our problem.
 \begin{theorem}
 \label{theo:main}
-Let us fix a density function $\mu$. For any integer $n$, there exist a function $(x',t)\mapsto \Wnv(t,x') \in \Cinf \left( [-T/2,T/2] \times [x'_l,x'_r] \right)$ such that the function $\Bnv$ defined by
+Let us fix a density function $\mu$. For any integer $n$, there exists a function $(x',t)\mapsto \Wnv(t,x') \in \Cinf \left( [-T/2,T/2] \times [x'_l,x'_r] \right)$ such that the function $\Bnv$ defined by
 \begin{equation}
 	\Bnv(x') = \int_{-T/2}^{T/2} \left( \Tbv \mu \right)\left( t,\lambda(t) \right) \Wnv(x',t) dt,
 \label{eq:DCC}
