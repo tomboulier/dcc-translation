@@ -146,16 +146,16 @@ Note that in this equation, the denominator can be equal to zero. This situation
 	\includegraphics[width=70mm]{figs/frame_object_before_rotation.eps} \\
 	\includegraphics[width=70mm]{figs/frame_object.eps}
 	\end{tabular}
-	\caption{Change of reference frame: the object is now at center of the coordinate system. Top: only translation of the center of frame; bottom: after rotation of angle $\beta$. Note that the angle $\phi$ is the same as in Figure~\ref{fig:notations}, bottom. The virtual source position $(x',y_0')$ is defined in terms of $\sbv(t)$ and $\phi$; see equation~(\ref{eq:x'}).\label{fig:change_frame}}
+	\caption{Change of reference frame: the object is now at center of the coordinate system. Top: only translation of the center of frame; bottom: after rotation of angle $\beta$. The virtual source position $(x',y_0')$ is defined in terms of $\sbv(t)$ and $\phi$; see equation~(\ref{eq:x'}).\label{fig:change_frame}}
 \end{figure}
 
 In this frame, the coordinates of the source position is given by $\sbv(t)=\mathcal{R}_{\beta} \left( s(t)-\Mbv(t) \right)$. With this in mind, the data are given by the following formula
 \begin{equation}
-	(\Tbv\mu)(t,\phi) = \int_0^{+\infty} \mu \circ \mathcal{R}_{\beta} \left( s_{\bv}(t) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+	(\Tbv\mu)(t,\phi) = \int_0^{+\infty} \mu \circ \mathcal{R}_{-\beta} \left( s_{\bv}(t) + l \left[ \sin (\phi + \beta), -\cos (\phi + \beta) \right] \right) dl,
 \label{eq:F_from_sv}
 \end{equation}
 
-In other words, we are now dealing with a fixed object whose density function is given by $\mu \circ \mathcal{R}_{\beta}$ irradiated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, bottom).
+In other words, we are now dealing with a fixed object whose density function is given by $\mu \circ \mathcal{R}_{-\beta}$ irradiated by a source following an arc of a cycloid in the frame $\left(M(t), x', y'\right)$ (see Figure~\ref{fig:change_frame}, bottom).
 
 Here, the extreme points $\sbv(-T/2)$ and $\sbv(T/2)$ have the same $y'$-coordinate, $y'_0$. We will call $x'_l$ (resp. $x'_r$) the $x'$-coordinates of $\sbv(T/2)$ (resp. $\sbv(-T/2)$).
 
@@ -163,7 +163,7 @@ Now we define what we call the \emph{virtual fanbeam projection} from a point $(
 \begin{definition}
 	For any point $x'$ between $x'_l$ and $x'_r$, and for any angle $\phi \in \left[ -\pi/2, \pi/2\right]$, the \emph{virtual fanbeam projection} of the object $\mu$ is defined by
 \begin{equation}
-	\left( \tilde{\mathcal{F}}\mu	\right)(x',\phi) = \int_0^{+\infty} \mu \left( (x',y'_0) + l \left[ \sin \phi, -\cos \phi \right] \right) dl.
+	\left( \tilde{\mathcal{F}} \mu	\right)(x',\phi') = \int_0^{+\infty} \mu \circ \mathcal{R}_{-\beta} \left( (x',y'_0) + l \left[ \sin \phi', -\cos \phi' \right] \right) dl.
 \label{eq:def_Ftilde}
 \end{equation}
 This is called \emph{virtual} since it does not correspond to an actual position of the source.
@@ -177,7 +177,7 @@ In the following lemma, we will make the connection between the virtual fanbeam 
 		\label{eq:x'}
 	\end{equation}
 	where, for any time $t$, $\left( s_{1,\bv}(t), s_{2,\bv}(t) \right)$ are the coordinates of $\sbv(t)$.
-	Then, we have $\left( \tilde{\mathcal{F}}\mu \right)(x',\phi) = \left( \Tbv \mu \right)(t,\phi)$.
+	Then, we have $\left( \tilde{\mathcal{F}} \left( \mu \circ \mathcal{R}_{-\beta} \right) \right)(x',\phi + \beta) = \left( \Tbv \mu \right)(t,\phi)$.
 \label{lem:T_x_t}
 \end{lemma}
 The idea behind the proof of lemma~\ref{lem:T_x_t} is to note that between $x'$ and $\sbv(t)$, the integral of $\mu$ is equal to zero since the support is assumed to remain in the half-space $\left\{ y<y_0 \right\}$. Hence, instead of starting the integration from $x'$ in~(\ref{eq:def_Ftilde}), we can start from $\sbv(t)$, which will give us~(\ref{eq:F_from_sv}).
