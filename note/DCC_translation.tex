@@ -72,7 +72,7 @@ In the field of CT-imaging, data consistency conditions (DCCs) use the redundanc
 
 In~\cite{clackdoyle2015consistency}, the fan-beam DCCs were modified to handle the case of a source moving along an arc of a circle. Briefly, all rays passing through the same point along a "virtual" source line between the two extreme positions of the source are gathered to form a virtual fan-beam projection. The DCCs for fan-beam projections along a line from~\cite{clackdoyle2013necessary} could then be applied; numerical examples showed a situation where an artificial detector attenuation was added, and the DCCs were invoked to recover the unknown attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors used parallel-beam H-L conditions for the case of an object undergoing rigid body motion while irradiated by a fan-beam source along a circular trajectory. Those conditions allowed the authors to recover the parameters of the the movement. The parameters were subsequently incorporated into the reconstruction procedure, in order to suppress the artifacts caused by such movement.  However, using the parallel-beam H-L conditions means that the fan-beam projections had to cover all rays in the plane so that a fan-to-parallel rebinning could be achieved. The rebinning was achieved mathematically; however, the requirement of at least a standard fan-beam shortscan of $180^{\circ}$ plus fan-angle was required. In our work, we are concerned with the opposite extreme of a short arc of fan-beam measurements.
 
-In this article, we will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. Using a change of reference frame, we will use the same idea as in~\cite{clackdoyle2015consistency} a change of variables. Then, in a second part, we will show how the DCCs can be used in order to identify the translation velocity.
+In this article, we will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. With an adapted reference frame, we will use as in~\cite{clackdoyle2015consistency} a change of variables. Then, in a second part, we will show how the DCCs can be used in order to identify the translation velocity.
 
 \section{Theory} 
 \label{sec:theory}
@@ -108,7 +108,7 @@ where $t \in \left[ -T/2, T/2\right]$, $\phi \in \left[ -\pi/2, \pi/2\right]$ an
 
 Now let us suppose that the object is translating along a straight line with a constant velocity vector $\bv = (v_1, v_2)\in \R^2$ (see Figure~\ref{fig:notations}, bottom). In other words, if we let $\Mbv(t)$ denote its center of mass at any time $t$, we have
 \begin{equation}
-	\Mbv(t) =   \left( t + T/2 \right) \bv
+	\Mbv(t) =   \Mbv(0) + \left( t + T/2 \right) \bv
 \label{eq:center_of_mass}
 \end{equation}
 The density function of the object now depends on both the spatial variable $\bx \in \R^2$ and the time $t$. If we denote the time-varying object by $\mubv$, we have
@@ -287,7 +287,7 @@ We studied the influence of the time during which the object was translating, \i
 
 
 \section{Conclusion}
-In this work, we have proposed a way to recover the velocity parameters of a translating object in fan-beam CT from a set of projections restricted to an arc of the circular trajectory. The method uses data consistency conditions (DCCs), adapted from~\cite{clackdoyle2015consistency}. Setting the origin of the reference frame at the center of mass of the object, we are in fact dealing with DCCs in the case of an arc of a cycloid. Numerical examples show that these conditions work well in the case of an object translating in a direction which is parallel to the $x$-axis. Further work is in progress to recover the same results for a general translation.
+In this work, we have proposed a way to recover the velocity parameters of a translating object in fan-beam CT from a set of projections restricted to an arc of the circular trajectory. The method uses data consistency conditions (DCCs), adapted from~\cite{clackdoyle2015consistency}. Setting the origin of the reference frame at a point which remains still with respect to the center of mass of the object, we are in fact dealing with DCCs in the case of an arc of a cycloid. Numerical examples show that these conditions work well in the case of an object translating in a direction which is parallel to the $x$-axis. Further work is in progress to recover the same results for a general translation.
 
 
 \bibliographystyle{plain}
