@@ -1,5 +1,5 @@
 % \documentclass[a4paper]{article}
-\documentclass[twocolumn]{IEEEtran}
+\documentclass[letterpaper,twocolumn]{IEEEtran}
 
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -70,7 +70,7 @@ In this article, we compute data consistency conditions (DCCs) in fan-beam geome
 
 In the field of CT-imaging, data consistency conditions (DCCs) use the redundancy of the data in order to establish relations that must be fulfilled  between projections. These conditions are called \emph{full} when they are not only necessary but also sufficient. One of the best known DCCs are the Helgason-Ludwig (H-L) conditions~\cite{helgason1980radon,ludwig1966radon}, which are full for parallel projections. Full DCCs are also known for the case of fan-beam projections with source position taken along a straight line~\cite{clackdoyle2013necessary}.
 
-In~\cite{clackdoyle2015consistency}, the fan-beam DCCs were modified to handle the case of a source moving along an arc of a circle. Briefly, all rays passing through the same point along a "virtual" source line between the two extreme positions of the source are gathered to form a virtual fan-beam projection. The DCCs for fan-beam projections along a line from~\cite{clackdoyle2013necessary} could then be applied; numerical examples showed a situation where an artificial detector attenuation was added, and the DCCs were invoked to recover the unknown attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2006data,yu2007data}, where the authors used parallel-beam H-L conditions for the case of an object undergoing rigid body motion while irradiated by a fan-beam source along a circular trajectory. Those conditions allowed the authors to recover the parameters of the the movement. The parameters were subsequently incorporated into the reconstruction procedure, in order to suppress the artifacts caused by such movement.  However, using the parallel-beam H-L conditions means that the fan-beam projections had to cover all rays in the plane so that a fan-to-parallel rebinning could be achieved. The rebinning was achieved mathematically; however, the requirement of at least a standard fan-beam shortscan of $180^{\circ}$ plus fan-angle was required. In our work, we are concerned with the opposite extreme of a short arc of fan-beam measurements.
+In~\cite{clackdoyle2015consistency}, the fan-beam DCCs were modified to handle the case of a source moving along an arc of a circle. Briefly, all rays passing through the same point along a "virtual" source line between the two extreme positions of the source are gathered to form a virtual fan-beam projection. The DCCs for fan-beam projections along a line from~\cite{clackdoyle2013necessary} could then be applied; numerical examples showed a situation where an artificial detector attenuation was added, and the DCCs were invoked to recover the unknown attenuation coefficient. The case of a moving object has been tackled in~\cite{yu2007data}, where the authors used parallel-beam H-L conditions for the case of an object undergoing rigid body motion while irradiated by a fan-beam source along a circular trajectory. Those conditions allowed the authors to recover the parameters of the the movement. The parameters were subsequently incorporated into the reconstruction procedure, in order to suppress the artifacts caused by such movement.  However, using the parallel-beam H-L conditions means that the fan-beam projections had to cover all rays in the plane so that a fan-to-parallel rebinning could be achieved. The rebinning was achieved mathematically; however, the requirement of at least a standard fan-beam shortscan of $180^{\circ}$ plus fan-angle was required. In our work, we are concerned with the opposite extreme of a short arc of fan-beam measurements.
 
 In this article, we will suppose that an object is translating while illuminated by a fan-beam source which is moving along an arc of a circle. With an adapted reference frame, we will use as in~\cite{clackdoyle2015consistency} a change of variables. Then, in a second part, we will show how the DCCs can be used in order to identify the translation velocity.
 
@@ -84,8 +84,8 @@ Let us begin with some notation and definitions. We will consider an object in $
 \begin{figure}[!ht]
 	\centering
 	\begin{tabular}{c}
-	\includegraphics[width=60mm]{figs/frame_scanner_still.eps} \\
-	\includegraphics[width=60mm]{figs/frame_scanner.eps}
+	\includegraphics[width=70mm]{figs/frame_scanner_still.eps} \\
+	\includegraphics[width=70mm]{figs/frame_scanner.eps}
 	\end{tabular}
 	\caption{Problem under consideration. The source point $s(t)$ follows the arc of circle depicted in bold. The circle has center $O$ and radius $R_0$. The object is continually undergoing a translation during the movement of the source.\label{fig:notations}}
 \end{figure}
@@ -142,8 +142,8 @@ Note that in this equation, the denominator can be equal to zero. This situation
 	\centering
 	%\includegraphics[width=12cm]{figs/frame_object.eps}
 	\begin{tabular}{c}
-	\includegraphics[width=70mm]{figs/frame_object_before_rotation.eps} \\
-	\includegraphics[width=70mm]{figs/frame_object.eps}
+	\includegraphics[width=80mm]{figs/frame_object_before_rotation.eps} \\
+	\includegraphics[width=80mm]{figs/frame_object.eps}
 	\end{tabular}
 	\caption{Change of reference frame: the object is now at center of the coordinate system. Top: only translation of the center of frame; bottom: after rotation of angle $\beta$. The virtual source position $(x',y_0')$ is defined in terms of $\sbv(t)$ and $\phi$; see equation~(\ref{eq:x'}).\label{fig:change_frame}}
 \end{figure}

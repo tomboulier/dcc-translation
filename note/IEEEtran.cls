@@ -5630,7 +5630,7 @@ between column types.}%
 
 %% SET UP THE DEFAULT PAGESTYLE
 \pagestyle{headings}
-\pagenumbering{arabic}
+\pagenumbering{gobble}
 
 % normally the page counter starts at 1
 \setcounter{page}{1}
