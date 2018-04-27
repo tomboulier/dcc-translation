@@ -70,6 +70,7 @@ tol = .01
 p = Parameters(configFile)
 s = Simulator(p)
 res = s.run()
+DCC = DataConsistencyConditions(res)
 
 # simulation with RTK's example in wiki
 projWiki = wiki_example_RTK(configFile)
@@ -142,7 +143,7 @@ def test_alpha_t_0_0():
 		Moreover, the function is not supposed to raise a warning about
 		division by 0.
 	"""
-	alpha_t_0_0 = np.vectorize(lambda t:res.alpha(t,0,0))
+	alpha_t_0_0 = np.vectorize(lambda t:DCC.alpha(t,0,0))
 
 	# extreme values
 	np.testing.assert_almost_equal(alpha_t_0_0(p.T/2), np.pi/2)

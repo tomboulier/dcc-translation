@@ -80,6 +80,14 @@ class Parameters(object):
 		# return np.arctan( x / self.sdd) * 360 / (2*np.pi)
 		return np.arctan( x / self.sdd)
 
+	def get_virtual_positions_vector(self):
+		"""
+			These will be the abciss of points where DCC function
+			will be computed.
+		"""
+		xmax = self.R0 * np.sin(self.omega*self.T/2 /360*2*np.pi) * .75
+		return np.linspace(-xmax, xmax)
+
 class MovingEllipse(object):
 	"""docstring for MovingEllipse"""
 	def __init__(self, params):
@@ -211,11 +219,67 @@ class Results(object):
 		self.DCC_function = None
 		self.DCC_function_theo = None
 
+	def plotSinogram(self, xunits = 'mm'):
+		# define the limits of the axis
+		imageSize = self.params.imageSize
+		T = self.params.T
+		max_angle = self.params.get_max_angle()
+		min_angle = self.params.get_min_angle()
+		phimax = np.arctan( .5*imageSize / self.params.sdd) * 360 / (2*np.pi)
+
+		# plot the image
+		plt.figure()
+		
+		if xunits == 'mm':
+			# the units here represent a distance (on the detector)
+			plt.xlabel('Distance from detector center (in mm)', labelpad=20)
+			extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
+			aspect = imageSize / (max_angle - min_angle)
+
+		elif xunits == 'degrees':
+			# the units here represent an angle ('phi' in T(x,phi))
+			plt.xlabel('Beam direction (in degrees)', labelpad=20)
+			extent = [-phimax, phimax, max_angle, min_angle]
+			aspect = 2 * phimax / (max_angle - min_angle)
+
+		plt.imshow(self.projections, cmap = cm.Greys_r, extent = extent, 
+			       aspect = aspect/2)
+		plt.ylabel('Gantry angle (in degrees)', labelpad=20)
+		matplotlib.rcParams.update({'font.size': 22})
+		plt.show()
+
+	def interpolate_projection(self):
+		"""
+			Interpolation of the operator T(alpha,t).
+			
+			Be careful: the angle alpha is the angle between the beam and the
+			line joining the source to the center of the detector. Not to be
+			confused with phi, which is the angle between the beam and the 
+			y-axis
+		"""
+		t = self.params.get_time_range()
+		alpha = self.params.get_alpha_range()
+
+		self.projections_interpolator = interpolate.interp2d(alpha, t,
+			                                                 self.projections,
+			                                                 kind='linear')
+
+class DataConsistencyConditions(object):
+	"""
+		The computations of DCCs happen here
+	"""
+	def __init__(self, results):
+		self.results = results
+		self.params = results.params
+		self.source = results.source
+
+		self.DCC_function = None
+
 	def get_virtual_source_position(self, t, v):
 		"""
 			Computes :math:`s_v(t)`
 		"""
-		Mvt = np.array(((t+self.params.T/2) * v, 0))
+		Mvt = np.array( ( (t+self.params.T/2) * v, 0) )
 		return self.source.get_position(t) - Mvt
 
 	def alpha(self, t, x, v):
@@ -287,51 +351,6 @@ class Results(object):
 
 		return num / denom * self.jacobian(t,x,v)
 
-	def plotSinogram(self, xunits = 'mm'):
-		# define the limits of the axis
-		imageSize = self.params.imageSize
-		T = self.params.T
-		max_angle = self.params.get_max_angle()
-		min_angle = self.params.get_min_angle()
-		phimax = np.arctan( .5*imageSize / self.params.sdd) * 360 / (2*np.pi)
-
-		# plot the image
-		plt.figure()
-		
-		if xunits == 'mm':
-			# the units here represent a distance (on the detector)
-			plt.xlabel('Distance from detector center (in mm)', labelpad=20)
-			extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
-			aspect = imageSize / (max_angle - min_angle)
-
-		elif xunits == 'degrees':
-			# the units here represent an angle ('phi' in T(x,phi))
-			plt.xlabel('Beam direction (in degrees)', labelpad=20)
-			extent = [-phimax, phimax, max_angle, min_angle]
-			aspect = 2 * phimax / (max_angle - min_angle)
-
-		plt.imshow(self.projections, cmap = cm.Greys_r, extent = extent, 
-			       aspect = aspect/2)
-		plt.ylabel('Gantry angle (in degrees)', labelpad=20)
-		matplotlib.rcParams.update({'font.size': 22})
-		plt.show()
-
-	def interpolate_projection(self):
-		"""
-			Interpolation of the operator T(alpha,t).
-			
-			Be careful: the angle alpha is the angle between the beam and the
-			line joining the source to the center of the detector. Not to be
-			confused with phi, which is the angle between the beam and the 
-			y-axis
-		"""
-		t = self.params.get_time_range()
-		alpha = self.params.get_alpha_range()
-
-		self.projections_interpolator = interpolate.interp2d(alpha, t,
-			                                                 self.projections,
-			                                                 kind='linear')
-
 	def integrand(self, t, x, n, v):
 		"""
 			The function to be integrated in DCC, i.e.
@@ -346,7 +365,7 @@ class Results(object):
 		omega = self.params.omega / 360 * 2*np.pi
 
 		alpha_v = lambda t,x: self.alpha(t, x, v)
-		fb_proj = lambda t,x: self.projections_interpolator(alpha_v(t,x)-omega*t, t)
+		fb_proj = lambda t,x: self.results.projections_interpolator(alpha_v(t,x)-omega*t, t)
 		weight = lambda t,x,n: self.W(t, x, n, v)
 
 		y = fb_proj(t,x) * weight(t,x,n)
@@ -374,14 +393,35 @@ class Results(object):
 		
 		return integrate.simps(y, dx = t[1]-t[0])
 
-	def compute_DCC_function(self, v):
+	def compute_DCC_function(self, v, n):
 		"""
 			Transform B as a lambda function
 		"""
-		if self.projections_interpolator is None:
-			self.interpolate_projection()
+		if self.results.projections_interpolator is None:
+			self.results.interpolate_projection()
 
 		self.DCC_function = lambda x,n: self.B(x, n, v)
+
+	def compute_vectorized_DCC_function(self, v, x, n):
+		"""
+			Compute a vector giving all values of B(x) for each
+			point in x
+		"""
+		self.compute_DCC_function(v,n)
+		Bn = np.vectorize(lambda x: self.DCC_function(x, n))
+
+		return Bn(x)
+
+class Optimizator(object):
+	"""
+		In order to avoid inverse crime, we have to be
+		very careful here with the parameters the DCCs
+		can access.
+	"""
+
+	def __init__(self, results, dcc):
+		self.results = results
+		self.dcc = dcc
 
 	def residual_polyfit(self, x, n, v):
 		"""
@@ -389,75 +429,50 @@ class Results(object):
 			polynom obtained by fitting.
 		"""
 
-		self.compute_DCC_function(v)
-		Bn = np.vectorize(lambda x: self.DCC_function(x, n))
+		# self.dcc.compute_DCC_function(v)
+		# Bn = np.vectorize(lambda x: self.dcc.DCC_function(x, n))
+		Bn = self.dcc.compute_vectorized_DCC_function(v,x,n)
 		_, res, _, _, _ = np.polyfit(Bn(x), y, n, full = True)
 
-		return res[0]
+		return res[0]	
 
+	
 if __name__ == '__main__':
-	# plot sinogram
-	p0 = Parameters('example0.ini')
-	s0 = Simulator(p0)
-	res0 = s0.run()
-
-	p1 = Parameters('example1.ini')
-	s1 = Simulator(p1)
-	res1 = s1.run()
 
 	p = Parameters('example.ini')
 	s = Simulator(p)
 	res = s.run()
 	# res.plotSinogram()
 
-	x = np.concatenate((res0.projections[0:499,:],res.projections,res1.projections[1500:2000,:]), axis=0)
+	# Plot DCC
+	v = p.v
+	n = 2
+	x = p.get_virtual_positions_vector()
 
-	plt.figure()
-	imageSize = p0.imageSize
-	max_angle = p0.get_max_angle()
-	min_angle = p0.get_min_angle()
-	plt.xlabel('Distance from detector center (in mm)', labelpad=20)
-	extent = [-imageSize/2, imageSize/2, max_angle, min_angle]
-	aspect = imageSize / (max_angle - min_angle)
-	plt.imshow(x, cmap = cm.Greys_r,extent = extent, aspect = aspect)
-	plt.ylabel('Gantry angle (in degrees)', labelpad=20)
-	matplotlib.rcParams.update({'font.size': 22})
+	# compute x -> Bn(x) function
+	DCC = DataConsistencyConditions(res)
+	y = DCC.compute_vectorized_DCC_function(v,x,n)
+
+	# interpolation with polynom
+	poly = np.polyfit(x, y, n)
+	yfit = np.poly1d(poly)(x)
+	# rmse = sqrt(mean_squared_error(y, yfit))
+	diff = y-yfit
+	rmse = np.sqrt((diff*diff).sum())/np.sqrt((y*y).sum())
+	textrmse = r"$%.4f$" % (rmse)
+	textstr = r"$RMSE = $" + textrmse
+
+	# plot results
+	fig, ax = plt.subplots(1)
+	plt.plot(x, y, 'ob')
+	plt.plot(x, yfit, '-r')
+	axes = plt.gca()
+	axes.set_ylim([y.mean()-20,y.mean()+20])
+	matplotlib.rcParams.update({'font.size': 25})
+	ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=30,
+        verticalalignment='top')
+	plt.savefig('B' + str(n) + '.eps')
 	plt.show()
-
-	# # Plot DCC
-	# v = p.v
-	# n = 2
-
-	# xmax = p.R0 * np.sin(p.omega*p.T/2 /360*2*np.pi) * .75
-	# x = np.linspace(-xmax, xmax)
-
-	# # compute x -> Bn(x) function
-	# res.compute_DCC_function(v)
-	# Bn = np.vectorize(lambda x: res.DCC_function(x, n))
-	# y = Bn(x)
-
-	# # interpolation with polynom
-	# poly = np.polyfit(x, y, n)
-	# yfit = np.poly1d(poly)(x)
-	# # rmse = sqrt(mean_squared_error(y, yfit))
-	# diff = y-yfit
-	# rmse = np.sqrt((diff*diff).sum())/np.sqrt((y*y).sum())
-	# textrmse = r"$%.4f$" % (rmse)
-	# textstr = r"$RMSE = $" + textrmse
-
-	# # plot results
-	# fig, ax = plt.subplots(1)
-	# plt.plot(x, y, 'ob')
-	# plt.plot(x, yfit, '-r')
-	# # plt.xlabel(r'$x$, in mm', labelpad=15)
-	# # plt.ylabel(r'$B_n(x)$', labelpad=15)
-	# axes = plt.gca()
-	# axes.set_ylim([y.mean()-20,y.mean()+20])
-	# matplotlib.rcParams.update({'font.size': 25})
-	# ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=30,
- #        verticalalignment='top')
-	# plt.savefig('B' + str(n) + '.eps')
-	# plt.show()
 
 	# # optimization
 	# print "Error of interpolation is: " + str(res.residual_polyfit(x,n,v))
