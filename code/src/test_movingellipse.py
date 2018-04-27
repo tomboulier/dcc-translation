@@ -137,7 +137,7 @@ def test_fanbeam_operator_has_compact_support():
 ## Testing DCC
 def test_alpha_t_0_0():
 	"""
-		When :math:`v = 0` and `x = 0`, one has :math:`\alpha(T/2) = \pi/2`
+		When :math:`v = 0` and :math:`x = 0`, one has :math:`\alpha(T/2) = \pi/2`
 		and :math:`\alpha(-T/2) = -\pi/2`.
 		Moreover, the function is not supposed to raise a warning about
 		division by 0.
