@@ -3,7 +3,7 @@
  
  
 """
-    This script simulate a moving ellipse, illuminated by a source
+    This script simulates a moving ellipse, illuminated by a source
     following an arc of circle. The illumination is fanbeam.
 """
 import ipdb
@@ -402,7 +402,7 @@ class DataConsistencyConditions(object):
 
 		self.DCC_function = lambda x,n: self.B(x, n, v)
 
-	def compute_vectorized_DCC_function(self, v, x, n):
+	def compute_vectorized_DCC_function(self, n, v, x):
 		"""
 			Compute a vector giving all values of B(x) for each
 			point in x
@@ -412,30 +412,105 @@ class DataConsistencyConditions(object):
 
 		return Bn(x)
 
-class Optimizator(object):
+class PolynomProjector(object):
 	"""
-		In order to avoid inverse crime, we have to be
-		very careful here with the parameters the DCCs
-		can access.
+		In this class, we fit the DCC function onto a polynomial
+		function
 	"""
 
-	def __init__(self, results, dcc):
-		self.results = results
+	def __init__(self, dcc):
 		self.dcc = dcc
 
-	def residual_polyfit(self, x, n, v):
+	def fit_dcc_polynom(self, n, v, x):
+		"""
+			Interpolates the DCC function with a polynom of
+			degree n
+		"""
+
+		# computes the array with Bn(x) values
+		y = self.dcc.compute_vectorized_DCC_function(n,v,x)
+
+		# interpolation with polynom
+		poly = np.polyfit(x, y, n)
+
+
+		# the results is an array of values
+		return np.poly1d(poly)(x)
+
+	def compute_RMSE(self, n, v, x):
+		"""
+			Compute the root mean square error of the fitting
+			with fit_dcc_polynom
+		"""
+
+		y = self.dcc.compute_vectorized_DCC_function(n,v,x)
+		yfit = self.fit_dcc_polynom(n,v,x)
+		
+		diff = y - yfit
+		
+		return np.sqrt((diff*diff).sum())/np.sqrt((y*y).sum())
+
+	def plot_fitting(self, n, v, x):
+		"""
+			Plot the result of the fitting procedure, showing
+			the function Bn(x) with the polynom and the RMSE
+		"""
+		# text for RMSE
+		rmse = self.compute_RMSE(n,v,x)
+		textrmse = r"$%.4f$" % (rmse)
+		textstr = r"$RMSE = $" + textrmse
+
+		y = self.dcc.compute_vectorized_DCC_function(n,v,x)
+		yfit = self.fit_dcc_polynom(n,v,x)
+
+		fig, ax = plt.subplots(1)
+		plt.plot(x, y, 'ob')
+		plt.plot(x, yfit, '-r')
+		axes = plt.gca()
+		axes.set_ylim([y.mean()-20,y.mean()+20])
+		matplotlib.rcParams.update({'font.size': 25})
+		ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=30,
+    	    verticalalignment='top')
+		plt.savefig('B' + str(n) + '.eps')
+		plt.show()
+
+	def residual_polyfit(self, n, v, x):
 		"""
 			Computes the function |Bn(x)-P(x)|, where P(x) is the
 			polynom obtained by fitting.
 		"""
+		Bn = self.dcc.compute_vectorized_DCC_function(n,v,x)
+		# _, res, _, _, _ = np.polyfit(Bn, y, n, full = True)
+		_, res, _, _, _ = np.polyfit(x, Bn, n, full = True)
 
-		# self.dcc.compute_DCC_function(v)
-		# Bn = np.vectorize(lambda x: self.dcc.DCC_function(x, n))
-		Bn = self.dcc.compute_vectorized_DCC_function(v,x,n)
-		_, res, _, _, _ = np.polyfit(Bn(x), y, n, full = True)
+		return res[0]
 
-		return res[0]	
+class Optimizer(object):
+	"""
+		Optimization process in order to recover velocity 
+		occurs in this class
+	"""
+	def __init__(self, polynom_projector):
+		"""
+			In order to avoid inverse crime, we have to be
+			very careful here with the parameters the DCCs
+			can access.
+		"""
+		self.polyproj = polynom_projector
+		
+	def minimize_rmse(self, n, x):
+		"""
+			Minimization of RMSE of the fitting
+		"""
+		from scipy.optimize import minimize
 
+		residual_callable = lambda v: self.polyproj.residual_polyfit(n,v,x)
+		# residual_callable = lambda v: self.polyproj.compute_RMSE(n,v,x)
+
+		min_v = minimize(residual_callable, 0, method = 'Powell')
+
+		return min_v.x
+	
 	
 if __name__ == '__main__':
 
@@ -449,38 +524,21 @@ if __name__ == '__main__':
 	n = 2
 	x = p.get_virtual_positions_vector()
 
-	# compute x -> Bn(x) function
 	DCC = DataConsistencyConditions(res)
-	y = DCC.compute_vectorized_DCC_function(v,x,n)
-
-	# interpolation with polynom
-	poly = np.polyfit(x, y, n)
-	yfit = np.poly1d(poly)(x)
-	# rmse = sqrt(mean_squared_error(y, yfit))
-	diff = y-yfit
-	rmse = np.sqrt((diff*diff).sum())/np.sqrt((y*y).sum())
-	textrmse = r"$%.4f$" % (rmse)
-	textstr = r"$RMSE = $" + textrmse
-
-	# plot results
-	fig, ax = plt.subplots(1)
-	plt.plot(x, y, 'ob')
-	plt.plot(x, yfit, '-r')
-	axes = plt.gca()
-	axes.set_ylim([y.mean()-20,y.mean()+20])
-	matplotlib.rcParams.update({'font.size': 25})
-	ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=30,
-        verticalalignment='top')
-	plt.savefig('B' + str(n) + '.eps')
-	plt.show()
+	polyproj = PolynomProjector(DCC)
+	polyproj.fit_dcc_polynom(n,v,x)
+	# polyproj.plot_fitting(n, v, x)
 
 	# # optimization
+	# optim = Optimizer(polyproj)
 	# print "Error of interpolation is: " + str(res.residual_polyfit(x,n,v))
 	# from scipy.optimize import minimize
 	# # residual_callable = lambda v: res.residual_polyfit(x,0,v) + res.residual_polyfit(x,1,v) + res.residual_polyfit(x,2,v) + res.residual_polyfit(x,3,v)
 	# residual_callable = lambda v: res.residual_polyfit(x,n,v)
 	# min_v = minimize(residual_callable, 0, method = 'Powell')
+
+	# min_v = optim.minimize_rmse(n,x)
 	# print "*** Results of optimization ***"
 	# print "True value is: " + str(p.v)
-	# print "Search result is: " + str(min_v.x)
-	# print "Difference is: " + str(min_v.x-v)
+	# print "Search result is: " + str(min_v)
+	# print "Difference is: " + str(min_v-v)
