@@ -143,7 +143,7 @@ def test_lambda_t_0_0():
 		Moreover, the function is not supposed to raise a warning about
 		division by 0.
 	"""
-	lambda_t_0_0 = np.vectorize(lambda t:DCC.lambda_v(t,0,0))
+	lambda_t_0_0 = np.vectorize(lambda t:DCC.lambda_v(t,0,0,0))
 
 	# extreme values
 	np.testing.assert_almost_equal(lambda_t_0_0(p.T/2), np.pi/2)
@@ -175,6 +175,40 @@ def test_beta_raises_exception():
 
 	with pytest.raises(ZeroDivisionError) as e_info:
 		DCC.beta(v1,p.v2)
+
+def test_virtual_source_position_begin_end():
+	"""
+		By definition, the y-coordinates of the source is supposed
+		to be the same when :math:`t=-T/2` and :math:`t=T/2`.
+	"""
+	# y-coordinate of s_v(T/2)
+	s_v_2_T_over_2 = DCC.get_virtual_source_position(p.T/2, p.v, p.v2)[1]
+
+	# y-coordinate of s_v(T/2)
+	s_v_2_minus_T_over_2 = DCC.get_virtual_source_position(-p.T/2, p.v, p.v2)[1]
+	
+	np.testing.assert_almost_equal(s_v_2_T_over_2, s_v_2_minus_T_over_2)
+
+def test_F_0_0():
+	"""
+		As mentioned in equation (17) of the abstract, when :math:`v=0`
+		the function :math:`F` has a simpler formulation
+
+		..math::
+		F^{(0,0)}(t,x) = \frac{x + R_0 \sin(\omega t)}{R0 \cos(\omega t)}
+	"""
+	R0 = p.R0
+	omega = p.omega/360 *2*np.pi
+	y0 = R0*np.cos(omega*p.T/2)
+	
+	from numpy.random import randn
+	# virtual point, taken randomly
+	x = randn()
+	# time vector, taken randomly
+	t = randn()
+	
+	F_theo = (x + R0 * np.sin(omega * t)) / (R0 * np.cos(omega*t) - y0)
+	np.testing.assert_almost_equal(DCC.F(t, 0, 0, x), F_theo)
 
 
 
