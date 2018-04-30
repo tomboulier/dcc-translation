@@ -166,6 +166,16 @@ def test_beta_v2_0():
 
 	assert DCC.beta(v1,0) == 0.
 
+def test_beta_raises_exception():
+	"""
+		Assert that method beta in DCC class raises the proper
+		exception, ie when denominator is equal to 0.
+	"""
+	v1 = -2*p.R0*np.sin(2*np.pi/360 * p.omega*p.T/2)/p.T
+
+	with pytest.raises(ZeroDivisionError) as e_info:
+		DCC.beta(v1,p.v2)
+
 
 
 

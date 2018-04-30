@@ -298,8 +298,11 @@ class DataConsistencyConditions(object):
 
 		num = T * v2
 		denom = 2 * R0 * np.sin(omega*T/2) + T*v1
-
-		return np.arctan(num/denom)
+		
+		if denom == 0.:
+			raise ZeroDivisionError("denominator is equal to zero in function beta")
+		else:
+			return np.arctan(num/denom)
 
 	def lambda_v(self, t, x, v):
 		"""
@@ -534,7 +537,7 @@ if __name__ == '__main__':
 	p = Parameters('example.ini')
 	s = Simulator(p)
 	res = s.run()
-	res.plotSinogram()
+	# res.plotSinogram()
 
 	# Plot DCC
 	v = p.v
@@ -542,10 +545,12 @@ if __name__ == '__main__':
 	x = p.get_virtual_positions_vector()
 
 	DCC = DataConsistencyConditions(res)
-	polyproj = PolynomProjector(DCC)
+	v1 = -2*p.R0*np.sin(2*np.pi/360 * p.omega*p.T/2)/p.T
+	print DCC.beta(v1,p.v2)
+	# polyproj = PolynomProjector(DCC)
 	# polyproj.fit_dcc_polynom(n,v,x)
 	# print "Error of interpolation is: " + str(polyproj.residual_polyfit(n,v,x))
-	polyproj.plot_fitting(n, v, x)
+	# polyproj.plot_fitting(n, v, x)
 
 	# # Optimization
 	# optim = Optimizer(polyproj)
