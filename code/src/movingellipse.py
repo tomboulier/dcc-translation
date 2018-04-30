@@ -51,6 +51,7 @@ class Parameters(object):
 		self.imageSize = cfg.getint('Parameters', 'imageSize')
 		self.Nt = cfg.getint('Parameters', 'Nt')
 		self.v = cfg.getfloat('Parameters', 'v')
+		self.v2 = cfg.getfloat('Parameters', 'v2')
 		# parameters describing the ellipse
 		self.ellipseDensity = cfg.getfloat('Ellipse', 'density')
 		self.ellipseAngle = cfg.getfloat('Ellipse', 'angle')
@@ -281,6 +282,24 @@ class DataConsistencyConditions(object):
 		"""
 		Mvt = np.array( ( (t+self.params.T/2) * v, 0) )
 		return self.source.get_position(t) - Mvt
+
+	def beta(self, v1, v2):
+		"""
+			The rotation angle :math:`\beta` defined in formula (7)
+			of the abstract
+
+			.. math::
+			\beta = \arctan \left( \frac{T v_2} \
+			{2 R_0 \sin(\omega T/2) + T v_1} \right)
+		"""
+		R0 = self.params.R0
+		omega = self.params.omega/360 *2*np.pi
+		T = self.params.T
+
+		num = T * v2
+		denom = 2 * R0 * np.sin(omega*T/2) + T*v1
+
+		return np.arctan(num/denom)
 
 	def lambda_v(self, t, x, v):
 		"""

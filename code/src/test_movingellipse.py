@@ -155,6 +155,17 @@ def test_lambda_t_0_0():
 		                  / (p.R0*np.cos(p.omega*t/360 *2*np.pi)-p.y0) )
 	np.testing.assert_array_almost_equal(lambda_t_0_0(t), lambda_theo)
 
+def test_beta_v2_0():
+	"""
+		When :math:`v_2 = 0`, then :math:`\beta = 0`.
+		Here, we test that beta(v1,0) is equal to 0, with a random
+		value (strictly positive) for v1.
+	"""
+	from numpy.random import randn
+	v1 = np.abs(randn())
+
+	assert DCC.beta(v1,0) == 0.
+
 
 
 
