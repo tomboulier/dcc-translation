@@ -35,8 +35,8 @@ class Parameters(object):
     		- sdd: source to detector distance, in mm
     		- omega: speed of rotation, in degree/s
     		- T: duration of acquisition, in s
-    		- y0: total time of experiment, in s
-    		- imageSize: distance from isocenter to the chord of the
+    		- imageSize: length of the detector, in mm
+    		- y0: distance from isocenter to the chord of the
     		             arc of circle, in mm
     		- Nt: number of discretization points for the time
     		- v: speed of the object along the x-axis, in mm/s
@@ -282,10 +282,9 @@ class DataConsistencyConditions(object):
 		Mvt = np.array( ( (t+self.params.T/2) * v, 0) )
 		return self.source.get_position(t) - Mvt
 
-	def alpha(self, t, x, v):
+	def lambda_v(self, t, x, v):
 		"""
-			Since 'lambda' is a reserved keword in Python, we use 'alpha'
-			to express the function :math:`\lambda` in Theorem 1, i.e.
+			Function :math:`\lambda^{(v)}` in Theorem 1, i.e.
 			
 			.. math::
 			\lambda_n(t,x) = \arctan \left( \frac{x + R_0 \sin(\omega t) + \
@@ -364,8 +363,8 @@ class DataConsistencyConditions(object):
 		T = self.params.T
 		omega = self.params.omega / 360 * 2*np.pi
 
-		alpha_v = lambda t,x: self.alpha(t, x, v)
-		fb_proj = lambda t,x: self.results.projections_interpolator(alpha_v(t,x)-omega*t, t)
+		lambda_v = lambda t,x: self.lambda_v(t, x, v)
+		fb_proj = lambda t,x: self.results.projections_interpolator(lambda_v(t,x)-omega*t, t)
 		weight = lambda t,x,n: self.W(t, x, n, v)
 
 		y = fb_proj(t,x) * weight(t,x,n)
@@ -467,11 +466,11 @@ class PolynomProjector(object):
 		plt.plot(x, y, 'ob')
 		plt.plot(x, yfit, '-r')
 		axes = plt.gca()
-		axes.set_ylim([y.mean()-20,y.mean()+20])
+		# axes.set_ylim([y.mean()-20,y.mean()+20])
 		matplotlib.rcParams.update({'font.size': 25})
 		ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=30,
     	    verticalalignment='top')
-		plt.savefig('B' + str(n) + '.eps')
+		# plt.savefig('B' + str(n) + '.eps')
 		plt.show()
 
 	def residual_polyfit(self, n, v, x):
@@ -480,7 +479,6 @@ class PolynomProjector(object):
 			polynom obtained by fitting.
 		"""
 		Bn = self.dcc.compute_vectorized_DCC_function(n,v,x)
-		# _, res, _, _, _ = np.polyfit(Bn, y, n, full = True)
 		_, res, _, _, _ = np.polyfit(x, Bn, n, full = True)
 
 		return res[0]
@@ -517,27 +515,23 @@ if __name__ == '__main__':
 	p = Parameters('example.ini')
 	s = Simulator(p)
 	res = s.run()
-	# res.plotSinogram()
+	res.plotSinogram()
 
 	# Plot DCC
 	v = p.v
-	n = 2
+	n = 1
 	x = p.get_virtual_positions_vector()
 
 	DCC = DataConsistencyConditions(res)
 	polyproj = PolynomProjector(DCC)
-	polyproj.fit_dcc_polynom(n,v,x)
-	# polyproj.plot_fitting(n, v, x)
+	# polyproj.fit_dcc_polynom(n,v,x)
+	# print "Error of interpolation is: " + str(polyproj.residual_polyfit(n,v,x))
+	polyproj.plot_fitting(n, v, x)
 
-	# # optimization
+	# # Optimization
 	# optim = Optimizer(polyproj)
-	# print "Error of interpolation is: " + str(res.residual_polyfit(x,n,v))
-	# from scipy.optimize import minimize
-	# # residual_callable = lambda v: res.residual_polyfit(x,0,v) + res.residual_polyfit(x,1,v) + res.residual_polyfit(x,2,v) + res.residual_polyfit(x,3,v)
-	# residual_callable = lambda v: res.residual_polyfit(x,n,v)
-	# min_v = minimize(residual_callable, 0, method = 'Powell')
-
 	# min_v = optim.minimize_rmse(n,x)
+
 	# print "*** Results of optimization ***"
 	# print "True value is: " + str(p.v)
 	# print "Search result is: " + str(min_v)

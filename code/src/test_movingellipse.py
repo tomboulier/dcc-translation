@@ -107,7 +107,7 @@ def test_projections_fits_example_in_wiki_RTK():
 	assert norm(diff,2) <= tol * norm(projWiki,2)
 	assert norm(diff,np.inf) <= tol * norm(projWiki,np.inf)
 
-# Testing post-processing
+## Testing post-processing
 
 def test_interpolation_fits_actual_projections():
 	"""
@@ -136,24 +136,24 @@ def test_fanbeam_operator_has_compact_support():
 	np.testing.assert_almost_equal(T(-np.pi/2, t).sum(), 0.0)
 
 ## Testing DCC
-def test_alpha_t_0_0():
+def test_lambda_t_0_0():
 	"""
-		When :math:`v = 0` and :math:`x = 0`, one has :math:`\alpha(T/2) = \pi/2`
-		and :math:`\alpha(-T/2) = -\pi/2`.
+		When :math:`v = 0` and :math:`x = 0`, one has :math:`\lambda(T/2) = \pi/2`
+		and :math:`\lambda(-T/2) = -\pi/2`.
 		Moreover, the function is not supposed to raise a warning about
 		division by 0.
 	"""
-	alpha_t_0_0 = np.vectorize(lambda t:DCC.alpha(t,0,0))
+	lambda_t_0_0 = np.vectorize(lambda t:DCC.lambda_v(t,0,0))
 
 	# extreme values
-	np.testing.assert_almost_equal(alpha_t_0_0(p.T/2), np.pi/2)
-	np.testing.assert_almost_equal(alpha_t_0_0(-p.T/2), -np.pi/2)
+	np.testing.assert_almost_equal(lambda_t_0_0(p.T/2), np.pi/2)
+	np.testing.assert_almost_equal(lambda_t_0_0(-p.T/2), -np.pi/2)
 
 	# elsewhere, compare with theoretical values
 	t = np.linspace(-p.T/+.01, p.T/2-.01, 1000)
-	alpha_theo = np.arctan( (p.R0*np.sin(p.omega*t/360 *2*np.pi)) \
+	lambda_theo = np.arctan( (p.R0*np.sin(p.omega*t/360 *2*np.pi)) \
 		                  / (p.R0*np.cos(p.omega*t/360 *2*np.pi)-p.y0) )
-	np.testing.assert_array_almost_equal(alpha_t_0_0(t), alpha_theo)
+	np.testing.assert_array_almost_equal(lambda_t_0_0(t), lambda_theo)
 
 
 
