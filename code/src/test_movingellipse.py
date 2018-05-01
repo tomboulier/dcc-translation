@@ -225,7 +225,7 @@ def test_F_0_0():
 	F_theo = (x + R0 * np.sin(omega * t)) / (R0 * np.cos(omega*t) - y0)
 	np.testing.assert_almost_equal(DCC.F(t, 0, 0, x), F_theo)
 
-def test_get_virtual_source_position():
+def test_get_virtual_source_position_v_0():
 	"""
 		Test that when :math:`v_1 = v_2 = 0`, one has
 		:math:`s^{(v)}(t) = R_0(-\sin(\omega t), \cos(\omega t))`
@@ -238,6 +238,32 @@ def test_get_virtual_source_position():
 	s_theo = p.R0 * np.array( (-np.sin(omega*t), np.cos(omega*t)) )
 
 	np.testing.assert_almost_equal(s_0_t, s_theo)
+
+def test_get_virtual_source_position_v2_0():
+	"""
+		Test that when :math:`v_2 = 0`, one has
+		:math:`s^{(v)}(t) = (-R_0 \sin(\omega t) - (t+T/2) v_1, \
+		                      R_0 \cos(\omega t))`
+	"""
+	from numpy.random import randn
+	t = randn()
+	v = randn()
+	R0 = p.R0
+	omega = p.omega/360*2*np.pi
+	T = p.T
+
+	s_0_t = DCC.get_virtual_source_position(t, v, 0)
+	omega = p.omega/360*2*np.pi
+
+	# we will use here the same code as in previous versions
+	Mvt = np.array( ( (t+p.T/2) * v, 0) )
+	s_theo = s.source.get_position(t) - Mvt
+
+	s_theo_analytical = np.array( (-R0 * np.sin(omega*t) - \
+		(t+T/2)*v, R0*np.cos(omega*t)) )
+
+	np.testing.assert_almost_equal(s_0_t, s_theo)
+	np.testing.assert_almost_equal(s_0_t, s_theo_analytical)
 
 def test_get_virtual_points_vector():
 	"""
@@ -252,5 +278,82 @@ def test_get_virtual_points_vector():
 
 	np.testing.assert_almost_equal(x_prime, x_prime_theo)
 
+def test_jacobian_with_old_formulas():
+	"""
+		In some archives, we had the formulas for the jacobian
+		when :math:`v_2=0`, so we will use it here.
+	"""
 
+	# for time, degree of polynom, position: we take random values
+	from numpy.random import randint 
+	n = randint(5)
+	from numpy.random import randn
+	t = np.abs(randn())
+	x = randn()
+	v1 = np.abs(randn())
+	# important, because the test relies on the fact that v2 = 0
+	v2 = 0
 
+	# usual parameters
+	R0 = p.R0
+	T = p.T
+	omega = p.omega / 360 * 2*np.pi
+	y0 = p.y0
+
+	# compute weighting function with DCC class
+	jacobian_new = DCC.jacobian(t,v1,v2,x)
+
+	# compute old formula (with previous version of code)
+	v = v1 # to be compatible with old notations
+	# first, "jacobian"
+	num = R0**2*omega - v*y0 + R0 * np.cos(omega*t) * (v - omega*y0) \
+                         + R0 * omega * np.sin(omega*t) * (x + (t+T/2)*v)
+	denom = (R0 * np.cos(omega*t) - y0)**2
+	jacobian_old = num/denom
+
+	np.testing.assert_almost_equal(jacobian_new, jacobian_old)
+
+def test_integrand_with_old_formulas():
+	"""
+		In some archives, we had the formulas for the weighting function
+		and the jacobian when :math:`v_2=0`, so we will use it here.
+	"""
+
+	# for time, degree of polynom, position: we take random values
+	from numpy.random import randint 
+	n = randint(5)
+	from numpy.random import randn
+	t = np.abs(randn())
+	x = randn()
+	v1 = np.abs(randn())
+	# important, because the test relies on the fact that v2 = 0
+	v2 = 0
+
+	# usual parameters
+	R0 = p.R0
+	T = p.T
+	omega = p.omega / 360 * 2*np.pi
+	y0 = R0 * np.cos(omega*T/2)
+
+	# compute weighting function with DCC class
+	weight_new = DCC.W(n,t,v1,v2,x)
+
+	# compute old formula (with previous version of code)
+	v = v1 # to be compatible with old notations
+	# first, "jacobian"
+	num = R0**2*omega - v*y0 + R0 * np.cos(omega*t) * (v - omega*y0) \
+                         + R0 * omega * np.sin(omega*t) * (x + (t+T/2)*v)
+	denom = (R0 * np.cos(omega*t) - y0)**2
+	J_x_t_v = num/denom
+
+	# then, function W_n(t,x)
+	s_v_t = DCC.get_virtual_source_position(t, v1, v2)
+	from scipy.spatial import distance
+	D_x_t = distance.euclidean(s_v_t, (x,y0))
+	num = (x + R0 * np.sin(omega*t) + (t+T/2)*v)**n
+	denom = D_x_t * (R0 * np.cos(omega*t) - y0)**(n-1)
+	W_n_t_x =  num / denom
+	
+	weight_old = J_x_t_v * W_n_t_x
+
+	np.testing.assert_almost_equal(weight_old, weight_new)

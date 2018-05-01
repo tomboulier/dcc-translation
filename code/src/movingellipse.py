@@ -461,7 +461,8 @@ class DataConsistencyConditions(object):
 		diff_t_B = self.diff_t_F_denominator(t, v1, v2, x)
 		F = self.F(t, v1, v2, x)
 
-		return (diff_t_A * B - A * diff_t_B) / (B*B * (1+F*F))
+		# return (diff_t_A * B - A * diff_t_B) / (B*B * (1+F*F))
+		return (diff_t_A * B - A * diff_t_B) / (B*B)
 
 	def W(self, n, t, v1, v2, x):
 		"""
@@ -645,11 +646,11 @@ if __name__ == '__main__':
 	p = Parameters('example.ini')
 	s = Simulator(p)
 	res = s.run()
-	# res.plotSinogram()
+	res.plotSinogram()
 
 	# Plot DCC
 	v = p.v
-	n = 0
+	n = 3
 
 	DCC = DataConsistencyConditions(res)
 	# DCC.compute_vectorized_DCC_function(n,p.v,p.v2,x)
