@@ -81,14 +81,6 @@ class Parameters(object):
 		# return np.arctan( x / self.sdd) * 360 / (2*np.pi)
 		return np.arctan( x / self.sdd)
 
-	def get_virtual_positions_vector(self):
-		"""
-			These will be the abciss of points where DCC function
-			will be computed.
-		"""
-		xmax = self.R0 * np.sin(self.omega*self.T/2 /360*2*np.pi) * .75
-		return np.linspace(-xmax, xmax)
-
 class MovingEllipse(object):
 	"""docstring for MovingEllipse"""
 	def __init__(self, params):
@@ -293,6 +285,25 @@ class DataConsistencyConditions(object):
 		
 		return R_beta.dot(self.source.get_position(t) - Mvt)
 
+	def get_virtual_points_vector(self, v1, v2):
+		"""
+			These will be the x-coordinates of points where DCC function
+			will be computed.
+		"""
+		# xmax = self.R0 * np.sin(self.omega*self.T/2 /360*2*np.pi) * .75
+		# return np.linspace(-xmax, xmax)
+
+		# take notations of Definition 3 for x', i.e. x' is between x'_l and x'_r
+		# whith x'_l = s_v(T/2) and x'_r = s_v(-T/2)
+		T = self.params.T
+		# v1 = self.params.v
+		# v2 = self.params.v2
+
+		xl = self.get_virtual_source_position(T/2, v1, v2)[0]
+		xr = self.get_virtual_source_position(-T/2, v1, v2)[0]
+
+		return np.linspace(xl,xr)
+
 	def beta(self, v1, v2):
 		"""
 			The rotation angle :math:`\beta` defined in formula (7)
@@ -465,7 +476,7 @@ class DataConsistencyConditions(object):
 		lambda_v = self.lambda_v(t, v1, v2, x)
 		jacobian = self.jacobian(t, v1, v2, x)
 
-		return np.tan(lambda_v)**n * np.cos(lambda_v) * jacobian
+		return (np.tan(lambda_v))**n * np.cos(lambda_v) * jacobian
 
 	def integrand(self, n, t, v1, v2, x):
 		"""
@@ -479,9 +490,11 @@ class DataConsistencyConditions(object):
 
 		T = self.params.T
 		omega = self.params.omega / 360 * 2*np.pi
+		beta = self.beta(v1,v2)
 
 		lambda_v = lambda t,x: self.lambda_v(t,v1,v2,x)
-		fb_proj = lambda t,x: self.results.projections_interpolator(lambda_v(t,x)-omega*t, t)
+		# fb_proj = lambda t,x: self.results.projections_interpolator(lambda_v(t,x)-omega*t, t)
+		fb_proj = lambda t,x: self.results.projections_interpolator(lambda_v(t,x) + beta - omega*t, t)
 		weight = lambda t,x,n: self.W(n,t,v1,v2,x)
 
 		y = fb_proj(t,x) * weight(t,x,n)
@@ -636,13 +649,13 @@ if __name__ == '__main__':
 
 	# Plot DCC
 	v = p.v
-	n = 1
-	x = p.get_virtual_positions_vector()
+	n = 0
 
 	DCC = DataConsistencyConditions(res)
 	# DCC.compute_vectorized_DCC_function(n,p.v,p.v2,x)
 
 	polyproj = PolynomProjector(DCC)
+	x = DCC.get_virtual_points_vector(p.v,p.v2)
 	# polyproj.fit_dcc_polynom(n,p.v,p.v2,x)
 	# print "Error of interpolation is: " + str(polyproj.residual_polyfit(n,v,x))
 	polyproj.plot_fitting(n, p.v, p.v2, x)

@@ -187,7 +187,22 @@ def test_virtual_source_position_begin_end():
 	# y-coordinate of s_v(T/2)
 	s_v_2_minus_T_over_2 = DCC.get_virtual_source_position(-p.T/2, p.v, p.v2)[1]
 	
+
 	np.testing.assert_almost_equal(s_v_2_T_over_2, s_v_2_minus_T_over_2)
+
+def test_simplified_formula_for_y0_prime():
+	"""
+		Test that :math:`s^{(v)}(T/2) = s^{(v)}(-T/2) = R_0 \cos(\omega T/2 + \beta)`
+	"""
+	y0_prime = p.R0 * np.cos(p.omega/360*2*np.pi * p.T/2 + DCC.beta(p.v,p.v2))
+	# y-coordinate of s_v(T/2)
+	s_v_2_T_over_2 = DCC.get_virtual_source_position(p.T/2, p.v, p.v2)[1]
+
+	# y-coordinate of s_v(T/2)
+	s_v_2_minus_T_over_2 = DCC.get_virtual_source_position(-p.T/2, p.v, p.v2)[1]
+
+	np.testing.assert_almost_equal(y0_prime, s_v_2_minus_T_over_2)
+	np.testing.assert_almost_equal(s_v_2_T_over_2, y0_prime)
 
 def test_F_0_0():
 	"""
@@ -210,9 +225,32 @@ def test_F_0_0():
 	F_theo = (x + R0 * np.sin(omega * t)) / (R0 * np.cos(omega*t) - y0)
 	np.testing.assert_almost_equal(DCC.F(t, 0, 0, x), F_theo)
 
+def test_get_virtual_source_position():
+	"""
+		Test that when :math:`v_1 = v_2 = 0`, one has
+		:math:`s^{(v)}(t) = R_0(-\sin(\omega t), \cos(\omega t))`
+	"""
+	from numpy.random import randn
+	t = randn()
 
+	s_0_t = DCC.get_virtual_source_position(t, 0, 0)
+	omega = p.omega/360*2*np.pi
+	s_theo = p.R0 * np.array( (-np.sin(omega*t), np.cos(omega*t)) )
 
+	np.testing.assert_almost_equal(s_0_t, s_theo)
 
+def test_get_virtual_points_vector():
+	"""
+		Here, we test that when :math:`v_1 = v_2 = 0`, the virtual points
+		:math:`x'` are in fact points between :math:`-R_0\sin(\omega T/2)`
+		and :math:`-R_0\sin(\omega T/2)`
+	"""
+	x_prime = DCC.get_virtual_points_vector(0,0)
+
+	omega = p.omega/360*2*np.pi
+	x_prime_theo = p.R0 * np.linspace(-np.sin(omega*p.T/2), np.sin(omega*p.T/2) )
+
+	np.testing.assert_almost_equal(x_prime, x_prime_theo)
 
 
 
