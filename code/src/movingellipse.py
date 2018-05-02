@@ -100,8 +100,8 @@ class MovingEllipse(object):
 		v = self.params.v
 		v2 = self.params.v2
 
-		return [self.params.ellipseCenterX + (t+T/2)*v,
-		        self.params.ellipseCenterY + (t+T/2)*v2,
+		return [self.params.ellipseCenterX - (t+T/2)*v,
+		        self.params.ellipseCenterY - (t+T/2)*v2,
 		        0]
 
 	def get_axis(self):
