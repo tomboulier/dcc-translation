@@ -366,3 +366,44 @@ def test_integrand_with_old_formulas():
 	weight_old = J_x_t_v * W_n_t_x
 
 	np.testing.assert_almost_equal(weight_old, weight_new)
+
+def test_two_different_formulas_for_weight_function():
+	"""
+		In Theorem 1, the weight function is defined as
+
+		..math::
+		W(t) = \tan^n(\lambda) \cos(\lambda) \partial_t \lambda
+
+		We can also show that
+
+		..math::
+		W(t) = \frac{F(t)^n}{\sqrt{1+F^(t)}} F'(t),
+
+		where :math:`F(t) := \arctan(\lambda)`. This is what
+		we will test here.
+	"""
+	# for time, degree of polynom, position, velocity,
+	# we take random values
+	from numpy.random import randint 
+	n = randint(5)
+	from numpy.random import randn
+	t = np.abs(randn())
+	x = randn()
+	v1 = np.abs(randn())
+	v2 = np.abs(randn())
+
+	# usual parameters
+	R0 = p.R0
+	T = p.T
+	omega = p.omega / 360 * 2*np.pi
+	y0 = R0 * np.cos(omega*T/2)
+
+	# compute weighting function with DCC class
+	weight_DCC = DCC.W(n,t,v1,v2,x)
+
+	# compute formula
+	F_t_x = DCC.F(t, v1, v2, x)
+	diff_t_F = DCC.jacobian(t, v1, v2, x) # computes F'(t)
+	weight_alternative = F_t_x**n / np.sqrt(1 + F_t_x**2) * diff_t_F
+
+	np.testing.assert_almost_equal(weight_DCC, weight_alternative)
