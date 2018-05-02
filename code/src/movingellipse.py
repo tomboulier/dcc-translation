@@ -98,9 +98,10 @@ class MovingEllipse(object):
 		"""
 		T = self.params.T
 		v = self.params.v
+		v2 = self.params.v2
 
 		return [self.params.ellipseCenterX + (t+T/2)*v,
-		        self.params.ellipseCenterY,
+		        self.params.ellipseCenterY + (t+T/2)*v2,
 		        0]
 
 	def get_axis(self):
@@ -640,7 +641,6 @@ class Optimizer(object):
 
 		return min_v.x
 	
-	
 if __name__ == '__main__':
 
 	p = Parameters('example.ini')
@@ -656,7 +656,7 @@ if __name__ == '__main__':
 	# DCC.compute_vectorized_DCC_function(n,p.v,p.v2,x)
 
 	polyproj = PolynomProjector(DCC)
-	x = DCC.get_virtual_points_vector(p.v,p.v2)
+	x = DCC.get_virtual_points_vector(p.v,p.v2)[10:40]
 	# polyproj.fit_dcc_polynom(n,p.v,p.v2,x)
 	# print "Error of interpolation is: " + str(polyproj.residual_polyfit(n,v,x))
 	polyproj.plot_fitting(n, p.v, p.v2, x)

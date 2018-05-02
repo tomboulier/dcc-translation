@@ -109,6 +109,15 @@ def test_projections_fits_example_in_wiki_RTK():
 
 ## Testing post-processing
 
+configFile = 'example.ini'
+tol = .01
+
+# simulation by our algorithm
+p = Parameters(configFile)
+s = Simulator(p)
+res = s.run()
+DCC = DataConsistencyConditions(res)
+
 def test_interpolation_fits_actual_projections():
 	"""
 		The interpolator must fit the actual data
