@@ -3,8 +3,9 @@
  
  
 """
-    This script simulates a moving ellipse, illuminated by a source
-    following an arc of circle. The illumination is fanbeam.
+    This script computes analytically the projections of
+    a moving ellipse, illuminated by a source which follows
+    an arc of circle. The illumination is fanbeam.
 """
 import ipdb
 
@@ -81,7 +82,7 @@ class Parameters(object):
 		# return np.arctan( x / self.sdd) * 360 / (2*np.pi)
 		return np.arctan( x / self.sdd)
 
-class MovingEllipse(object):
+class AnalyticalEllipse(object):
 	"""docstring for MovingEllipse"""
 	def __init__(self, params):
 		self.params = params
@@ -100,8 +101,8 @@ class MovingEllipse(object):
 		v = self.params.v
 		v2 = self.params.v2
 
-		return [self.params.ellipseCenterX - (t+T/2)*v,
-		        self.params.ellipseCenterY - (t+T/2)*v2,
+		return [self.params.ellipseCenterX + (t+T/2)*v,
+		        self.params.ellipseCenterY + (t+T/2)*v2,
 		        0]
 
 	def get_axis(self):
@@ -114,21 +115,54 @@ class MovingEllipse(object):
 			Simulate fan-beam acquisition of the object with given
 			source and detector, at time t
 		"""
-		# create geometry of the source at time t
-		geometry = source.get_geometry(t)
+		N = self.params.imageSize
+		results = np.zeros(N)
 
-		# compute intersection of fan-beam with ellipse
-		empty_image_detector = detector.get_empty_image()
-		rei = srtk.RayEllipsoidIntersectionImageFilter()
-		rei.SetDensity(self.get_density())
-		rei.SetAngle(self.get_angle())
-		rei.SetCenter(self.get_center(t)) # 
-		rei.SetAxis(self.get_axis())
+		# general parameters
+		alpha = self.params.get_alpha_range()
+		omega = self.params.omega/360 * 2*np.pi
+
+		# ellipse parameters
+		x,y,_ = self.get_center(t)
+		a,b,_ = self.get_axis()
+		if (a != b):
+			raise ValueError("Ellipse is not a circle (the analytical formula only works with circle)", a, b)
 		
-		rei.SetGeometry(geometry)
-		reiImage = rei.Execute(empty_image_detector)
-	
-		return srtk.GetArrayFromImage(reiImage)[0,0,:]
+		s1,s2 = source.get_position(t)
+
+		# for i in np.arange(N):
+		# 	# i is the number of the pixel in the image printed on the detector
+		# 	# there is no "resolution" parameter, meaning that there is 1 pixel
+		# 	# per millimeter
+		# 	# TODO : add this parameter?
+			
+		# 	# phi is the angle between the beam and the y-axis
+		# 	phi = omega*t + alpha[i]
+
+		# 	# computation of the distance between the center of the circle
+		# 	# and the beam
+		# 	dist = np.abs( (s1-x)*np.cos(phi) + (s2-y)*np.sin(phi) )
+
+		# 	# stores in the array
+		# 	if dist > a:
+		# 		results[i] = 0
+		# 	else:
+		# 		results[i] = 2 * np.sqrt(a**2 - dist**2)
+
+		# phi is the angle between the beam and the y-axis
+		phi = omega*t + alpha
+		
+		# distance between the center of the circle and the beam
+		dist = np.abs( (s1-x)*np.cos(phi) + (s2-y)*np.sin(phi) )
+
+		# results = (dist<a) * 2 * np.sqrt(a**2 - dist**2)
+		# [x if x < 5 else 0 for x in np.arange(10)]
+		# ipdb.set_trace()
+		results[dist < a] = (2 * np.sqrt(a**2 - dist**2))[dist<a]
+
+		
+
+		return self.get_density() * results
 
 class Detector(object):
 	"""docstring for Detector"""
@@ -176,7 +210,7 @@ class Simulator(object):
 		self.params = params
 		self.source = Source(params)
 		self.detector = Detector(params)
-		self.ellipse = MovingEllipse(params)
+		self.ellipse = AnalyticalEllipse(params)
 
 	def run(self):
 		"""
@@ -257,6 +291,7 @@ class Results(object):
 		self.projections_interpolator = interpolate.interp2d(alpha, t,
 			                                                 self.projections,
 			                                                 kind='linear')
+
 
 class DataConsistencyConditions(object):
 	"""
@@ -629,20 +664,26 @@ class Optimizer(object):
 		
 	def minimize_rmse(self, n, x):
 		"""
-			Minimization of RMSE of the fitting
+			Minimization of RMSE of the polynomial fitting.
 		"""
+		# For the moment, works only for v2=0
+		v2 = self.polyproj.dcc.params.v2
+		if v2 != 0:
+			raise ValueError("Optimization only works for v2 = 0 for the moment", v2)
+
 		from scipy.optimize import minimize
 
-		residual_callable = lambda v: self.polyproj.residual_polyfit(n,v,x)
+		residual_callable = lambda v: self.polyproj.residual_polyfit(n,v,0,x)
 		# residual_callable = lambda v: self.polyproj.compute_RMSE(n,v,x)
 
 		min_v = minimize(residual_callable, 0, method = 'Powell')
 
 		return min_v.x
-	
+
+
 if __name__ == '__main__':
 
-	p = Parameters('example.ini')
+	p = Parameters('circle_test.ini')
 	res = Simulator(p).run()
 	res.plotSinogram()
 
@@ -652,6 +693,22 @@ if __name__ == '__main__':
 	polyproj = PolynomProjector(DCC)
 	x = DCC.get_virtual_points_vector(p.v,p.v2)[10:40]
 	polyproj.plot_fitting(1, p.v, p.v2, x)
+
+	# optimization
+	optimizer = Optimizer(polyproj)
+	min_v = optimizer.minimize_rmse(1,x)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
