@@ -495,7 +495,6 @@ class DataConsistencyConditions(object):
 		beta = self.beta(v1,v2)
 
 		lambda_v = lambda t,x: self.lambda_v(t,v1,v2,x)
-		# fb_proj = lambda t,x: self.results.projections_interpolator(lambda_v(t,x)-omega*t, t)
 		fb_proj = lambda t,x: self.results.projections_interpolator(lambda_v(t,x) + beta - omega*t, t)
 		weight = lambda t,x,n: self.W(n,t,v1,v2,x)
 
@@ -644,28 +643,16 @@ class Optimizer(object):
 if __name__ == '__main__':
 
 	p = Parameters('example.ini')
-	s = Simulator(p)
-	res = s.run()
+	res = Simulator(p).run()
 	res.plotSinogram()
 
 	# Plot DCC
-	v = p.v
-	n = 3
-
 	DCC = DataConsistencyConditions(res)
-	# DCC.compute_vectorized_DCC_function(n,p.v,p.v2,x)
 
 	polyproj = PolynomProjector(DCC)
 	x = DCC.get_virtual_points_vector(p.v,p.v2)[10:40]
-	# polyproj.fit_dcc_polynom(n,p.v,p.v2,x)
-	# print "Error of interpolation is: " + str(polyproj.residual_polyfit(n,v,x))
-	polyproj.plot_fitting(n, p.v, p.v2, x)
+	polyproj.plot_fitting(1, p.v, p.v2, x)
 
-	# # Optimization
-	# optim = Optimizer(polyproj)
-	# min_v = optim.minimize_rmse(n,x)
 
-	# print "*** Results of optimization ***"
-	# print "True value is: " + str(p.v)
-	# print "Search result is: " + str(min_v)
-	# print "Difference is: " + str(min_v-v)
+
+
