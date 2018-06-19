@@ -6,23 +6,16 @@
     This script simulates a moving ellipse, illuminated by a source
     following an arc of circle. The illumination is fanbeam.
 """
-import ipdb
 
+from simulator import Simulator
 import math
-import SimpleRTK as srtk
 import numpy as np
 import ConfigParser
 import matplotlib
 import matplotlib.pyplot as plt
-
+from scipy import integrate
 plt.rc('text', usetex=True)
 matplotlib.rcParams['text.latex.unicode'] = True
-import matplotlib.cm as cm
-from scipy import interpolate
-from scipy.spatial import distance
-from scipy import integrate
-from sklearn.metrics import mean_squared_error
-from math import sqrt
 
 
 class Parameters(object):
@@ -82,192 +75,6 @@ class Parameters(object):
         x = np.arange(-self.imageSize / 2, self.imageSize / 2)
         # return np.arctan( x / self.sdd) * 360 / (2*np.pi)
         return np.arctan(x / self.sdd)
-
-
-class MovingEllipse(object):
-    """docstring for MovingEllipse"""
-
-    def __init__(self, params):
-        self.params = params
-
-    def get_density(self):
-        return self.params.ellipseDensity
-
-    def get_angle(self):
-        return self.params.ellipseAngle
-
-    def get_center(self, t):
-        """
-            Since it is moving, the position depends on t
-        """
-        T = self.params.T
-        v = self.params.v
-        v2 = self.params.v2
-
-        return [self.params.ellipseCenterX - (t + T / 2) * v,
-                self.params.ellipseCenterY - (t + T / 2) * v2,
-                0]
-
-    def get_axis(self):
-        return [self.params.ellipseSemiAxisX,
-                self.params.ellipseSemiAxisY,
-                self.params.ellipseSemiAxisY]
-
-    def compute_projection(self, t, source, detector):
-        """
-            Simulate fan-beam acquisition of the object with given
-            source and detector, at time t
-        """
-        # create geometry of the source at time t
-        geometry = source.get_geometry(t)
-
-        # compute intersection of fan-beam with ellipse
-        empty_image_detector = detector.get_empty_image()
-        rei = srtk.RayEllipsoidIntersectionImageFilter()
-        rei.SetDensity(self.get_density())
-        rei.SetAngle(self.get_angle())
-        rei.SetCenter(self.get_center(t))  #
-        rei.SetAxis(self.get_axis())
-
-        rei.SetGeometry(geometry)
-        reiImage = rei.Execute(empty_image_detector)
-
-        return srtk.GetArrayFromImage(reiImage)[0, 0, :]
-
-
-class Detector(object):
-    """docstring for Detector"""
-
-    def __init__(self, params):
-        self.params = params
-
-    def get_empty_image(self):
-        proj = srtk.ConstantImageSource()
-        proj.SetSize([self.params.imageSize, 1, 1])
-        proj.SetSpacing([1, 1, 1])
-        origin = (np.array(proj.GetSize()) - 1) \
-                 * np.array(proj.GetSpacing()) \
-                 * -.5
-        proj.SetOrigin(origin)
-        proj.SetConstant(0.0)
-        return proj.Execute()
-
-
-class Source(object):
-    """docstring for Source"""
-
-    def __init__(self, params):
-        self.R0 = params.R0
-        self.sdd = params.sdd
-        self.omega = params.omega
-        self.get_angle = lambda t: params.get_angle(t)
-
-    def get_geometry(self, t):
-        geometry = srtk.ThreeDCircularProjectionGeometry()
-        geometry.AddProjection(self.R0, self.sdd,
-                               self.get_angle(t), 0, 0)
-        return geometry
-
-    def get_position(self, t):
-        return np.array((-self.R0 * np.sin(self.omega * t / 360 * 2 * np.pi), \
-                         self.R0 * np.cos(self.omega * t / 360 * 2 * np.pi)))
-
-
-class Simulator(object):
-    """
-        In this class, all simulations are performed
-    """
-
-    def __init__(self, params):
-        """
-            Load the parameters
-        """
-        self.params = params
-        self.source = Source(params)
-        self.detector = Detector(params)
-        self.ellipse = MovingEllipse(params)
-
-    def run(self):
-        """
-            Computes all the projections, at any angle and any time
-        """
-        # get general parameters
-        T = self.params.T
-        imageSize = self.params.imageSize
-        Nt = self.params.Nt
-
-        # the array giving projections
-        projarray = np.zeros((Nt, imageSize))
-
-        for nt, t in enumerate(self.params.get_time_range()):
-            projarray[nt, :] = self.ellipse.compute_projection(t,
-                                                               self.source,
-                                                               self.detector)
-
-        # store results
-        results = Results(self.params, self.source, self.detector)
-        results.projections = projarray
-        return results
-
-
-class Results(object):
-    """
-        Encapsulation of everything that is computed by Simulator
-    """
-
-    def __init__(self, params, source, detector):
-        self.params = params
-        self.source = source
-        self.detector = detector
-        self.projections = None
-        self.projections_interpolator = None
-        self.DCC_function = None
-        self.DCC_function_theo = None
-
-    def plotSinogram(self, xunits='mm'):
-        # define the limits of the axis
-        imageSize = self.params.imageSize
-        T = self.params.T
-        max_angle = self.params.get_max_angle()
-        min_angle = self.params.get_min_angle()
-        phimax = np.arctan(.5 * imageSize / self.params.sdd) * 360 / (2 * np.pi)
-
-        # plot the image
-        plt.figure()
-
-        if xunits == 'mm':
-            # the units here represent a distance (on the detector)
-            plt.xlabel('Distance from detector center (in mm)', labelpad=20)
-            extent = [-imageSize / 2, imageSize / 2, max_angle, min_angle]
-            aspect = imageSize / (max_angle - min_angle)
-
-        elif xunits == 'degrees':
-            # the units here represent an angle ('phi' in T(x,phi))
-            plt.xlabel('Beam direction (in degrees)', labelpad=20)
-            extent = [-phimax, phimax, max_angle, min_angle]
-            aspect = 2 * phimax / (max_angle - min_angle)
-
-        plt.imshow(self.projections, cmap=cm.Greys_r, extent=extent,
-                   aspect=aspect / 2)
-        plt.ylabel('Gantry angle (in degrees)', labelpad=20)
-        matplotlib.rcParams.update({'font.size': 22})
-        plt.show()
-
-    def interpolate_projection(self):
-        """
-            Interpolation of the operator T(alpha,t).
-
-            Be careful: the angle alpha is the angle between the beam and the
-            line joining the source to the center of the detector. Not to be
-            confused with phi, which is the angle between the beam and the
-            y-axis
-        """
-        t = self.params.get_time_range()
-        alpha = self.params.get_alpha_range()
-
-        self.projections_interpolator = interpolate.interp2d(alpha, t,
-                                                             self.projections,
-                                                             kind='linear')
 
 
 class DataConsistencyConditions(object):
