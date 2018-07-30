@@ -16,9 +16,11 @@ class Simulator(object):
         self.params = params
         self.source = Source(params)
         self.detector = Detector(params)
+
+        # target is built depending on the parameters (shape? type of computation [RTK/Analytical]? )
         if params.targetType == "ellipse":
             if params.ellipseModel == "RTK":
-                self.target = MovingEllipse(params)
+                self.target = RTKEllipse(params)
             elif params.ellipseModel == "Analytical":
                 self.target = AnalyticalEllipse(params)
             else:

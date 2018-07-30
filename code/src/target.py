@@ -1,8 +1,9 @@
-import SimpleRTK as srtk
 import numpy as np
 
-class MovingEllipse(object):
-    """docstring for MovingEllipse"""
+class RTKEllipse(object):
+    """
+        Class of ellipse where projections are simulated with the module 'RTK', by Simon Rit
+    """
 
     def __init__(self, params):
         self.params = params
@@ -35,6 +36,7 @@ class MovingEllipse(object):
             Simulate fan-beam acquisition of the object with given
             source and detector, at time t
         """
+        import SimpleRTK as srtk
         # create geometry of the source at time t
         geometry = source.get_geometry(t)
 
@@ -52,7 +54,10 @@ class MovingEllipse(object):
         return srtk.GetArrayFromImage(reiImage)[0, 0, :]
 
 class AnalyticalEllipse(object):
-    """docstring for MovingEllipse"""
+    """
+        Class of ellipse where projections are computed according to analytical (i.e. exact)
+        formulas. Hence, this is not a simulation but a computation.
+    """
 
     def __init__(self, params):
         self.params = params
