@@ -11,6 +11,7 @@ from simulator import Simulator
 from parameters import Parameters
 from dcc import DataConsistencyConditions
 from dcc import PolynomProjector
+from inverseproblem import Optimizer
 import math
 import numpy as np
 import ConfigParser
@@ -18,34 +19,6 @@ import matplotlib
 import matplotlib.pyplot as plt
 plt.rc('text', usetex=True)
 matplotlib.rcParams['text.latex.unicode'] = True
-
-
-class Optimizer(object):
-    """
-        Optimization process in order to recover velocity
-        occurs in this class
-    """
-
-    def __init__(self, polynom_projector):
-        """
-            In order to avoid inverse crime, we have to be
-            very careful here with the parameters the DCCs
-            can access.
-        """
-        self.polyproj = polynom_projector
-
-    def minimize_rmse(self, n, x):
-        """
-            Minimization of RMSE of the fitting
-        """
-        from scipy.optimize import minimize
-
-        residual_callable = lambda v: self.polyproj.residual_polyfit(n, v, x)
-        # residual_callable = lambda v: self.polyproj.compute_RMSE(n,v,x)
-
-        min_v = minimize(residual_callable, 0, method='Powell')
-
-        return min_v.x
 
 
 if __name__ == '__main__':
@@ -57,5 +30,10 @@ if __name__ == '__main__':
     DCC = DataConsistencyConditions(res)
 
     polyproj = PolynomProjector(DCC)
+    n=1
     x = DCC.get_virtual_points_vector(p.v, p.v2)[10:40]
-    polyproj.plot_fitting(1, p.v, p.v2, x)
+    polyproj.plot_fitting(n, p.v, p.v2, x)
+
+    # recover velocity
+    optimizer = Optimizer(polyproj)
+    v_optim = optimizer.minimize_rmse(n, x)
