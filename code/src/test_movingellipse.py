@@ -2,7 +2,8 @@ from main import *
 from numpy.linalg import norm
 import pytest
 import SimpleRTK as srtk
-
+import ConfigParser
+import numpy as np
 
 def wiki_example_RTK(configFile):
     """

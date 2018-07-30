@@ -30,13 +30,17 @@ class Parameters(object):
         self.Nt = cfg.getint('Parameters', 'Nt')
         self.v = cfg.getfloat('Parameters', 'v')
         self.v2 = cfg.getfloat('Parameters', 'v2')
-        # parameters describing the ellipse
-        self.ellipseDensity = cfg.getfloat('Ellipse', 'density')
-        self.ellipseAngle = cfg.getfloat('Ellipse', 'angle')
-        self.ellipseCenterX = cfg.getfloat('Ellipse', 'x')
-        self.ellipseCenterY = cfg.getfloat('Ellipse', 'y')
-        self.ellipseSemiAxisX = cfg.getfloat('Ellipse', 'a')
-        self.ellipseSemiAxisY = cfg.getfloat('Ellipse', 'b')
+        self.targetType = cfg.get('Parameters', 'targetType')
+
+        if self.targetType == "ellipse":
+            # parameters describing the ellipse
+            self.ellipseDensity = cfg.getfloat('Ellipse', 'density')
+            self.ellipseAngle = cfg.getfloat('Ellipse', 'angle')
+            self.ellipseCenterX = cfg.getfloat('Ellipse', 'x')
+            self.ellipseCenterY = cfg.getfloat('Ellipse', 'y')
+            self.ellipseSemiAxisX = cfg.getfloat('Ellipse', 'a')
+            self.ellipseSemiAxisY = cfg.getfloat('Ellipse', 'b')
+            self.ellipseModel = cfg.get('Ellipse', 'model')
 
         # These parameters are derived from previous ones
         self.y0 = self.R0 * np.cos(self.omega * self.T / 2 / 360 * 2 * np.pi)
