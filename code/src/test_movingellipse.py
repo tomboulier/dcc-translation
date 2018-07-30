@@ -1,4 +1,4 @@
-from movingellipse import *
+from main import *
 from numpy.linalg import norm
 import pytest
 import SimpleRTK as srtk

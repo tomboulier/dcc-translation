@@ -37,3 +37,5 @@ if __name__ == '__main__':
     # recover velocity
     optimizer = Optimizer(polyproj)
     v_optim = optimizer.minimize_rmse(n, x)
+
+    print "Result of optimization is : " + str(v_optim)
