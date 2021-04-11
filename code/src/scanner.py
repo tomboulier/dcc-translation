@@ -1,4 +1,4 @@
-import SimpleRTK as srtk
+from itk import RTK as rtk
 import numpy as np
 
 class Detector(object):
@@ -8,7 +8,7 @@ class Detector(object):
         self.params = params
 
     def get_empty_image(self):
-        proj = srtk.ConstantImageSource()
+        proj = rtk.ConstantImageSource()
         proj.SetSize([self.params.imageSize, 1, 1])
         proj.SetSpacing([1, 1, 1])
         origin = (np.array(proj.GetSize()) - 1) \
@@ -29,7 +29,7 @@ class Source(object):
         self.get_angle = lambda t: params.get_angle(t)
 
     def get_geometry(self, t):
-        geometry = srtk.ThreeDCircularProjectionGeometry()
+        geometry = rtk.ThreeDCircularProjectionGeometry()
         geometry.AddProjection(self.R0, self.sdd,
                                self.get_angle(t), 0, 0)
         return geometry

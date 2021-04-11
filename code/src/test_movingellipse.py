@@ -1,8 +1,8 @@
 from main import *
 from numpy.linalg import norm
 import pytest
-import SimpleRTK as srtk
-import ConfigParser
+from itk import RTK as rtk
+import configparser
 import numpy as np
 
 def wiki_example_RTK(configFile):
@@ -13,7 +13,7 @@ def wiki_example_RTK(configFile):
         http://wiki.openrtk.org/index.php/SimpleRTK#Testing_SimpleRTK
     """
     # Read the parameters from file
-    cfg = ConfigParser.ConfigParser()
+    cfg = configparser.ConfigParser()
     cfg.read(configFile)
     numberOfProjections = cfg.getint('Parameters', 'Nt')
     omega = cfg.getfloat('Parameters', 'omega')
@@ -35,13 +35,13 @@ def wiki_example_RTK(configFile):
     ellipseSemiAxisY = cfg.getfloat('Ellipse', 'b')
 
     # Defines the RTK geometry object
-    geometry = srtk.ThreeDCircularProjectionGeometry()
+    geometry = rtk.ThreeDCircularProjectionGeometry()
     for x in range(0, numberOfProjections):
         angle = firstAngle + x * angularArc / (numberOfProjections - 1)
         geometry.AddProjection(sid, sdd, angle, isox, isoy)
 
     # initialization of 'blank' image
-    constantImageSource = srtk.ConstantImageSource()
+    constantImageSource = rtk.ConstantImageSource()
     sizeOutput = [imageSize, imageSize, numberOfProjections]
     spacing = [1.0, 1.0, 1.0]
     origin = (np.array(sizeOutput) - 1) * np.array(spacing) * -.5
@@ -51,7 +51,7 @@ def wiki_example_RTK(configFile):
     constantImageSource.SetConstant(0.0)
     source = constantImageSource.Execute()
 
-    rei = srtk.RayEllipsoidIntersectionImageFilter()
+    rei = rtk.RayEllipsoidIntersectionImageFilter()
     semiprincipalaxis = [ellipseSemiAxisX,
                          ellipseSemiAxisY,
                          ellipseSemiAxisY]
@@ -64,7 +64,7 @@ def wiki_example_RTK(configFile):
     rei.SetGeometry(geometry)
     reiImage = rei.Execute(source)
 
-    return srtk.GetArrayFromImage(reiImage[:, imageSize / 2, :])
+    return rtk.GetArrayFromImage(reiImage[:, imageSize / 2, :])
 
 
 configFile = 'test.ini'
