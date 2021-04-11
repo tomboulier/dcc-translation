@@ -12,10 +12,6 @@ from parameters import Parameters
 from dcc import DataConsistencyConditions
 from dcc import PolynomProjector
 from inverseproblem import Optimizer
-import matplotlib
-import matplotlib.pyplot as plt
-plt.rc('text', usetex=True)
-matplotlib.rcParams['text.latex.unicode'] = True
 
 
 if __name__ == '__main__':

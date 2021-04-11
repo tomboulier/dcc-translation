@@ -1,10 +1,7 @@
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from scipy import interpolate
-plt.rc('text', usetex=True)
-matplotlib.rcParams['text.latex.unicode'] = True
 
 class Results(object):
     """
@@ -46,7 +43,6 @@ class Results(object):
         plt.imshow(self.projections, cmap=cm.Greys_r, extent=extent,
                    aspect=aspect / 2)
         plt.ylabel('Gantry angle (in degrees)', labelpad=20)
-        matplotlib.rcParams.update({'font.size': 22})
         plt.show()
 
     def interpolate_projection(self):
