@@ -1,5 +1,5 @@
 import numpy as np
-import ConfigParser
+from configparser import ConfigParser
 
 class Parameters(object):
     """
@@ -19,7 +19,7 @@ class Parameters(object):
             - Nt: number of discretization points for the time
             - v: speed of the object along the x-axis, in mm/s
         """
-        cfg = ConfigParser.ConfigParser()
+        cfg = ConfigParser()
         cfg.read(configFile)
         # general parameters
         self.R0 = cfg.getfloat('Parameters', 'R0')
