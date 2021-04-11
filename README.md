@@ -11,15 +11,15 @@ In *Proceedings of the Fifth International Conference on Image Formation in X-Ra
 
 ## Installation
 
-First, install all packages needed with the following command:
+First, go to the folder containing the scripts:
+```
+cd code/src
+```
+
+Then, install all packages needed with the following command:
 
 ```
 pip install -r requirements.txt
-```
-
-Then, go to the folder containing the scripts:
-```
-cd code/src
 ```
 
 Finally, run the main script as follows:
