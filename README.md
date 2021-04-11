@@ -1,3 +1,6 @@
+
+[![DOI](https://zenodo.org/badge/356943838.svg)](https://zenodo.org/badge/latestdoi/356943838)
+
 # Data Consistency Conditions for a translating object
 
 This is the source code from the following paper:
@@ -14,7 +17,12 @@ First, install all packages needed with the following command:
 pip install -r requirements.txt
 ```
 
-Then, run the main script as follows:
+Then, go to the folder containing the scripts:
+```
+cd code/src
+```
+
+Finally, run the main script as follows:
 
 ```
 python main.py
