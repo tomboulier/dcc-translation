@@ -1,5 +1,6 @@
 
 [![DOI](https://zenodo.org/badge/356943838.svg)](https://zenodo.org/badge/latestdoi/356943838)
+![python-app_workflow](https://github.com/tomboulier/dcc-translation/actions/workflows/python-app.yml/badge.svg)
 
 # Data Consistency Conditions for a translating object
 
