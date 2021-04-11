@@ -346,7 +346,7 @@ class PolynomProjector(object):
         axes = plt.gca()
         # axes.set_ylim([y.mean()-20,y.mean()+20])
         matplotlib.rcParams.update({'font.size': 25})
-        ax.text(0.05, 0.95, textstr, transform=ax.transAxes, fontsize=30,
+        ax.text(0.3, 0.95, textstr, transform=ax.transAxes, fontsize=30,
                 verticalalignment='top')
         # plt.savefig('B' + str(n) + '.eps')
         plt.show()
