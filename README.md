@@ -6,9 +6,9 @@
 
 This is the source code from the following paper:
 
-Boulier, T., Clackdoyle, R., Lesaint, J., & Desbat, L. (2018, May).
-**Consistency of Fan-beam Projections of a Translating Object Along an Arc of a Circle.**
-In *Proceedings of the Fifth International Conference on Image Formation in X-Ray Computed Tomography (CT-Meeting).*
+> **Consistency of Fan-beam Projections of a Translating Object Along an Arc of a Circle**
+> *Boulier, T., Clackdoyle, R., Lesaint, J., & Desbat, L.*
+> Proceedings of the Fifth International Conference on Image Formation in X-Ray Computed Tomography (CT-Meeting).
 
 ## Installation
 
